@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
+  <defs>
+    <!-- Gradient for the planet -->
+    <radialGradient id="earthGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" stop-color="#003366" /> <!-- Dark blue center -->
+      <stop offset="100%" stop-color="#0099FF" /> <!-- Light blue edge -->
+    </radialGradient>
+    <!-- Gradient for the land -->
+    <linearGradient id="landGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#006400" /> <!-- Dark green -->
+      <stop offset="100%" stop-color="#00FF00" /> <!-- Light green -->
+    </linearGradient>
+  </defs>
+  
+  <!-- Circle for the planet -->
+  <circle cx="25" cy="25" r="22" fill="url(#earthGradient)" />
+  
+  <!-- Simple land shapes -->
+  <path fill="url(#landGradient)" d="M20,10 Q25,20 30,15 T40,25 Q35,30 30,25 T20,20 Z" />
+  <path fill="url(#landGradient)" d="M15,30 Q20,35 25,30 T35,30 Q30,25 25,30 Z" />
+</svg>
