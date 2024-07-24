@@ -1,5 +1,4 @@
 import { createClient, PostgrestResponse } from "@supabase/supabase-js";
-import { BBox } from "geojson";
 import { Database } from "./supabase_types";
 
 const url = "https://biccczfztgnfaqzmizan.supabase.co";
@@ -17,21 +16,19 @@ export interface BoundingBoxResponse {
   references_to_other_boxes: number[];
 }
 
-interface SimilarBox extends BoundingBoxResponse {
-  similarity: number;
-}
+// interface SimilarBox extends BoundingBoxResponse {
+//   similarity: number;
+// }
 
 export const useSupabase = () => {
   const fetchBoundingBoxes = async (
-    bounds: BBox
+    lat: number,
+    lon: number
   ): Promise<BoundingBoxResponse[]> => {
-    console.log("Fetching coverage for", bounds);
     const { data, error }: PostgrestResponse<BoundingBoxResponse> =
-      await supabase.rpc("find_multiple_polygons", {
-        input_min_lat: bounds[1],
-        input_min_lon: bounds[0],
-        input_max_lat: bounds[3],
-        input_max_lon: bounds[2],
+      await supabase.rpc("find_polygon", {
+        lat,
+        lon,
       });
     if (error) {
       console.error("Error fetching covered boxes:", error);
