@@ -10,3 +10,5 @@ RUN bun run build
 
 FROM scratch
 COPY --from=builder /app/dist /app/dist
+
+CMD ["tail", "-f", "/dev/null"]
