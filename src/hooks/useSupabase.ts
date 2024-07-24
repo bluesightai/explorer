@@ -16,9 +16,9 @@ export interface BoundingBoxResponse {
   references_to_other_boxes: number[];
 }
 
-// interface SimilarBox extends BoundingBoxResponse {
-//   similarity: number;
-// }
+interface SimilarBox extends BoundingBoxResponse {
+  similarity: number;
+}
 
 export const useSupabase = () => {
   const fetchBoundingBoxes = async (
@@ -38,24 +38,20 @@ export const useSupabase = () => {
     return data || [];
   };
 
-  //   const findSimilarTiles = async (bounds: BBox): Promise<SimilarBox[]> => {
-  //     console.log("Fetching similar for", bounds);
-  //     const { data, error }: PostgrestResponse<SimilarBox> = await supabase.rpc(
-  //       "find_similar_search_boxes",
-  //       {
-  //         north: bounds[3],
-  //         south: bounds[1],
-  //         east: bounds[2],
-  //         west: bounds[0],
-  //         top_k: 5, // optional, defaults to 5 if not provided
-  //       }
-  //     );
-  //     if (error) {
-  //       console.error("Error finding similar tiles:", error);
-  //       return [];
-  //     }
-  //     return data || [];
-  //   };
+  const findSimilarTiles = async (id: number): Promise<SimilarBox[]> => {
+    const { data, error }: PostgrestResponse<SimilarBox> = await supabase.rpc(
+      "find_similar_search_boxes",
+      {
+        input_id: id,
+        top_k: 5, // optional, defaults to 5 if not provided
+      }
+    );
+    if (error) {
+      console.error("Error finding similar tiles:", error);
+      return [];
+    }
+    return data || [];
+  };
 
-  return { fetchBoundingBoxes };
+  return { fetchBoundingBoxes, findSimilarTiles };
 };
