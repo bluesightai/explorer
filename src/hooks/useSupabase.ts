@@ -1,5 +1,5 @@
 import { createClient, PostgrestResponse } from "@supabase/supabase-js";
-import { Database } from "./supabase_types";
+import { Database } from "../supabase_types";
 
 const url = "https://biccczfztgnfaqzmizan.supabase.co";
 const key =

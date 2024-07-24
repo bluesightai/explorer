@@ -1,4 +1,4 @@
-import { useMapInteractions } from './useMapInteractions';
+import { useMapInteractions } from '../hooks/useMapInteractions';
 
 const ControlWidget = ({ isPinning, handlePinPoint }: { isPinning: boolean; handlePinPoint: (arg0: any) => void }) => {
   const {

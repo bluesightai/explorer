@@ -1,7 +1,7 @@
 import React from 'react';
 import { PolygonLayer } from '@deck.gl/layers';
 import { DeckGL } from '@deck.gl/react';
-import { BoundingBoxResponse } from './useSupabase';
+import { BoundingBoxResponse } from '../../hooks/useSupabase';
 
 
 interface GridLayerComponentProps {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './SceneCard.css';
-import { BoundingBoxResponse } from './useSupabase';
-import { useNaipImagery } from './useNaipImagery';
+import { BoundingBoxResponse } from '../../hooks/useSupabase';
+import { useNaipImagery } from '../../hooks/useNaipImagery';
 
 interface SceneCardProps {
     referencePoint: [number, number];
