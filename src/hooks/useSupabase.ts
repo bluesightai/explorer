@@ -13,7 +13,6 @@ export interface BoundingBoxResponse {
   min_lon: number;
   max_lat: number;
   max_lon: number;
-  references_to_other_boxes: number[];
 }
 
 interface SimilarBox extends BoundingBoxResponse {
@@ -38,18 +37,25 @@ export const useSupabase = () => {
     return data || [];
   };
 
-  const findSimilarTiles = async (id: number): Promise<SimilarBox[]> => {
+  const findSimilarTiles = async (
+    ids: number[],
+    top_k: number
+  ): Promise<SimilarBox[]> => {
+    console.log("Length of input ids is", ids);
+    console.log("top k is", top_k);
     const { data, error }: PostgrestResponse<SimilarBox> = await supabase.rpc(
-      "find_similar_search_boxes",
+      "find_similar_tiles",
       {
-        input_id: id,
-        top_k: 5, // optional, defaults to 5 if not provided
+        input_ids: ids,
+        top_k: top_k, // optional, defaults to 5 if not provided
       }
     );
     if (error) {
       console.error("Error finding similar tiles:", error);
       return [];
     }
+    console.log("length of data is", data.length);
+
     return data || [];
   };
 

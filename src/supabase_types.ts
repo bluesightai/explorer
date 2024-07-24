@@ -132,22 +132,6 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      find_multiple_polygons: {
-        Args: {
-          input_min_lat: number
-          input_min_lon: number
-          input_max_lat: number
-          input_max_lon: number
-        }
-        Returns: {
-          id: number
-          min_lat: number
-          min_lon: number
-          max_lat: number
-          max_lon: number
-          references_to_other_boxes: number[]
-        }[]
-      }
       find_polygon: {
         Args: {
           lat: number
@@ -159,13 +143,12 @@ export type Database = {
           min_lon: number
           max_lat: number
           max_lon: number
-          references_to_other_boxes: number[]
         }[]
       }
-      find_similar_search_boxes: {
+      find_similar_tiles: {
         Args: {
-          input_id: number
-          top_k: number
+          input_ids: number[]
+          top_k?: number
         }
         Returns: {
           id: number
@@ -174,7 +157,6 @@ export type Database = {
           min_lon: number
           max_lat: number
           max_lon: number
-          references_to_other_boxes: number[]
         }[]
       }
     }

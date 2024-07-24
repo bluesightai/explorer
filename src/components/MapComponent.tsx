@@ -27,13 +27,16 @@ function getTooltip({ tile }: TileLayerPickingInfo) {
 }
 
 export default function MapComponent({ showBorder = false }: { showBorder?: boolean }) {
-    const { handleFindSimilar, isPinning, handlePinPoint, pinnedPoint, handleMapClick, handleCleanSearch, targetBoundingBoxes, resultBoundingBoxes } = useMapInteractions();
+    const { setSliderValue, sliderValue, handleFindSimilar, isPinning, handlePinPoint, pinnedPoints, handleMapClick, handleCleanSearch, targetBoundingBoxes, resultBoundingBoxes } = useMapInteractions();
 
 
-
+    const pinnedLayers = pinnedPoints.map((pinnedPoint, index) => PinLayer({ pinnedPoint, index }))
+    console.log("Pinned layers are", pinnedLayers.length)
     const layers: LayersList = [
+
         TileLayerComponent({ showBorder }),
-        ...(pinnedPoint ? [PinLayer({ pinnedPoint })] : [])
+        pinnedLayers
+
     ];
 
     return (
@@ -51,9 +54,11 @@ export default function MapComponent({ showBorder = false }: { showBorder?: bool
                 handleCleanSearch={handleCleanSearch}
                 isPinning={isPinning}
                 handlePinPoint={handlePinPoint} handleFindSimilar={handleFindSimilar} />
-            {pinnedPoint && targetBoundingBoxes.length > 0 && (
+            {pinnedPoints && targetBoundingBoxes.length > 0 && (
                 <SceneCard
-                    referencePoint={pinnedPoint} targetBoundingBoxes={targetBoundingBoxes} resultBoundingBoxes={resultBoundingBoxes} />)}
+                    sliderValue={sliderValue}
+                    setSliderValue={setSliderValue}
+                    targetBoundingBoxes={targetBoundingBoxes} resultBoundingBoxes={resultBoundingBoxes} />)}
 
         </>
     );

@@ -1,10 +1,7 @@
 import './ControlWidget.css';
-import { useMapInteractions } from '../../hooks/useMapInteractions';
 
 const ControlWidget = ({ isPinning, handlePinPoint, handleFindSimilar, handleCleanSearch }: { handleCleanSearch: (arg0: any) => void; handleFindSimilar: (arg0: any) => void; isPinning: boolean; handlePinPoint: (arg0: any) => void }) => {
-  const {
-    handleShareFindings,
-  } = useMapInteractions();
+
 
   return (
     <div className="control-widget">
@@ -19,7 +16,7 @@ const ControlWidget = ({ isPinning, handlePinPoint, handleFindSimilar, handleCle
         <span className="control-button-icon">🔍</span>
         Find Similar
       </button>
-      <button onClick={handleShareFindings} className="control-button">
+      <button onClick={() => { }} className="control-button">
         <span className="control-button-icon">↗️</span>
         Share Findings
       </button>

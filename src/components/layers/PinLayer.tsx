@@ -3,11 +3,12 @@ import { IconLayer } from '@deck.gl/layers';
 
 interface PinLayerComponentProps {
     pinnedPoint: [number, number] | null;
+    index: number
 }
 
-export const PinLayer: (props: PinLayerComponentProps) => IconLayer = ({ pinnedPoint }) => {
+export const PinLayer: (props: PinLayerComponentProps) => IconLayer = ({ pinnedPoint, index }) => {
     return new IconLayer({
-        id: 'pin-layer',
+        id: 'pin-layer-${index}',
         data: pinnedPoint ? [pinnedPoint] : [],
         getPosition: d => d,
         getIcon: _ => ({
