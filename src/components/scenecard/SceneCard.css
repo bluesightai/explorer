@@ -43,7 +43,8 @@
   gap: 10px;
 }
 
-.grid img, .grid .image-placeholder {
+.grid img,
+.grid .image-placeholder {
   width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
@@ -78,7 +79,7 @@ input[type="range"]::-webkit-slider-thumb {
   height: 16px;
   width: 16px;
   border-radius: 50%;
-  background: #007AFF;
+  background: #007aff;
   margin-top: -6px;
 }
 

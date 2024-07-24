@@ -40,7 +40,6 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-
       - name: Create GitHub Deployment
         uses: chrnorm/deployment-action@v2
         id: deployment
@@ -76,7 +75,7 @@ jobs:
           script: |
             set -x
             TARGET_DIR="/usr/share/nginx/demo.bluesight.ai/html"
-            
+
             sudo rm -rf $TARGET_DIR/*
             sudo mkdir -p $TARGET_DIR
             sudo mv /tmp/demo/dist/* $TARGET_DIR/

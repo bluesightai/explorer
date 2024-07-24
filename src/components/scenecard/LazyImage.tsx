@@ -1,37 +1,37 @@
 // LazyImage.tsx
-import React, { useState, useEffect } from 'react';
-import { BoundingBoxResponse } from '../../hooks/useSupabase';
+import { BoundingBoxResponse } from "../../hooks/useSupabase"
+import React, { useEffect, useState } from "react"
 
 interface LazyImageProps {
-    boxData: BoundingBoxResponse;
-    fetchImage: (box: BoundingBoxResponse) => Promise<string>;
-    alt: string;
+  boxData: BoundingBoxResponse
+  fetchImage: (box: BoundingBoxResponse) => Promise<string>
+  alt: string
 }
 
 const LazyImage: React.FC<LazyImageProps> = ({ boxData, fetchImage, alt }) => {
-    const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null)
 
-    useEffect(() => {
-        let isMounted = true;
-        const loadImage = async () => {
-            try {
-                const url = await fetchImage(boxData);
-                if (isMounted) {
-                    setImageUrl(url);
-                }
-            } catch (error) {
-                console.error('Error loading image:', error);
-            }
-        };
+  useEffect(() => {
+    let isMounted = true
+    const loadImage = async () => {
+      try {
+        const url = await fetchImage(boxData)
+        if (isMounted) {
+          setImageUrl(url)
+        }
+      } catch (error) {
+        console.error("Error loading image:", error)
+      }
+    }
 
-        loadImage();
+    loadImage()
 
-        return () => {
-            isMounted = false;
-        };
-    }, [boxData, fetchImage]);
+    return () => {
+      isMounted = false
+    }
+  }, [boxData, fetchImage])
 
-    return imageUrl ? <img src={imageUrl} alt={alt} /> : <div className="image-placeholder" />;
-};
+  return imageUrl ? <img src={imageUrl} alt={alt} /> : <div className="image-placeholder" />
+}
 
-export default LazyImage;
+export default LazyImage
