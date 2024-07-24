@@ -8,8 +8,8 @@ interface PinLayerComponentProps {
 
 export const PinLayer: (props: PinLayerComponentProps) => IconLayer = ({ pinnedPoint, index }) => {
     return new IconLayer({
-        id: 'pin-layer-${index}',
-        data: pinnedPoint ? [pinnedPoint] : [],
+        id: `pin-layer-${index}`,
+        data: [pinnedPoint],
         getPosition: d => d,
         getIcon: _ => ({
             url: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-512.png',

@@ -8,6 +8,7 @@ import ControlWidget from './control/ControlWidget';
 import SceneCard from './scenecard/SceneCard';
 import { TileLayerComponent } from './layers/TileLayer';
 import { PinLayer } from './layers/PinLayer';
+import { GridLayer } from './layers/GridLayer';
 
 const INITIAL_VIEW_STATE: MapViewState = {
     latitude: 40,
@@ -30,12 +31,14 @@ export default function MapComponent({ showBorder = false }: { showBorder?: bool
     const { setSliderValue, sliderValue, handleFindSimilar, isPinning, handlePinPoint, pinnedPoints, handleMapClick, handleCleanSearch, targetBoundingBoxes, resultBoundingBoxes } = useMapInteractions();
 
 
-    const pinnedLayers = pinnedPoints.map((pinnedPoint, index) => PinLayer({ pinnedPoint, index }))
-    console.log("Pinned layers are", pinnedLayers.length)
+    // const pinnedLayers = pinnedPoints.map((pinnedPoint, index) => PinLayer({ pinnedPoint, index }))
+    // [...pinnedLayers],
+
     const layers: LayersList = [
 
         TileLayerComponent({ showBorder }),
-        pinnedLayers
+        GridLayer({ boundingBoxes: targetBoundingBoxes }),
+
 
     ];
 
