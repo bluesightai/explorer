@@ -7,7 +7,6 @@ import { useMapInteractions } from '../hooks/useMapInteractions';
 import ControlWidget from './control/ControlWidget';
 import SceneCard from './scenecard/SceneCard';
 import { TileLayerComponent } from './layers/TileLayer';
-import { PinLayer } from './layers/PinLayer';
 import { GridLayer } from './layers/GridLayer';
 
 const INITIAL_VIEW_STATE: MapViewState = {
