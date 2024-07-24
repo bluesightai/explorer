@@ -3,10 +3,8 @@ import DeckGL from '@deck.gl/react';
 import { MapView } from '@deck.gl/core';
 import type { LayersList, MapViewState } from '@deck.gl/core';
 import type { TileLayerPickingInfo } from '@deck.gl/geo-layers';
-import { useState } from 'react';
-import { BoundingBoxResponse, useSupabase } from '../hooks/useSupabase';
 import { useMapInteractions } from '../hooks/useMapInteractions';
-import ControlWidget from './ControlWidget';
+import ControlWidget from './control/ControlWidget';
 import SceneCard from './scenecard/SceneCard';
 import { TileLayerComponent } from './layers/TileLayer';
 import { PinLayer } from './layers/PinLayer';
@@ -29,24 +27,11 @@ function getTooltip({ tile }: TileLayerPickingInfo) {
 }
 
 export default function MapComponent({ showBorder = false }: { showBorder?: boolean }) {
-    const [pinnedPoint, setPinnedPoint] = useState<[number, number] | null>(null);
-    const [boundingBoxes, setBoundingBoxes] = useState<BoundingBoxResponse[]>([]);
+    const { isPinning, handlePinPoint, pinnedPoint, handleMapClick, boundingBoxes, handleCleanSearch } = useMapInteractions();
 
-    const { fetchBoundingBoxes } = useSupabase();
-    const { isPinning, handlePinPoint } = useMapInteractions();
+    const referenceIDs = boundingBoxes.map(item => item.id)
 
-    const onClick = async (info: any) => {
-        if (isPinning && info.coordinate) {
-            const [longitude, latitude] = info.coordinate;
-            setPinnedPoint([longitude, latitude]);
-            handlePinPoint(); // Turn off pinning mode
-            console.log("longitude", longitude, "latitude", latitude);
-            const bbox = await fetchBoundingBoxes(latitude, longitude);
-            if (bbox.length > 0) {
-                setBoundingBoxes(bbox);
-            }
-        }
-    };
+    console.log("Reference ids is", referenceIDs)
 
     const layers: LayersList = [
         TileLayerComponent({ showBorder }),
@@ -62,18 +47,20 @@ export default function MapComponent({ showBorder = false }: { showBorder?: bool
                 controller={true}
                 // @ts-ignore
                 getTooltip={getTooltip}
-                onClick={onClick}
+                onClick={handleMapClick}
             />
             <ControlWidget
+                handleCleanSearch={handleCleanSearch}
                 isPinning={isPinning}
-                handlePinPoint={handlePinPoint}
-            />
+                handlePinPoint={handlePinPoint} handleFindSimilar={function (arg0: any): void {
+                    throw new Error('Function not implemented.');
+                }} />
             {pinnedPoint && boundingBoxes.length > 0 && (
                 <SceneCard
                     referencePoint={pinnedPoint}
                     boundingBoxes={boundingBoxes}
-                />
-            )}
+                />)}
+
         </>
     );
 }
