@@ -11,17 +11,16 @@ export const useMapInteractions = () => {
   const { fetchBoundingBoxes, findSimilarTiles } = useSupabase()
 
   const handlePinPoint = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    console.log("Clicked element:", event.target);
-    event.stopPropagation();
-    event.preventDefault();
-    
-    console.log("Clicking point", event);
-    setIsPinning(!isPinning);
-  };
+    console.log("Clicked element:", event.target)
+    event.stopPropagation()
+    event.preventDefault()
+
+    console.log("Clicking point", event)
+    setIsPinning(!isPinning)
+  }
 
   const handleMapClick = async (info: any, event: any) => {
-    
-    console.log('clicking map', info, event)
+    console.log("clicking map", info, event)
     if (isPinning && info.coordinate) {
       const [longitude, latitude] = info.coordinate
       if (!pinnedPoints) {
@@ -45,17 +44,17 @@ export const useMapInteractions = () => {
   }
 
   const handleFindSimilar = async () => {
+    console.log("We hit thhe handleFindSimilar", targetBoundingBoxes)
+
     if (targetBoundingBoxes) {
       const targetIds = targetBoundingBoxes.map((item) => item.id)
-      console.log("Slider values is", sliderValue)
+      console.log("targetIds", targetBoundingBoxes)
 
       const similarBoxes = await findSimilarTiles(targetIds, sliderValue)
       setResultBoundingBoxes(similarBoxes)
     } else {
       throw Error("No target box set")
     }
-    // Implement find similar functionality
-    console.log("Find similar")
   }
 
   const handleShareFindings = () => {

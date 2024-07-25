@@ -1,6 +1,24 @@
-.carousel-container {
-  width: 100%;
-  overflow: hidden;
+@import "../../main.scss";
+
+.carousel__container {
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--spacing-m);
+
+  &-pinned {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--spacing-xs);
+  }
+
+  &-button {
+    background-color: var(--blue);
+    color: var(--white);
+    display: inline-flex;
+    max-width: fit-content;
+  }
 }
 
 .carousel {
