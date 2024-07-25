@@ -48,7 +48,6 @@ export default function MapComponent() {
     return (
         <Map
             initialViewState={INITIAL_VIEW_STATE}
-            maxZoom={16}
             mapStyle={style_url}
             mapboxAccessToken={mapboxToken}
             interactive={true}
