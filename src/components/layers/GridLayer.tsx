@@ -36,6 +36,7 @@ export const GridLayer = ({ boundingBoxes }: BoundingBoxLayerProps) => {
   }))
 
   return new GeoJsonLayer({
+
     id: "bounding-box-layer",
     data: {
       type: "FeatureCollection",

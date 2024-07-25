@@ -10,11 +10,18 @@ export const useMapInteractions = () => {
 
   const { fetchBoundingBoxes, findSimilarTiles } = useSupabase()
 
-  const handlePinPoint = () => {
-    setIsPinning(!isPinning)
-  }
+  const handlePinPoint = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    console.log("Clicked element:", event.target);
+    event.stopPropagation();
+    event.preventDefault();
+    
+    console.log("Clicking point", event);
+    setIsPinning(!isPinning);
+  };
 
-  const handleMapClick = async (info: any) => {
+  const handleMapClick = async (info: any, event: any) => {
+    
+    console.log('clicking map', info, event)
     if (isPinning && info.coordinate) {
       const [longitude, latitude] = info.coordinate
       if (!pinnedPoints) {
