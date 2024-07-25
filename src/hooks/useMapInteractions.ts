@@ -43,14 +43,13 @@ export const useMapInteractions = () => {
     }
   }
 
-  const handleFindSimilar = async () => {
-    console.log("We hit thhe handleFindSimilar", targetBoundingBoxes)
-
+  const handleFindSimilar = async (current_boxes: BoundingBoxResponse[]) => {
     if (targetBoundingBoxes) {
-      const targetIds = targetBoundingBoxes.map((item) => item.id)
-      console.log("targetIds", targetBoundingBoxes)
+      const targetIds = current_boxes.map((item) => item.id)
+      console.log("targetIds", targetIds, sliderValue)
 
       const similarBoxes = await findSimilarTiles(targetIds, sliderValue)
+      console.log("similarBoxes", similarBoxes)
       setResultBoundingBoxes(similarBoxes)
     } else {
       throw Error("No target box set")

@@ -54,7 +54,9 @@ export const useSupabase = () => {
 
   const findSimilarTiles = async (ids: number[], top_k: number): Promise<SimilarBox[]> => {
     // return retryOperation(async () => {
-    console.log("Length of input ids is", ids)
+    console.log("Ids are", ids)
+    console.log("Length of input ids is", ids.length)
+
     console.log("top k is", top_k)
     const { data, error }: PostgrestResponse<SimilarBox> = await supabase.rpc("find_similar_tiles", {
       input_ids: ids,
@@ -66,8 +68,7 @@ export const useSupabase = () => {
       throw error
     }
     console.log("length of data is", data.length)
-    return data || []
-    // })
+    return data
   }
 
   return { fetchBoundingBoxes, findSimilarTiles }
