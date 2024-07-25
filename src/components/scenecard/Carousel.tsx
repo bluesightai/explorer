@@ -1,5 +1,5 @@
 import { BoundingBoxResponse } from "../../hooks/useSupabase"
-import "./Carousel.css"
+import "./Carousel.scss"
 import LazyImage from "./LazyImage"
 import React from "react"
 

@@ -1,5 +1,5 @@
 import { BoundingBoxResponse } from "../../hooks/useSupabase"
-import "./ExpandableGrid.css"
+import "./ExpandableGrid.scss"
 import LazyImage from "./LazyImage"
 
 export const ExpandableGrid = ({

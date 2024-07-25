@@ -3,7 +3,7 @@ import { useNaipImagery } from "../../hooks/useNaipImagery"
 import { BoundingBoxResponse } from "../../hooks/useSupabase"
 import Carousel from "./Carousel"
 import ExpandableGrid from "./ExpandableGrid"
-import "./SceneCard.css"
+import "./SceneCard.scss"
 import Slider from "./Slider"
 
 interface SceneCardProps {

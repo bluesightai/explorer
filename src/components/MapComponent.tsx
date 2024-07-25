@@ -101,8 +101,9 @@ export default function MapComponent() {
             id: 'california-layer',
             data: californiaPolygon,
             filled: false,
-            lineWidthMinPixels: 2,
-            getLineColor: [255, 255, 255],  // White border
+            lineWidthMaxPixels: 0,
+            lineWidthMinPixels: 0,
+            // getLineColor: [255, 255, 255],  // White border
             pickable: true,
         }),
         GridLayer({ boundingBoxes: targetBoundingBoxes }),

@@ -1,4 +1,4 @@
-import "./ControlWidget.css"
+import "./ControlWidget.scss"
 
 const ControlWidget = ({
   isPinning,
@@ -21,7 +21,7 @@ const ControlWidget = ({
         <span className="control-button-icon">🔍</span>
         Find Similar
       </button>
-      <button onClick={() => {}} className="control-button">
+      <button onClick={() => { }} className="control-button">
         <span className="control-button-icon">↗️</span>
         Share Findings
       </button>
