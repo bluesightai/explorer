@@ -1,8 +1,14 @@
+:root {
+  --border-radius: 8px;
+}
+
 .scene-card {
   position: absolute;
   top: 20px;
   right: 20px;
   background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(240, 240, 240, 0.2);
+  backdrop-filter: blur(10px);
   color: white;
   padding: 20px;
   border-radius: 15px;
