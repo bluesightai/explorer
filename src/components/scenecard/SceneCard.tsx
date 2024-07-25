@@ -11,6 +11,8 @@ interface SceneCardProps {
     resultBoundingBoxes: BoundingBoxResponse[]
     sliderValue: number
     setSliderValue: (arg0: number) => void
+    onTileClick: (boundingBox: [number, number, number, number]) => void;
+
 }
 
 const SceneCard: React.FC<SceneCardProps> = ({
@@ -18,13 +20,14 @@ const SceneCard: React.FC<SceneCardProps> = ({
     sliderValue,
     targetBoundingBoxes,
     resultBoundingBoxes,
+    onTileClick
 }) => {
     const { fetchNaipImage } = useNaipImagery()
 
     return (
         <div className="scene-card">
-            <Carousel boxes={targetBoundingBoxes} fetchImage={fetchNaipImage} />
-            <ExpandableGrid boxes={resultBoundingBoxes} count={resultBoundingBoxes.length} fetchImage={fetchNaipImage} />
+            <Carousel onTileClick={onTileClick} boxes={targetBoundingBoxes} fetchImage={fetchNaipImage} />
+            <ExpandableGrid onTileClick={onTileClick} boxes={resultBoundingBoxes} count={resultBoundingBoxes.length} fetchImage={fetchNaipImage} />
             <Slider min={1} max={1000} value={sliderValue} onChange={setSliderValue} />
             <button className="clear-button">clear 🗑</button>
         </div>

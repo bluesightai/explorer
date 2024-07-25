@@ -1,11 +1,11 @@
 // MapComponent.tsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useMapInteractions } from "../hooks/useMapInteractions"
 import ControlWidget from "./control/ControlWidget"
 import { GridLayer } from "./layers/GridLayer"
 import SceneCard from "./scenecard/SceneCard"
 import type { LayersList, MapViewState } from "@deck.gl/core"
-import { Map, useControl, Popup } from 'react-map-gl';
+import { Map, useControl, Popup, ViewStateChangeEvent } from 'react-map-gl';
 import { MapboxOverlay } from '@deck.gl/mapbox';
 import { DeckProps } from '@deck.gl/core';
 import { GeoJsonLayer } from '@deck.gl/layers';
@@ -67,6 +67,27 @@ export default function MapComponent() {
         }
     };
 
+    const [viewState, setViewState] = useState<MapViewState>(INITIAL_VIEW_STATE);
+
+
+    const handleTileClick = useCallback((bbox: [number, number, number, number]) => {
+        const [minLng, minLat, maxLng, maxLat] = bbox;
+        const centerLng = (minLng + maxLng) / 2;
+        const centerLat = (minLat + maxLat) / 2;
+
+        setViewState(prevState => ({
+            ...prevState,
+            longitude: centerLng,
+            latitude: centerLat,
+            zoom: 15, // Adjust this zoom level as needed
+            transitionDuration: 1000, // Smooth transition in milliseconds
+        }));
+    }, []);
+
+
+    const handleViewStateChange = useCallback((e: ViewStateChangeEvent) => setViewState(e.viewState), []);
+
+
 
     const layers: LayersList = [
         new GeoJsonLayer({
@@ -94,13 +115,17 @@ export default function MapComponent() {
         }
     }, [targetBoundingBoxes]);
 
+
+
     return (
         <Map
-            initialViewState={INITIAL_VIEW_STATE}
+            {...viewState}
             mapStyle={style_url}
             mapboxAccessToken={mapboxToken}
             interactive={true}
             attributionControl={true}
+            onMove={handleViewStateChange}
+
         >
             <DeckGLOverlay
                 layers={layers}
@@ -132,6 +157,7 @@ export default function MapComponent() {
             {pinnedPoints && targetBoundingBoxes.length > 0 && (
                 <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 2 }}>
                     <SceneCard
+                        onTileClick={handleTileClick}
                         sliderValue={sliderValue}
                         setSliderValue={setSliderValue}
                         targetBoundingBoxes={targetBoundingBoxes}
