@@ -6,24 +6,18 @@ export const useNaipImagery = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  const mapboxToken = 'pk.eyJ1Ijoic3p5bW9uem15c2xvbnkiLCJhIjoiY2x5eDYxb2JqMWxkaTJrczZjZ3Nhd2hrZSJ9.jpzoW1-5ILOP-hIWtXBPxA'
+
   const fetchNaipImage = useCallback(async (box: BoundingBoxResponse): Promise<string> => {
     setIsLoading(true)
     setError(null)
 
     try {
-      // Calculate center of the bounding box
-      const lat = (box.max_lat + box.min_lat) / 2
-      const lon = (box.min_lon + box.max_lon) / 2
+      // Construct the bounding box string
+      const bbox = `${box.min_lon},${box.min_lat},${box.max_lon},${box.max_lat}`
 
-      // Convert lat/lon to tile coordinates
-      const z = 16 // Max zoom level for NAIP tiles
-      const x = Math.floor(((lon + 180) / 360) * Math.pow(2, z))
-      const y = Math.floor(
-        ((1 - Math.log(Math.tan((lat * Math.PI) / 180) + 1 / Math.cos((lat * Math.PI) / 180)) / Math.PI) / 2) *
-          Math.pow(2, z),
-      )
-
-      const url = `https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/${z}/${y}/${x}`
+      // Construct the Mapbox Static Images API URL
+      const url = `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/[${bbox}]/256x256?access_token=${mapboxToken}`
 
       return url
     } catch (err) {
