@@ -19,7 +19,7 @@ interface SimilarBox extends BoundingBoxResponse {
 }
 
 const MAX_RETRIES = 3
-const RETRY_DELAY = 1000 // 1 second
+const RETRY_DELAY = 200 // 1 second
 
 async function retryOperation<T>(operation: () => Promise<T>): Promise<T> {
   let lastError: any

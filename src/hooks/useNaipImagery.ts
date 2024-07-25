@@ -10,13 +10,10 @@ const user_name = 'szymonzmyslony'
 export const style_url = `mapbox://styles/${user_name}/${style_id}`
 
 
-
-
 export const useNaipImagery = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  
 
   const fetchNaipImage = useCallback(async (box: BoundingBoxResponse): Promise<string> => {
     setIsLoading(true)

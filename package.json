@@ -17,6 +17,7 @@
     "@deck.gl/layers": "^9.0.24",
     "@deck.gl/react": "^9.0.24",
     "@supabase/supabase-js": "^2.44.4",
+    "@turf/turf": "^7.0.0",
     "@types/mapbox-gl": "^3.1.0",
     "deck.gl": "^9.0.24",
     "mapbox-gl": "^3.5.2",

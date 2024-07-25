@@ -43,7 +43,7 @@ export const GridLayer = ({ boundingBoxes }: BoundingBoxLayerProps) => {
       features: features,
     },
     filled: true,
-    getFillColor: [255, 0, 0, 100], // Semi-transparent red
+    getFillColor: [255, 0, 0, 250], // Semi-transparent red
     getLineColor: [255, 0, 0],
     getLineWidth: 2,
     lineWidthMinPixels: 1,
