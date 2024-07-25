@@ -30,8 +30,6 @@ export const useMapInteractions = () => {
         // If pinnedPoint already exists, add the new coordinate to the array
         setPinnedPoints([...pinnedPoints, [longitude, latitude]])
       }
-      setIsPinning(false)
-      console.log("longitude", longitude, "latitude", latitude)
       const bboxes = await fetchBoundingBoxes(latitude, longitude)
       if (bboxes.length > 0) {
         const newIds = bboxes.map((item) => item.id)
@@ -63,10 +61,9 @@ export const useMapInteractions = () => {
 
   const handleCleanSearch = () => {
     setPinnedPoints([])
-    setIsPinning(false)
+    setIsPinning(true)
     setTargetBoundingBoxes([])
-    // Implement clean search functionality
-    console.log("Clean search")
+    setResultBoundingBoxes([])
   }
 
   return {

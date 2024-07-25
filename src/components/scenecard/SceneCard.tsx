@@ -13,6 +13,8 @@ interface SceneCardProps {
   setSliderValue: (arg0: number) => void
   handleFindSimilar: (current_boxes: BoundingBoxResponse[]) => void
   onTileClick: (boundingBox: [number, number, number, number]) => void
+  handleCleanSearch: (arg0: any) => void
+
 }
 
 const SceneCard: React.FC<SceneCardProps> = ({
@@ -21,11 +23,11 @@ const SceneCard: React.FC<SceneCardProps> = ({
   resultBoundingBoxes,
   onTileClick,
   handleFindSimilar,
+  setSliderValue,
+  handleCleanSearch
 }) => {
   const { fetchNaipImage } = useNaipImagery()
-  console.log("IN scene card", sliderValue)
-  console.log("targetBoundingBoxes", targetBoundingBoxes)
-  console.log("targetBoundingBoxes lenght", targetBoundingBoxes.length)
+
 
 
   return (
@@ -37,7 +39,7 @@ const SceneCard: React.FC<SceneCardProps> = ({
         </span>
         Find Similar
       </button>
-
+      {resultBoundingBoxes.length && <Slider min={9} max={100} value={sliderValue} onChange={setSliderValue} />}
       {resultBoundingBoxes.length && (
         <ExpandableGrid
           onTileClick={onTileClick}
@@ -46,9 +48,12 @@ const SceneCard: React.FC<SceneCardProps> = ({
           fetchImage={fetchNaipImage}
         />
       )}
+
+
       {resultBoundingBoxes.length &&
-        <button className="clear-button">clear 🗑</button>
+        <button onClick={handleCleanSearch} className="clear-button">clear 🗑</button>
       }
+
     </div>
   )
 }

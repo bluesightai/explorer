@@ -22,53 +22,55 @@ interface SimilarBox extends BoundingBoxResponse {
 const MAX_RETRIES = 5
 const RETRY_DELAY = 1000 // 1 second
 
-// async function retryOperation<T>(operation: () => Promise<T>): Promise<T> {
-//   let lastError: any
-//   for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
-//     try {
-//       return await operation()
-//     } catch (error) {
-//       lastError = error
-//       console.warn(`Attempt ${attempt + 1} failed. Retrying in ${RETRY_DELAY}ms...`)
-//       await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY))
-//     }
-//   }
-//   throw lastError
-// }
+async function retryOperation<T>(operation: () => Promise<T>): Promise<T> {
+  let lastError: any
+  for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+    try {
+      return await operation()
+    } catch (error) {
+      lastError = error
+      console.warn(`Attempt ${attempt + 1} failed. Retrying in ${RETRY_DELAY}ms...`)
+      await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY))
+    }
+  }
+  throw lastError
+}
 
 export const useSupabase = () => {
   const fetchBoundingBoxes = async (lat: number, lon: number): Promise<BoundingBoxResponse[]> => {
-    // return retryOperation(async () => {
-    const { data, error }: PostgrestResponse<BoundingBoxResponse> = await supabase.rpc("find_polygon", {
-      lat,
-      lon,
+    return retryOperation(async () => {
+      const { data, error }: PostgrestResponse<BoundingBoxResponse> = await supabase.rpc("find_polygon", {
+        lat,
+        lon,
+      })
+      if (error) {
+        console.error("Error fetching covered boxes:", error)
+        throw error
+      }
+      console.log("Data is", data)
+      return data || []
+      // })
     })
-    if (error) {
-      console.error("Error fetching covered boxes:", error)
-      throw error
-    }
-    console.log("Data is", data)
-    return data || []
-    // })
   }
 
   const findSimilarTiles = async (ids: number[], top_k: number): Promise<SimilarBox[]> => {
-    // return retryOperation(async () => {
-    console.log("Ids are", ids)
-    console.log("Length of input ids is", ids.length)
+    return retryOperation(async () => {
+      console.log("Ids are", ids)
+      console.log("Length of input ids is", ids.length)
 
-    console.log("top k is", top_k)
-    const { data, error }: PostgrestResponse<SimilarBox> = await supabase.rpc("find_similar_tiles", {
-      input_ids: ids,
-      top_k: top_k, // optional, defaults to 5 if not provided
+      console.log("top k is", top_k)
+      const { data, error }: PostgrestResponse<SimilarBox> = await supabase.rpc("find_similar_tiles", {
+        input_ids: ids,
+        top_k: top_k, // optional, defaults to 5 if not provided
+      })
+
+      if (error) {
+        console.error("Error finding similar tiles:", error)
+        throw error
+      }
+      console.log("length of data is", data.length)
+      return data
     })
-
-    if (error) {
-      console.error("Error finding similar tiles:", error)
-      throw error
-    }
-    console.log("length of data is", data.length)
-    return data
   }
 
   return { fetchBoundingBoxes, findSimilarTiles }

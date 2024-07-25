@@ -3,9 +3,7 @@ import "./ControlWidget.scss"
 const ControlWidget = ({
   isPinning,
   handlePinPoint,
-  handleCleanSearch,
 }: {
-  handleCleanSearch: (arg0: any) => void
   isPinning: boolean
   handlePinPoint: (arg0: any) => void
 }) => {
@@ -16,14 +14,11 @@ const ControlWidget = ({
         {isPinning ? "Cancel Pin" : "Pin a Point"}
       </button>
 
-      <button onClick={() => {}} className="control-button">
+      <button onClick={() => { }} className="control-button">
         <span className="control-button-icon">↗️</span>
         Share Findings
       </button>
-      <button onClick={handleCleanSearch} className="control-button">
-        <span className="control-button-icon">🗑️</span>
-        Clear Search
-      </button>
+
     </div>
   )
 }

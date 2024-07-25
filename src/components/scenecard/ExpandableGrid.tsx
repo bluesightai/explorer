@@ -42,7 +42,6 @@ export const ExpandableGrid = ({
     <div className="expandable-grid">
       <div className="grid-header">
         <span>{count} similar found</span>
-        <button>^</button>
       </div>
       <div className="grid">{gridItems}</div>
     </div>

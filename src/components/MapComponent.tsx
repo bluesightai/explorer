@@ -141,12 +141,13 @@ export default function MapComponent() {
       )}
 
       <div style={{ position: "absolute", top: 0, left: 0, zIndex: 2 }}>
-        <ControlWidget handleCleanSearch={handleCleanSearch} isPinning={isPinning} handlePinPoint={handlePinPoint} />
+        <ControlWidget isPinning={isPinning} handlePinPoint={handlePinPoint} />
       </div>
 
       {pinnedPoints && targetBoundingBoxes.length > 0 && (
         <div style={{ position: "absolute", top: 0, right: 10, zIndex: 2 }}>
           <SceneCard
+            handleCleanSearch={handleCleanSearch}
             handleFindSimilar={handleFindSimilar}
             onTileClick={handleTileClick}
             sliderValue={sliderValue}
