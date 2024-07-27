@@ -1,14 +1,9 @@
 // BoundingBoxLayer.tsx
 import { GeoJsonLayer } from "@deck.gl/layers"
 import { Feature, Polygon } from "geojson"
+import { BoundingBoxResponse } from "../../hooks/supabaseTypes"
 
-export interface BoundingBoxResponse {
-  id: number
-  min_lat: number
-  min_lon: number
-  max_lat: number
-  max_lon: number
-}
+
 
 interface BoundingBoxLayerProps {
   boundingBoxes: BoundingBoxResponse[]
@@ -37,7 +32,8 @@ export const GridLayer = ({ boundingBoxes }: BoundingBoxLayerProps) => {
 
   return new GeoJsonLayer({
 
-    id: "bounding-box-layer",
+    id: `bounding-box-layer-${(boundingBoxes.length)
+      }`,
     data: {
       type: "FeatureCollection",
       features: features,

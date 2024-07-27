@@ -11,7 +11,7 @@ import { GeoJsonLayer } from "@deck.gl/layers"
 import { MapboxOverlay } from "@deck.gl/mapbox"
 import { booleanPointInPolygon } from "@turf/turf"
 import "mapbox-gl/dist/mapbox-gl.css"
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Map, Popup, ViewStateChangeEvent, useControl } from "react-map-gl"
 
 function DeckGLOverlay(props: DeckProps) {
@@ -41,7 +41,6 @@ export default function MapComponent() {
     handleMapClick,
     handleCleanSearch,
     targetBoundingBoxes,
-    // setTargetBoundingBoxes,
     resultBoundingBoxes,
   } = useMapInteractions()
 
@@ -70,7 +69,7 @@ export default function MapComponent() {
 
   const [viewState, setViewState] = useState<MapViewState>(INITIAL_VIEW_STATE)
 
-  const handleTileClick = useCallback((bbox: [number, number, number, number]) => {
+  const handleTileClick = (bbox: [number, number, number, number]) => {
     const [minLng, minLat, maxLng, maxLat] = bbox
     const centerLng = (minLng + maxLng) / 2
     const centerLat = (minLat + maxLat) / 2
@@ -82,9 +81,8 @@ export default function MapComponent() {
       zoom: 15, // Adjust this zoom level as needed
       transitionDuration: 1000, // Smooth transition in milliseconds
     }))
-  }, [])
+  }
 
-  const handleViewStateChange = useCallback((e: ViewStateChangeEvent) => setViewState(e.viewState), [])
 
   const layers: LayersList = [
     new GeoJsonLayer({
@@ -120,7 +118,7 @@ export default function MapComponent() {
       mapboxAccessToken={mapboxToken}
       interactive={true}
       attributionControl={true}
-      onMove={handleViewStateChange}
+      onMove={(e: ViewStateChangeEvent) => setViewState(e.viewState)}
     >
       <DeckGLOverlay
         layers={layers}

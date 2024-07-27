@@ -1,6 +1,6 @@
 // SceneCard.tsx
+import { BoundingBoxResponse } from "../../hooks/supabaseTypes"
 import { useNaipImagery } from "../../hooks/useNaipImagery"
-import { BoundingBoxResponse } from "../../hooks/useSupabase"
 import Carousel from "./Carousel"
 import ExpandableGrid from "./ExpandableGrid"
 import "./SceneCard.scss"
@@ -39,8 +39,11 @@ const SceneCard: React.FC<SceneCardProps> = ({
         </span>
         Find Similar
       </button>
-      {resultBoundingBoxes.length && <Slider min={9} max={100} value={sliderValue} onChange={setSliderValue} />}
-      {resultBoundingBoxes.length && (
+      {resultBoundingBoxes.length > 0 && (
+        <Slider min={9} max={100} value={sliderValue} onChange={setSliderValue} />
+      )}
+
+      {resultBoundingBoxes.length > 0 && (
         <ExpandableGrid
           onTileClick={onTileClick}
           boxes={resultBoundingBoxes}
@@ -49,11 +52,11 @@ const SceneCard: React.FC<SceneCardProps> = ({
         />
       )}
 
-
-      {resultBoundingBoxes.length &&
-        <button onClick={handleCleanSearch} className="clear-button">clear 🗑</button>
-      }
-
+      {resultBoundingBoxes.length > 0 && (
+        <button onClick={handleCleanSearch} className="clear-button">
+          clear 🗑
+        </button>
+      )}
     </div>
   )
 }
