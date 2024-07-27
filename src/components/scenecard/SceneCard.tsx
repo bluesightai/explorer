@@ -7,6 +7,7 @@ import ExpandableGrid from "./ExpandableGrid"
 import "./SceneCard.scss"
 import Slider from "./Slider"
 import { useCallback, useEffect } from "react"
+import FindButton from "./FindSimillarButton"
 
 interface SceneCardProps {
   targetBoundingBoxes: BoundingBoxResponse[]
@@ -44,22 +45,8 @@ const SceneCard: React.FC<SceneCardProps> = ({
   return (
     <div className="scene-card">
       <Carousel onTileClick={onTileClick} boxes={targetBoundingBoxes} fetchImage={fetchNaipImage} />
-      <button
-        onClick={() => handleFindSimilar(targetBoundingBoxes)}
-        className="carousel__container-button button"
-        disabled={isLoading}
-      >
-        {isLoading ? (
-          <span>Loading...</span>
-        ) : (
-          <>
-            <span>
-              <i className="fas fa-search"></i>
-            </span>
-            Find Similar
-          </>
-        )}
-      </button>
+      <FindButton handleFindSimilar={() => handleFindSimilar(targetBoundingBoxes)} isLoading={isLoading} />
+
       {resultBoundingBoxes.length > 0 && (
         <Slider
           min={1}
