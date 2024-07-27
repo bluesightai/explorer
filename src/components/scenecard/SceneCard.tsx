@@ -1,12 +1,11 @@
 // SceneCard.tsx
-import { useDebounce } from "use-debounce"
+import React from 'react'
 import { BoundingBoxResponse } from "../../hooks/supabaseTypes"
 import { useNaipImagery } from "../../hooks/useNaipImagery"
 import Carousel from "./Carousel"
 import ExpandableGrid from "./ExpandableGrid"
 import "./SceneCard.scss"
 import Slider from "./Slider"
-import { useCallback, useEffect } from "react"
 import FindButton from "./FindSimillarButton"
 
 interface SceneCardProps {
@@ -15,11 +14,9 @@ interface SceneCardProps {
   sliderValue: number
   isLoading: boolean
   setSliderValue: (arg0: number) => void
-  handleFindSimilar: (current_boxes: BoundingBoxResponse[]) => void
+  handleFindSimilar: () => void
   onTileClick: (boundingBox: [number, number, number, number]) => void
   handleCleanSearch: (arg0: any) => void
-
-
 }
 
 const SceneCard: React.FC<SceneCardProps> = ({
@@ -34,28 +31,38 @@ const SceneCard: React.FC<SceneCardProps> = ({
 }) => {
   const { fetchNaipImage } = useNaipImagery()
 
+  const handleSliderChange = (newValue: number) => {
+    setSliderValue(newValue)
+  }
 
-
+  const handleSliderRelease = () => {
+    if (resultBoundingBoxes.length > 0) {
+      handleFindSimilar()
+    }
+  }
 
   if (targetBoundingBoxes.length < 1) {
     return null
   }
 
-
   return (
     <div className="scene-card">
       <Carousel onTileClick={onTileClick} boxes={targetBoundingBoxes} fetchImage={fetchNaipImage} />
-      <FindButton handleFindSimilar={() => handleFindSimilar(targetBoundingBoxes)} isLoading={isLoading} />
 
-      {resultBoundingBoxes.length > 0 && (
+      {resultBoundingBoxes.length > 0 ? (
         <Slider
           min={1}
           max={1000}
           value={sliderValue}
-          onChange={setSliderValue}
+          onChange={handleSliderChange}
+          onRelease={handleSliderRelease}
           isLoading={isLoading}
         />
-      )}
+      ) :
+
+        <FindButton handleFindSimilar={handleFindSimilar} isLoading={isLoading} />
+
+      }
 
       {resultBoundingBoxes.length > 0 && (
         <ExpandableGrid
