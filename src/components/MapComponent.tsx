@@ -1,18 +1,22 @@
 // MapComponent.tsx
-import { useMapInteractions } from "../hooks/useMapInteractions"
 import { mapboxToken, style_url } from "../hooks/useNaipImagery"
+import { useMapState } from "../hooks/useMapState"
+import { usePinning } from "../hooks/usePinning"
+import { useBoundingBoxes } from "../hooks/useBoundingBoxes"
 import { californiaPolygon, inverseCaliforniaPolygon } from "./californiaPolygon"
 import ControlWidget from "./control/ControlWidget"
 import { GridLayer } from "./layers/GridLayer"
 import SceneCard from "./scenecard/SceneCard"
-import type { LayersList, MapViewState } from "@deck.gl/core"
+import type { LayersList } from "@deck.gl/core"
 import { DeckProps } from "@deck.gl/core"
 import { GeoJsonLayer } from "@deck.gl/layers"
 import { MapboxOverlay } from "@deck.gl/mapbox"
 import { booleanPointInPolygon } from "@turf/turf"
 import "mapbox-gl/dist/mapbox-gl.css"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect } from "react"
 import { Map, Popup, ViewStateChangeEvent, useControl } from "react-map-gl"
+import { useSupabase } from "../hooks/useSupabase"
+
 
 function DeckGLOverlay(props: DeckProps) {
   // @ts-ignore
@@ -21,32 +25,45 @@ function DeckGLOverlay(props: DeckProps) {
   return null
 }
 
-const INITIAL_VIEW_STATE: MapViewState = {
-  latitude: 37.5,
-  longitude: -120,
-  zoom: 5.5,
-  maxZoom: 16,
-  maxPitch: 85,
-  bearing: 0,
-}
+
 
 export default function MapComponent() {
+  const { viewState, setViewState, popupInfo, setPopupInfo } = useMapState()
+  const { isPinning, pinnedPoints, setPinnedPoints, handlePinPoint } = usePinning()
   const {
-    setSliderValue,
-    sliderValue,
-    handleFindSimilar,
-    isPinning,
-    handlePinPoint,
-    pinnedPoints,
-    handleMapClick,
-    handleCleanSearch,
     targetBoundingBoxes,
     resultBoundingBoxes,
-  } = useMapInteractions()
+    isLoading,
+    sliderValue,
+    setSliderValue,
+    handleFetchBoundingBoxes,
+    handleCleanSearch,
+    setIsLoading,
+    setResultBoundingBoxes
+  } = useBoundingBoxes()
 
-  const [popupInfo, setPopupInfo] = useState<{ longitude: number; latitude: number } | null>(null)
+  const { findSimilarTiles } = useSupabase()
 
-  const handleClick = (info: any, event: any) => {
+  const handleFindSimilar = useCallback(async () => {
+    if (targetBoundingBoxes.length > 0) {
+      setIsLoading(true)
+      try {
+        const targetIds = targetBoundingBoxes.map((item) => item.id)
+        const similarBoxes = await findSimilarTiles(targetIds, sliderValue)
+        setResultBoundingBoxes(similarBoxes)
+      } catch (error) {
+        console.error("Error finding similar tiles:", error)
+      } finally {
+        setIsLoading(false)
+      }
+    } else {
+      console.error("No target box set")
+    }
+  }, [targetBoundingBoxes, sliderValue, findSimilarTiles, setIsLoading, setResultBoundingBoxes])
+
+
+
+  const handleClick = (info: any) => {
     if (!info.coordinate) return
 
     const clickedPoint = {
@@ -61,13 +78,17 @@ export default function MapComponent() {
     const isInCalifornia = booleanPointInPolygon(clickedPoint, californiaPolygon)
 
     if (isInCalifornia) {
-      handleMapClick(info, event)
+      if (isPinning) {
+        const [longitude, latitude] = info.coordinate
+        setPinnedPoints([...pinnedPoints, [longitude, latitude]])
+        handleFetchBoundingBoxes(latitude, longitude)
+      }
     } else {
       setPopupInfo({ longitude: info.coordinate[0], latitude: info.coordinate[1] })
     }
   }
 
-  const [viewState, setViewState] = useState<MapViewState>(INITIAL_VIEW_STATE)
+
 
   const handleTileClick = (bbox: [number, number, number, number]) => {
     const [minLng, minLat, maxLng, maxLat] = bbox
@@ -117,7 +138,7 @@ export default function MapComponent() {
       mapStyle={style_url}
       mapboxAccessToken={mapboxToken}
       interactive={true}
-      attributionControl={true}
+      attributionControl={false}
       onMove={(e: ViewStateChangeEvent) => setViewState(e.viewState)}
     >
       <DeckGLOverlay
@@ -145,6 +166,7 @@ export default function MapComponent() {
       {pinnedPoints && targetBoundingBoxes.length > 0 && (
         <div style={{ position: "absolute", top: 0, right: 10, zIndex: 2 }}>
           <SceneCard
+            isLoading={isLoading}
             handleCleanSearch={handleCleanSearch}
             handleFindSimilar={handleFindSimilar}
             onTileClick={handleTileClick}

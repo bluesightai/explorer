@@ -10,10 +10,12 @@ interface SceneCardProps {
   targetBoundingBoxes: BoundingBoxResponse[]
   resultBoundingBoxes: BoundingBoxResponse[]
   sliderValue: number
+  isLoading: boolean
   setSliderValue: (arg0: number) => void
   handleFindSimilar: (current_boxes: BoundingBoxResponse[]) => void
   onTileClick: (boundingBox: [number, number, number, number]) => void
   handleCleanSearch: (arg0: any) => void
+
 
 }
 
@@ -23,6 +25,8 @@ const SceneCard: React.FC<SceneCardProps> = ({
   resultBoundingBoxes,
   onTileClick,
   handleFindSimilar,
+  isLoading,
+
   setSliderValue,
   handleCleanSearch
 }) => {
@@ -33,11 +37,21 @@ const SceneCard: React.FC<SceneCardProps> = ({
   return (
     <div className="scene-card">
       <Carousel onTileClick={onTileClick} boxes={targetBoundingBoxes} fetchImage={fetchNaipImage} />
-      <button onClick={() => handleFindSimilar(targetBoundingBoxes)} className="carousel__container-button button">
-        <span>
-          <i className="fas fa-search"></i>
-        </span>
-        Find Similar
+      <button
+        onClick={() => handleFindSimilar(targetBoundingBoxes)}
+        className="carousel__container-button button"
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <span>Loading...</span>
+        ) : (
+          <>
+            <span>
+              <i className="fas fa-search"></i>
+            </span>
+            Find Similar
+          </>
+        )}
       </button>
       {resultBoundingBoxes.length > 0 && (
         <Slider min={9} max={100} value={sliderValue} onChange={setSliderValue} />

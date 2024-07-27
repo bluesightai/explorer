@@ -22,7 +22,7 @@ export const useNaipImagery = () => {
       // Construct the bounding box string
       const bbox = `${box.min_lon},${box.min_lat},${box.max_lon},${box.max_lat}`
 
-      const url = `https://api.mapbox.com/styles/v1/${user_name}/${style_id}/static/[${bbox}]/256x256?access_token=${mapboxToken}`
+      const url = `https://api.mapbox.com/styles/v1/${user_name}/${style_id}/static/[${bbox}]/256x256?access_token=${mapboxToken}&attribution=false`
 
       return url
     } catch (err) {

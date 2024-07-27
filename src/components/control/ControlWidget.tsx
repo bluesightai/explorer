@@ -14,11 +14,6 @@ const ControlWidget = ({
         {isPinning ? "Cancel Pin" : "Pin a Point"}
       </button>
 
-      <button onClick={() => { }} className="control-button">
-        <span className="control-button-icon">↗️</span>
-        Share Findings
-      </button>
-
     </div>
   )
 }
