@@ -8,7 +8,7 @@ export const useBoundingBoxes = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [sliderValue, setSliderValue] = useState(9)
 
-  const { fetchBoundingBoxes } = useSupabase()
+  const { fetchBoundingBoxes, findSimilarTiles } = useSupabase()
 
   const handleFetchBoundingBoxes = async (latitude: number, longitude: number) => {
     const bboxes = await fetchBoundingBoxes(latitude, longitude)
@@ -25,8 +25,26 @@ export const useBoundingBoxes = () => {
     setResultBoundingBoxes([])
   }
 
+  const handleFindSimilar = useCallback(async () => {
+    if (targetBoundingBoxes.length > 0) {
+      setIsLoading(true)
+      try {
+        const targetIds = targetBoundingBoxes.map((item) => item.id)
+        const similarBoxes = await findSimilarTiles(targetIds, sliderValue)
+        setResultBoundingBoxes(similarBoxes)
+      } catch (error) {
+        console.error("Error finding similar tiles:", error)
+      } finally {
+        setIsLoading(false)
+      }
+    } else {
+      console.error("No target box set")
+    }
+  }, [targetBoundingBoxes, sliderValue])
+
   return {
     targetBoundingBoxes,
+    handleFindSimilar,
     resultBoundingBoxes,
     isLoading,
     sliderValue,

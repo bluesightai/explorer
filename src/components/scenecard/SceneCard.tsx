@@ -1,10 +1,12 @@
 // SceneCard.tsx
+import { useDebounce } from "use-debounce"
 import { BoundingBoxResponse } from "../../hooks/supabaseTypes"
 import { useNaipImagery } from "../../hooks/useNaipImagery"
 import Carousel from "./Carousel"
 import ExpandableGrid from "./ExpandableGrid"
 import "./SceneCard.scss"
 import Slider from "./Slider"
+import { useCallback, useEffect } from "react"
 
 interface SceneCardProps {
   targetBoundingBoxes: BoundingBoxResponse[]
@@ -26,12 +28,17 @@ const SceneCard: React.FC<SceneCardProps> = ({
   onTileClick,
   handleFindSimilar,
   isLoading,
-
   setSliderValue,
   handleCleanSearch
 }) => {
   const { fetchNaipImage } = useNaipImagery()
 
+
+
+
+  if (targetBoundingBoxes.length < 1) {
+    return null
+  }
 
 
   return (
@@ -54,7 +61,13 @@ const SceneCard: React.FC<SceneCardProps> = ({
         )}
       </button>
       {resultBoundingBoxes.length > 0 && (
-        <Slider min={9} max={100} value={sliderValue} onChange={setSliderValue} />
+        <Slider
+          min={1}
+          max={1000}
+          value={sliderValue}
+          onChange={setSliderValue}
+          isLoading={isLoading}
+        />
       )}
 
       {resultBoundingBoxes.length > 0 && (
