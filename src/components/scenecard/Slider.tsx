@@ -1,5 +1,6 @@
-// Slider.tsx
 import React from 'react'
+import "./Slider.scss"
+
 
 interface SliderProps {
   min: number
@@ -25,6 +26,7 @@ const Slider: React.FC<SliderProps> = React.memo(({ min, max, value, onChange, o
       />
       <div className="slider-labels">
         <span>{min}</span>
+        <span>{value}</span>
         <span>{max}</span>
       </div>
       {isLoading && <span className="slider-loading">Searching...</span>}

@@ -9,7 +9,7 @@ const key =
 const supabase = createClient<Database>(url, key)
 
 const MAX_RETRIES = 5
-const RETRY_DELAY = 1000 // 1 second
+const RETRY_DELAY = 50 // 1 second
 
 async function retryOperation<T>(operation: () => Promise<T>): Promise<T> {
   let lastError: any

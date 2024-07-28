@@ -5,9 +5,7 @@ export const usePinning = () => {
   const [isPinning, setIsPinning] = useState(false)
   const [pinnedPoints, setPinnedPoints] = useState<[number, number][]>([])
 
-  const handlePinPoint = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    event.stopPropagation()
-    event.preventDefault()
+  const handlePinPoint = () => {
     setIsPinning(!isPinning)
   }
 

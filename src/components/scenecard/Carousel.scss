@@ -1,53 +1,59 @@
-@import "../../main.scss";
-
 .carousel__container {
-  display: flex;
-  flex-direction: column;
-  row-gap: var(--spacing-m);
+  width: 100%;
+  overflow: hidden;
+}
 
-  &-pinned {
-    width: 100%;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    row-gap: var(--spacing-xs);
+.carousel__container-pinned {
+  margin-bottom: 1rem;
+
+  span {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+}
+
+.carousel__wrapper {
+  width: 100%;
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin; // For Firefox
+  scrollbar-color: #888 #f1f1f1; // For Firefox
+
+  // For Webkit browsers (Chrome, Safari, etc.)
+  &::-webkit-scrollbar {
+    height: 8px; // Height of the scroll bar
   }
 
-  &-button {
-    background-color: var(--blue);
-    color: var(--white);
-    display: inline-flex;
-    max-width: fit-content;
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1; // Color of the track
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #888; // Color of the scroll thumb
+    border-radius: 4px; // Rounded corners on the thumb
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555; // Color of the thumb when hovered
   }
 }
 
 .carousel {
   display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-}
-
-.carousel::-webkit-scrollbar {
-  display: none; /* WebKit */
+  flex-wrap: nowrap;
+  gap: 1rem;
+  padding-bottom: 1rem;
 }
 
 .carousel-item {
   flex: 0 0 auto;
-  width: 80px; /* Adjust based on your needs */
-  height: 80px; /* Adjust based on your needs */
-  margin-right: 10px;
-  scroll-snap-align: start;
-}
+  width: 150px; // Adjust this value based on your desired item width
+  cursor: pointer;
 
-.carousel-item:last-child {
-  margin-right: 0;
-}
-
-.carousel-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
 }

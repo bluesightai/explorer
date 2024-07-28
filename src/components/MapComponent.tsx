@@ -64,6 +64,12 @@ export default function MapComponent() {
 
   const layers = createMapLayers(targetBoundingBoxes, resultBoundingBoxes)
 
+  const handleSearchAndCancelPin = () => {
+    handleFindSimilar()
+    handlePinPoint()
+
+  }
+
   return (
     <Map
       {...viewState}
@@ -96,7 +102,7 @@ export default function MapComponent() {
       <SceneCard
         isLoading={isLoading}
         handleCleanSearch={handleCleanSearch}
-        handleFindSimilar={handleFindSimilar}
+        handleFindSimilar={handleSearchAndCancelPin}
         onTileClick={handleTileClick}
         sliderValue={sliderValue}
         setSliderValue={setSliderValue}
