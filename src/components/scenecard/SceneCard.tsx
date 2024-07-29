@@ -7,7 +7,7 @@ import Slider from "./Slider"
 import FindButton from "./FindSimillarButton"
 import AreaSelector from './AreaSelector'
 import { useAppState } from '../../hooks/AppContext'
-import SaveSearchButton from '../utilcomponents/SaveSearch'
+// import SaveSearchButton from '../utilcomponents/SaveSearch'
 
 interface SceneCardProps {
   onTileClick: (boundingBox: [number, number, number, number]) => void

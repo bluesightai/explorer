@@ -36,7 +36,7 @@ const ExpandableGrid: React.FC<ExpandableGridProps> = ({ setNegativeId, boxes, c
             fetchImage={fetchImage}
             alt={`Similar ${startIndex + index}`}
           />
-          {/* <button
+          <button
             className="negative-box-button"
             onClick={(e) => {
               e.stopPropagation();
@@ -45,7 +45,7 @@ const ExpandableGrid: React.FC<ExpandableGridProps> = ({ setNegativeId, boxes, c
             title="Mark as negative example"
           >
             👎
-          </button> */}
+          </button>
         </div>
       )
     }
