@@ -18,11 +18,32 @@
     flex: 1;
     aspect-ratio: 1;
     cursor: pointer;
+    position: relative; // Added for positioning the button
 
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+
+    .negative-box-button {
+      position: absolute;
+      right: 5px;
+      top: 5px;
+      background: rgba(255, 255, 255, 0.7);
+      border: none;
+      border-radius: 50%;
+      color: #ff0000;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 5px;
+      z-index: 10;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.9);
+        color: #cc0000;
+      }
     }
   }
 

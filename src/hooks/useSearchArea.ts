@@ -1,5 +1,5 @@
 // src/hooks/useSearchArea.ts
-import { supabase } from "./useSupabase"
+import { useSupabase } from "./useSupabase"
 import { useEffect, useState } from "react"
 
 export type SearchAreaGeometry = {
@@ -12,6 +12,7 @@ export type SearchAreaGeometry = {
 }
 
 export const useSearchArea = (areaId: number) => {
+  const { supabase } = useSupabase()
   const [searchAreaGeometry, setSearchAreaGeometry] = useState<SearchAreaGeometry | null>(null)
 
   useEffect(() => {

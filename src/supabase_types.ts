@@ -130,33 +130,32 @@ export type Database = {
       saved_searches: {
         Row: {
           id: number
-          name: string
-          result_ids: number[]
+          name: string | null
+          negative_ids: number[] | null
+          result_ids: number[] | null
           search_area_id: number | null
           target_ids: number[]
+          top_k: number
         }
         Insert: {
           id?: number
-          name: string
-          result_ids: number[]
+          name?: string | null
+          negative_ids?: number[] | null
+          result_ids?: number[] | null
           search_area_id?: number | null
           target_ids: number[]
+          top_k: number
         }
         Update: {
           id?: number
-          name?: string
-          result_ids?: number[]
+          name?: string | null
+          negative_ids?: number[] | null
+          result_ids?: number[] | null
           search_area_id?: number | null
           target_ids?: number[]
+          top_k?: number
         }
         Relationships: [
-          {
-            foreignKeyName: "fk_search_area"
-            columns: ["search_area_id"]
-            isOneToOne: false
-            referencedRelation: "search_areas"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "saved_searches_search_area_id_fkey"
             columns: ["search_area_id"]
@@ -217,36 +216,36 @@ export type Database = {
         Row: {
           created_at: string
           error: string | null
-          fine_tuned_model: string | null
           finished_at: string | null
           hyperparameters: Json | null
           id: string
           status: string
           task: string
+          trained_model: string | null
           training_file: string
           validation_file: string | null
         }
         Insert: {
           created_at: string
           error?: string | null
-          fine_tuned_model?: string | null
           finished_at?: string | null
           hyperparameters?: Json | null
           id: string
           status: string
           task: string
+          trained_model?: string | null
           training_file: string
           validation_file?: string | null
         }
         Update: {
           created_at?: string
           error?: string | null
-          fine_tuned_model?: string | null
           finished_at?: string | null
           hyperparameters?: Json | null
           id?: string
           status?: string
           task?: string
+          trained_model?: string | null
           training_file?: string
           validation_file?: string | null
         }
@@ -299,6 +298,22 @@ export type Database = {
           max_lon: number
         }[]
       }
+      get_complete_saved_search_data: {
+        Args: {
+          p_saved_search_id: number
+        }
+        Returns: {
+          search_area_id: number
+          top_k: number
+          negative_ids: number[]
+          id: number
+          min_lat: number
+          min_lon: number
+          max_lat: number
+          max_lon: number
+          is_target: boolean
+        }[]
+      }
       get_intersecting_search_boxes: {
         Args: {
           area_id: number
@@ -312,6 +327,22 @@ export type Database = {
           area_id: number
         }
         Returns: Json
+      }
+      get_similar_tiles_with_negative_and_index: {
+        Args: {
+          input_ids: number[]
+          top_k: number
+          index_id: number
+          negativeids: number[]
+        }
+        Returns: {
+          id: number
+          similarity: number
+          min_lat: number
+          min_lon: number
+          max_lat: number
+          max_lon: number
+        }[]
       }
       update_search_boxes_area: {
         Args: {

@@ -5,9 +5,12 @@ import { BoundingBoxResponse } from './supabaseTypes';
 export interface AppState {
   targetBoundingBoxes: BoundingBoxResponse[];
   resultBoundingBoxes: BoundingBoxResponse[];
+  negativeIDs: number[],
   areaId: number;
   sliderValue: number;
   isLoading: boolean;
+  isRestoringSearch: boolean;
+
 }
 
 // Define all possible action types
@@ -16,20 +19,37 @@ export type AppAction =
   | { type: 'SET_RESULT_BOXES'; payload: BoundingBoxResponse[] }
   | { type: 'SET_AREA_ID'; payload: number }
   | { type: 'SET_SLIDER_VALUE'; payload: number }
+  | { type: 'SET_NEGATIVE_IDS'; payload: number[] }
+  | { type: 'FINISH_RESTORE_SEARCH'; }
+  | { type: 'RESTORE_SEARCH'; payload: { negativeIDs: number[], targetBoundingBoxes: BoundingBoxResponse[], resultBoundingBoxes: BoundingBoxResponse[], areaId: number, sliderValue: number } }
   | { type: 'SET_LOADING'; payload: boolean };
 
 // Initial state
 const initialState: AppState = {
   targetBoundingBoxes: [],
+  negativeIDs: [],
   resultBoundingBoxes: [],
   areaId: 5,
   sliderValue: 9,
   isLoading: false,
+  isRestoringSearch: false,
+
 };
 
 // Reducer function
 function appReducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
+    case 'FINISH_RESTORE_SEARCH':
+      return {
+        ...state,
+        isRestoringSearch: false,
+      };
+    case 'RESTORE_SEARCH':
+      return {
+        ...state, ...action.payload, isRestoringSearch: true,
+      };
+    case 'SET_NEGATIVE_IDS':
+      return { ...state, negativeIDs: action.payload };
     case 'SET_TARGET_BOXES':
       return { ...state, targetBoundingBoxes: action.payload };
     case 'SET_RESULT_BOXES':

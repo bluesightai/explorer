@@ -5,26 +5,49 @@ import React from "react"
 
 interface CarouselProps {
   boxes: BoundingBoxResponse[]
+  removeBox: (id: number) => void
   fetchImage: (box: BoundingBoxResponse) => Promise<string>
   onTileClick: (boundingBox: [number, number, number, number]) => void
 }
 
-const Carousel: React.FC<CarouselProps> = ({ boxes, fetchImage, onTileClick }) => (
+
+interface CarouselProps {
+  boxes: BoundingBoxResponse[]
+  removeBox: (id: number) => void
+  fetchImage: (box: BoundingBoxResponse) => Promise<string>
+  onTileClick: (boundingBox: [number, number, number, number]) => void
+}
+
+
+const Carousel: React.FC<CarouselProps> = ({ boxes, removeBox, fetchImage, onTileClick }) => (
   <div className="carousel__container">
+    <span className="carousel__label">Selected tiles:</span>
     <div className="carousel__container-pinned">
-      <span>PINNED:</span>
       <div className="carousel__wrapper">
         <div className="carousel">
           {boxes.map((box, index) => {
-            const { max_lat, min_lat, max_lon, min_lon } = box
+            const { id, max_lat, min_lat, max_lon, min_lon } = box
 
             return (
               <div
-                onClick={() => onTileClick([min_lon, min_lat, max_lon, max_lat])}
-                key={box.id}
-                className="carousel-item"
+                key={id}
+                className="carousel-item-wrapper"
               >
-                <LazyImage boxData={box} fetchImage={fetchImage} alt={`Target ${index}`} />
+                <div
+                  onClick={() => onTileClick([min_lon, min_lat, max_lon, max_lat])}
+                  className="carousel-item"
+                >
+                  <LazyImage boxData={box} fetchImage={fetchImage} alt={`Target ${index}`} />
+                </div>
+                <button
+                  className="remove-box-button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeBox(id);
+                  }}
+                >
+                  ×
+                </button>
               </div>
             )
           })}

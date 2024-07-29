@@ -24,7 +24,7 @@ export const useBoundingBoxes = () => {
         const similarBoxes =
           state.areaId === 5
             ? await findSimilarTiles(targetIds, state.sliderValue)
-            : await findSimilarIndex(targetIds, state.sliderValue, state.areaId)
+            : await findSimilarIndex(targetIds, state.sliderValue, state.areaId, state.negativeIDs)
         dispatch({ type: "SET_RESULT_BOXES", payload: similarBoxes })
       } catch (error) {
         console.error("Error finding similar tiles:", error)

@@ -4,6 +4,7 @@ import "./ExpandableGrid.scss"
 import LazyImage from "./LazyImage"
 
 interface ExpandableGridProps {
+  setNegativeId: (id: number) => void
   boxes: BoundingBoxResponse[]
   count: number
   fetchImage: (box: BoundingBoxResponse) => Promise<string>
@@ -14,7 +15,7 @@ const ITEMS_PER_PAGE = 9
 const GRID_ROWS = 3
 const GRID_COLS = 3
 
-const ExpandableGrid: React.FC<ExpandableGridProps> = ({ boxes, count, fetchImage, onTileClick }) => {
+const ExpandableGrid: React.FC<ExpandableGridProps> = ({ setNegativeId, boxes, count, fetchImage, onTileClick }) => {
   const [currentPage, setCurrentPage] = useState(1)
 
   const totalPages = Math.ceil(boxes.length / ITEMS_PER_PAGE)
@@ -35,6 +36,16 @@ const ExpandableGrid: React.FC<ExpandableGridProps> = ({ boxes, count, fetchImag
             fetchImage={fetchImage}
             alt={`Similar ${startIndex + index}`}
           />
+          {/* <button
+            className="negative-box-button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setNegativeId(id);
+            }}
+            title="Mark as negative example"
+          >
+            👎
+          </button> */}
         </div>
       )
     }
