@@ -2,13 +2,20 @@
 import { LayersList } from "@deck.gl/core"
 import { GeoJsonLayer } from "@deck.gl/layers"
 import { BoundingBoxResponse } from "../../hooks/supabaseTypes"
-import { californiaPolygon, inverseCaliforniaPolygon } from "../californiaPolygon"
+import { inverseCaliforniaPolygon } from "../californiaPolygon"
 import { BoundingBoxLayer } from "./BoundingBoxLayer"
+import type { SearchAreaGeometry } from "../../hooks/useSearchArea"
+
+
+
+
 
 export const createMapLayers = (
     targetBoundingBoxes: BoundingBoxResponse[],
-    resultBoundingBoxes: BoundingBoxResponse[]
-): LayersList => [
+    resultBoundingBoxes: BoundingBoxResponse[],
+    searchAreaGeometry: SearchAreaGeometry | null  // New parameter
+): LayersList => {
+    const layers: LayersList = [
         new GeoJsonLayer({
             id: "inverse-california-layer",
             data: inverseCaliforniaPolygon,
@@ -16,14 +23,7 @@ export const createMapLayers = (
             getFillColor: [0, 0, 0, 128],
             pickable: true,
         }),
-        new GeoJsonLayer({
-            id: "california-layer",
-            data: californiaPolygon,
-            filled: false,
-            lineWidthMaxPixels: 0,
-            lineWidthMinPixels: 0,
-            pickable: true,
-        }),
+
         BoundingBoxLayer({
             color: [0, 0, 255],  // This is blue
             boundingBoxes: targetBoundingBoxes
@@ -33,3 +33,20 @@ export const createMapLayers = (
             boundingBoxes: resultBoundingBoxes
         })
     ]
+
+    // Add search area layer if geometry is provided
+    if (searchAreaGeometry) {
+        layers.push(
+            new GeoJsonLayer({
+                id: 'search-area-layer',
+                data: searchAreaGeometry,
+                filled: true,
+                getFillColor: [0, 0, 120, 64],  // Semi-transparent green
+
+                pickable: true,
+            })
+        )
+    }
+
+    return layers
+}

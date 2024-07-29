@@ -1,57 +1,41 @@
-import { BoundingBoxResponse } from "./supabaseTypes"
+// useBoundingBoxes.ts
+import { useAppState } from "./AppContext"
 import { useSupabase } from "./useSupabase"
-import { useCallback, useState } from "react"
 
 export const useBoundingBoxes = () => {
-  const [targetBoundingBoxes, setTargetBoundingBoxes] = useState<BoundingBoxResponse[]>([])
-  const [resultBoundingBoxes, setResultBoundingBoxes] = useState<BoundingBoxResponse[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [sliderValue, setSliderValue] = useState(9)
-
-  const { fetchBoundingBoxes, findSimilarTiles } = useSupabase()
+  const { state, dispatch } = useAppState()
+  const { fetchBoundingBoxes, findSimilarTiles, findSimilarIndex } = useSupabase()
 
   const handleFetchBoundingBoxes = async (latitude: number, longitude: number) => {
     const bboxes = await fetchBoundingBoxes(latitude, longitude)
     if (bboxes.length > 0) {
       const newIds = bboxes.map((item) => item.id)
-      const filteredBoxes = targetBoundingBoxes.filter((item) => !newIds.includes(item.id))
+      const filteredBoxes = state.targetBoundingBoxes.filter((item) => !newIds.includes(item.id))
       const mergedBoxes = [...bboxes, ...filteredBoxes]
-      setTargetBoundingBoxes(mergedBoxes)
+      dispatch({ type: "SET_TARGET_BOXES", payload: mergedBoxes })
     }
   }
 
-  const handleCleanSearch = () => {
-    setTargetBoundingBoxes([])
-    setResultBoundingBoxes([])
-  }
-
-  const handleFindSimilar = useCallback(async () => {
-    if (targetBoundingBoxes.length > 0) {
-      setIsLoading(true)
+  const handleFindSimilar = async () => {
+    if (state.targetBoundingBoxes.length > 0) {
+      dispatch({ type: "SET_LOADING", payload: true })
       try {
-        const targetIds = targetBoundingBoxes.map((item) => item.id)
-        const similarBoxes = await findSimilarTiles(targetIds, sliderValue)
-        setResultBoundingBoxes(similarBoxes)
+        const targetIds = state.targetBoundingBoxes.map((item) => item.id)
+        const similarBoxes =
+          state.areaId === 5
+            ? await findSimilarTiles(targetIds, state.sliderValue)
+            : await findSimilarIndex(targetIds, state.sliderValue, state.areaId)
+        dispatch({ type: "SET_RESULT_BOXES", payload: similarBoxes })
       } catch (error) {
         console.error("Error finding similar tiles:", error)
       } finally {
-        setIsLoading(false)
+        dispatch({ type: "SET_LOADING", payload: false })
       }
-    } else {
-      console.error("No target box set")
     }
-  }, [targetBoundingBoxes, sliderValue])
+  }
 
   return {
-    targetBoundingBoxes,
-    handleFindSimilar,
-    resultBoundingBoxes,
-    isLoading,
-    sliderValue,
-    setSliderValue,
     handleFetchBoundingBoxes,
-    handleCleanSearch,
-    setIsLoading,
-    setResultBoundingBoxes,
+    handleFindSimilar,
   }
 }

@@ -6,7 +6,7 @@ const url = "https://biccczfztgnfaqzmizan.supabase.co"
 const key =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpY2NjemZ6dGduZmFxem1pemFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyODY5ODcsImV4cCI6MjAzNTg2Mjk4N30.R9UmU-WIgcFfNIHqDmjl--kFDECNiYspE5IzTHG9Vf8"
 
-const supabase = createClient<Database>(url, key)
+export const supabase = createClient<Database>(url, key)
 
 const MAX_RETRIES = 5
 const RETRY_DELAY = 50 // 1 second
@@ -61,5 +61,26 @@ export const useSupabase = () => {
     })
   }
 
-  return { fetchBoundingBoxes, findSimilarTiles }
+  const findSimilarIndex = async (ids: number[], top_k: number, index_id: number): Promise<SimilarBox[]> => {
+    return retryOperation(async () => {
+      console.log("Ids are", ids)
+      console.log("Length of input ids is", ids.length)
+      console.log("top k is", top_k)
+
+      const { data, error }: PostgrestResponse<SimilarBox> = await supabase.rpc("find_similar_in_index", {
+        input_ids: ids,
+        top_k: top_k, // optional, defaults to 5 if not provided
+        index_id,
+      })
+
+      if (error) {
+        console.error("Error finding similar tiles:", error)
+        throw error
+      }
+      console.log("length of data is", data.length)
+      return data
+    })
+  }
+
+  return { fetchBoundingBoxes, findSimilarTiles, findSimilarIndex }
 }

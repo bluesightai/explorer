@@ -1,74 +1,79 @@
 // src/components/MapComponent.tsx
-import { useCallback, useEffect } from "react"
-import { Map, Popup, ViewStateChangeEvent, useControl } from "react-map-gl"
-import { DeckProps } from "@deck.gl/core"
-import { MapboxOverlay } from "@deck.gl/mapbox"
-import "mapbox-gl/dist/mapbox-gl.css"
+import { useCallback, useEffect } from "react";
+import { Map, Popup, ViewStateChangeEvent, useControl } from "react-map-gl";
+import { DeckProps } from "@deck.gl/core";
+import { MapboxOverlay } from "@deck.gl/mapbox";
+import "mapbox-gl/dist/mapbox-gl.css";
 
-import { mapboxToken, style_url } from "../hooks/useNaipImagery"
-import { useMapState } from "../hooks/useMapState"
-import { usePinning } from "../hooks/usePinning"
-import { useBoundingBoxes } from "../hooks/useBoundingBoxes"
-import ControlWidget from "./control/ControlWidget"
-import SceneCard from "./scenecard/SceneCard"
-import { calculateCenterAndZoom, isPointInCalifornia } from "../utils/mapUtils"
-import { createMapLayers } from "./layers/layers"
+import { mapboxToken, style_url } from "../hooks/useNaipImagery";
+import { useMapState } from "../hooks/useMapState";
+import { usePinning } from "../hooks/usePinning";
+import { useBoundingBoxes } from "../hooks/useBoundingBoxes";
+import ControlWidget from "./control/ControlWidget";
+import SceneCard from "./scenecard/SceneCard";
+import { calculateCenterAndZoom, isPointInCalifornia } from "../utils/mapUtils";
+import { createMapLayers } from "./layers/layers";
+import { useAppState } from "../hooks/AppContext";
+import { useSearchArea } from "../hooks/useSearchArea";
 
 function DeckGLOverlay(props: DeckProps) {
   // @ts-ignore
-  const overlay = useControl<MapboxOverlay>(() => new MapboxOverlay(props))
-  overlay.setProps(props)
-  return null
+  const overlay = useControl<MapboxOverlay>(() => new MapboxOverlay(props));
+  overlay.setProps(props);
+  return null;
 }
 
 export default function MapComponent() {
-  const { viewState, setViewState, popupInfo, setPopupInfo } = useMapState()
-  const { isPinning, pinnedPoints, setPinnedPoints, handlePinPoint } = usePinning()
-  const {
-    targetBoundingBoxes,
-    resultBoundingBoxes,
-    isLoading,
-    sliderValue,
-    setSliderValue,
-    handleFetchBoundingBoxes,
-    handleCleanSearch,
-    handleFindSimilar,
-  } = useBoundingBoxes()
+  const { viewState, setViewState, popupInfo, setPopupInfo } = useMapState();
+  const { isPinning, pinnedPoints, setPinnedPoints, handlePinPoint } = usePinning();
+  const { state, dispatch } = useAppState();
+  const { handleFetchBoundingBoxes, handleFindSimilar } = useBoundingBoxes();
 
   const handleClick = useCallback((info: any) => {
-    if (!info.coordinate) return
+    if (!info.coordinate) return;
 
-    const [longitude, latitude] = info.coordinate
+    const [longitude, latitude] = info.coordinate;
     if (isPointInCalifornia(longitude, latitude)) {
       if (isPinning) {
-        setPinnedPoints([...pinnedPoints, [longitude, latitude]])
-        handleFetchBoundingBoxes(latitude, longitude)
+        setPinnedPoints([...pinnedPoints, [longitude, latitude]]);
+        handleFetchBoundingBoxes(latitude, longitude);
       }
     } else {
-      setPopupInfo({ longitude, latitude })
+      setPopupInfo({ longitude, latitude });
     }
-  }, [isPinning, pinnedPoints, setPinnedPoints, handleFetchBoundingBoxes, setPopupInfo])
+  }, [isPinning, pinnedPoints, setPinnedPoints, handleFetchBoundingBoxes, setPopupInfo]);
 
   const handleTileClick = useCallback((bbox: [number, number, number, number]) => {
     setViewState((prevState) => ({
       ...prevState,
       ...calculateCenterAndZoom(bbox),
-    }))
-  }, [setViewState])
+    }));
+  }, [setViewState]);
 
   useEffect(() => {
-    if (targetBoundingBoxes.length === 0) {
-      setPopupInfo(null)
+    if (state.targetBoundingBoxes.length === 0) {
+      setPopupInfo(null);
     }
-  }, [targetBoundingBoxes, setPopupInfo])
+  }, [state.targetBoundingBoxes, setPopupInfo]);
 
-  const layers = createMapLayers(targetBoundingBoxes, resultBoundingBoxes)
+  const searchAreaGeometry = useSearchArea(state.areaId)
 
-  const handleSearchAndCancelPin = () => {
-    handleFindSimilar()
-    handlePinPoint()
+  const layers = createMapLayers(state.targetBoundingBoxes, state.resultBoundingBoxes, searchAreaGeometry)
 
-  }
+  const handleSearchAndCancelPin = useCallback(() => {
+    handleFindSimilar();
+    handlePinPoint();
+  }, [handleFindSimilar, handlePinPoint]);
+
+
+
+  const handleCleanSearch = useCallback(() => {
+    dispatch({ type: 'SET_TARGET_BOXES', payload: [] });
+    dispatch({ type: 'SET_RESULT_BOXES', payload: [] });
+  }, [dispatch]);
+
+
+
 
   return (
     <Map
@@ -100,15 +105,10 @@ export default function MapComponent() {
       <ControlWidget isPinning={isPinning} handlePinPoint={handlePinPoint} />
 
       <SceneCard
-        isLoading={isLoading}
-        handleCleanSearch={handleCleanSearch}
-        handleFindSimilar={handleSearchAndCancelPin}
         onTileClick={handleTileClick}
-        sliderValue={sliderValue}
-        setSliderValue={setSliderValue}
-        targetBoundingBoxes={targetBoundingBoxes}
-        resultBoundingBoxes={resultBoundingBoxes}
+        handleFindSimilar={handleSearchAndCancelPin}
+        handleCleanSearch={handleCleanSearch}
       />
     </Map>
-  )
+  );
 }

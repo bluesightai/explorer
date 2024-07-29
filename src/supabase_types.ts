@@ -9,6 +9,27 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      files_metadata: {
+        Row: {
+          bytes: number
+          created_at: string | null
+          filename: string
+          id: string
+        }
+        Insert: {
+          bytes: number
+          created_at?: string | null
+          filename: string
+          id: string
+        }
+        Update: {
+          bytes?: number
+          created_at?: string | null
+          filename?: string
+          id?: string
+        }
+        Relationships: []
+      }
       ip_data: {
         Row: {
           created_at: string
@@ -106,21 +127,128 @@ export type Database = {
           },
         ]
       }
+      saved_searches: {
+        Row: {
+          id: number
+          name: string
+          result_ids: number[]
+          search_area_id: number | null
+          target_ids: number[]
+        }
+        Insert: {
+          id?: number
+          name: string
+          result_ids: number[]
+          search_area_id?: number | null
+          target_ids: number[]
+        }
+        Update: {
+          id?: number
+          name?: string
+          result_ids?: number[]
+          search_area_id?: number | null
+          target_ids?: number[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_search_area"
+            columns: ["search_area_id"]
+            isOneToOne: false
+            referencedRelation: "search_areas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "saved_searches_search_area_id_fkey"
+            columns: ["search_area_id"]
+            isOneToOne: false
+            referencedRelation: "search_areas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      search_areas: {
+        Row: {
+          geometry: unknown | null
+          id: number
+          name: Database["public"]["Enums"]["region_enum"] | null
+        }
+        Insert: {
+          geometry?: unknown | null
+          id?: number
+          name?: Database["public"]["Enums"]["region_enum"] | null
+        }
+        Update: {
+          geometry?: unknown | null
+          id?: number
+          name?: Database["public"]["Enums"]["region_enum"] | null
+        }
+        Relationships: []
+      }
       search_boxes: {
         Row: {
           embedding: string | null
           id: number
           location: unknown
+          search_area_id: number | null
         }
         Insert: {
           embedding?: string | null
           id?: number
           location: unknown
+          search_area_id?: number | null
         }
         Update: {
           embedding?: string | null
           id?: number
           location?: unknown
+          search_area_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_search_area"
+            columns: ["search_area_id"]
+            isOneToOne: false
+            referencedRelation: "search_areas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      training_jobs: {
+        Row: {
+          created_at: string
+          error: string | null
+          fine_tuned_model: string | null
+          finished_at: string | null
+          hyperparameters: Json | null
+          id: string
+          status: string
+          task: string
+          training_file: string
+          validation_file: string | null
+        }
+        Insert: {
+          created_at: string
+          error?: string | null
+          fine_tuned_model?: string | null
+          finished_at?: string | null
+          hyperparameters?: Json | null
+          id: string
+          status: string
+          task: string
+          training_file: string
+          validation_file?: string | null
+        }
+        Update: {
+          created_at?: string
+          error?: string | null
+          fine_tuned_model?: string | null
+          finished_at?: string | null
+          hyperparameters?: Json | null
+          id?: string
+          status?: string
+          task?: string
+          training_file?: string
+          validation_file?: string | null
         }
         Relationships: []
       }
@@ -142,6 +270,21 @@ export type Database = {
           max_lon: number
         }[]
       }
+      find_similar_in_index: {
+        Args: {
+          input_ids: number[]
+          top_k: number
+          index_id: number
+        }
+        Returns: {
+          id: number
+          similarity: number
+          min_lat: number
+          min_lon: number
+          max_lat: number
+          max_lon: number
+        }[]
+      }
       find_similar_tiles: {
         Args: {
           input_ids: number[]
@@ -156,9 +299,30 @@ export type Database = {
           max_lon: number
         }[]
       }
+      get_intersecting_search_boxes: {
+        Args: {
+          area_id: number
+        }
+        Returns: {
+          box_id: number
+        }[]
+      }
+      get_search_area_geojson: {
+        Args: {
+          area_id: number
+        }
+        Returns: Json
+      }
+      update_search_boxes_area: {
+        Args: {
+          box_ids: number[]
+          area_id: number
+        }
+        Returns: number
+      }
     }
     Enums: {
-      [_ in never]: never
+      region_enum: "San Francisco" | "Los Angeles" | "San Diego" | "Central"
     }
     CompositeTypes: {
       [_ in never]: never
