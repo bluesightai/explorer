@@ -4,7 +4,7 @@ import { GeoJsonLayer } from "@deck.gl/layers"
 import { BoundingBoxResponse } from "../../hooks/supabaseTypes"
 import { inverseCaliforniaPolygon } from "../californiaPolygon"
 import { BoundingBoxLayer } from "./BoundingBoxLayer"
-import type { SearchAreaGeometry } from "../../hooks/useSearchArea"
+// import type { SearchAreaGeometry } from "../../hooks/useSearchArea"
 
 
 
@@ -13,7 +13,7 @@ import type { SearchAreaGeometry } from "../../hooks/useSearchArea"
 export const createMapLayers = (
     targetBoundingBoxes: BoundingBoxResponse[],
     resultBoundingBoxes: BoundingBoxResponse[],
-    searchAreaGeometry: SearchAreaGeometry | null  // New parameter
+    // searchAreaGeometry: SearchAreaGeometry | null  // New parameter
 ): LayersList => {
     const layers: LayersList = [
         new GeoJsonLayer({

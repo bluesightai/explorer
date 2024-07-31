@@ -14,7 +14,7 @@ import SceneCard from "./scenecard/SceneCard";
 import { calculateCenterAndZoom, isPointInCalifornia } from "../utils/mapUtils";
 import { createMapLayers } from "./layers/layers";
 import { useAppState } from "../hooks/AppContext";
-import { useSearchArea } from "../hooks/useSearchArea";
+// import { useSearchArea } from "../hooks/useSearchArea";
 
 function DeckGLOverlay(props: DeckProps) {
   // @ts-ignore
@@ -56,9 +56,9 @@ export default function MapComponent() {
     }
   }, [state.targetBoundingBoxes, setPopupInfo]);
 
-  const searchAreaGeometry = useSearchArea(state.areaId)
+  // const searchAreaGeometry = useSearchArea(state.areaId)
 
-  const layers = createMapLayers(state.targetBoundingBoxes, state.resultBoundingBoxes, searchAreaGeometry)
+  const layers = createMapLayers(state.targetBoundingBoxes, state.resultBoundingBoxes)
 
   const handleSearchAndCancelPin = useCallback(() => {
     handleFindSimilar();
