@@ -23,7 +23,7 @@ export const useBoundingBoxes = () => {
         const targetIds = state.targetBoundingBoxes.map((item) => item.id)
         const similarBoxes =
           state.areaId === 5
-            ? await findSimilarTiles(targetIds, state.sliderValue)
+            ? await findSimilarTiles(targetIds, state.sliderValue, state.negativeIDs)
             : await findSimilarIndex(targetIds, state.sliderValue, state.areaId, state.negativeIDs)
         dispatch({ type: "SET_RESULT_BOXES", payload: similarBoxes })
       } catch (error) {

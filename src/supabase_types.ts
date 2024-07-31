@@ -306,7 +306,7 @@ export type Database = {
           search_area_id: number
           top_k: number
           negative_ids: number[]
-          id: number
+          box_id: number
           min_lat: number
           min_lon: number
           max_lat: number
@@ -327,6 +327,21 @@ export type Database = {
           area_id: number
         }
         Returns: Json
+      }
+      get_similar_boxes_with_negatives_for_california: {
+        Args: {
+          input_ids: number[]
+          top_k: number
+          negativeids: number[]
+        }
+        Returns: {
+          id: number
+          similarity: number
+          min_lat: number
+          min_lon: number
+          max_lat: number
+          max_lon: number
+        }[]
       }
       get_similar_tiles_with_negative_and_index: {
         Args: {

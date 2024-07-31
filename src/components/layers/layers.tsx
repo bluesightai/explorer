@@ -35,18 +35,18 @@ export const createMapLayers = (
     ]
 
     // Add search area layer if geometry is provided
-    if (searchAreaGeometry) {
-        layers.push(
-            new GeoJsonLayer({
-                id: 'search-area-layer',
-                data: searchAreaGeometry,
-                filled: true,
-                getFillColor: [0, 0, 120, 64],  // Semi-transparent green
+    // if (searchAreaGeometry) {
+    //     layers.push(
+    //         new GeoJsonLayer({
+    //             id: 'search-area-layer',
+    //             data: searchAreaGeometry,
+    //             filled: true,
+    //             getFillColor: [0, 0, 120, 64],  // Semi-transparent green
 
-                pickable: true,
-            })
-        )
-    }
+    //             pickable: true,
+    //         })
+    //     )
+    // }
 
     return layers
 }

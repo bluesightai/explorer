@@ -40,16 +40,20 @@ export const useSupabase = () => {
     })
   }
 
-  const findSimilarTiles = async (ids: number[], top_k: number): Promise<SimilarBox[]> => {
+  const findSimilarTiles = async (ids: number[], top_k: number, negativeids: number[]): Promise<SimilarBox[]> => {
     return retryOperation(async () => {
       console.log("Ids are", ids)
       console.log("Length of input ids is", ids.length)
       console.log("top k is", top_k)
 
-      const { data, error }: PostgrestResponse<SimilarBox> = await supabase.rpc("find_similar_tiles", {
-        input_ids: ids,
-        top_k: top_k, // optional, defaults to 5 if not provided
-      })
+      const { data, error }: PostgrestResponse<SimilarBox> = await supabase.rpc(
+        "get_similar_boxes_with_negatives_for_california",
+        {
+          input_ids: ids,
+          negativeids,
+          top_k: top_k, // optional, defaults to 5 if not provided
+        },
+      )
 
       if (error) {
         console.error("Error finding similar tiles:", error)

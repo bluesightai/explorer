@@ -7,7 +7,6 @@ import Slider from "./Slider"
 import FindButton from "./FindSimillarButton"
 import AreaSelector from './AreaSelector'
 import { useAppState } from '../../hooks/AppContext'
-// import SaveSearchButton from '../utilcomponents/SaveSearch'
 
 interface SceneCardProps {
   onTileClick: (boundingBox: [number, number, number, number]) => void
@@ -28,7 +27,7 @@ const SceneCard: React.FC<SceneCardProps> = ({
     if (state.resultBoundingBoxes.length > 0 && !state.isRestoringSearch) {
       handleFindSimilar();
     }
-  }, [state.areaId, state.targetBoundingBoxes, state.negativeIDs, state.isRestoringSearch]);
+  }, [state.areaId, state.targetBoundingBoxes, state.negativeIDs]);
 
   const removeBox = (toBeRemovedId: number) => {
     const newBoxes = state.targetBoundingBoxes.filter(item => item.id != toBeRemovedId)
