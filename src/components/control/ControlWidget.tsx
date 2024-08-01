@@ -77,24 +77,31 @@ const ControlWidget = ({ isPinning, handlePinPoint }: { isPinning: boolean; hand
   }
 
   return (
-    <div className="control-widget">
-      <button onClick={handlePinPoint} className={`control-button ${isPinning ? "active" : ""}`}>
-        <img
-          src="src/assets/icons/pin.svg"
-          alt="pin icon"
-          className={`control-button-icon ${isPinning ? "active" : ""}`}
-        />
-        {isPinning ? "Cancel Pin" : "Pin a Point"}
-      </button>
+    <div className="left-toolbar">
+      <div className="logo">
+        <a href="https://bluesight.ai/" className="logo-full" target="_blank" rel="noopener noreferrer">
+          <span className="logo-dot"></span> <span className="logo-name">Bluesight.ai</span>
+        </a>
+      </div>
+      <div className="control-widget">
+        <button onClick={handlePinPoint} className={`control-button ${isPinning ? "active" : ""}`}>
+          <img
+            src="src/assets/icons/pin.svg"
+            alt="pin icon"
+            className={`control-button-icon ${isPinning ? "active" : ""}`}
+          />
+          {isPinning ? "Cancel Pin" : "Pin a Point"}
+        </button>
 
-      <div className="saved-searches">
-        <span className="saved-searches-title">Example search:</span>
-        <div className="saved-searches-buttons">
-          {savedSearches.map((item, index) => (
-            <button key={index} className="saved-searches-btn" onClick={() => handleSavedSearchClick(item)}>
-              {item.name}
-            </button>
-          ))}
+        <div className="saved-searches">
+          <span className="saved-searches-title">Example search:</span>
+          <div className="saved-searches-buttons">
+            {savedSearches.map((item, index) => (
+              <button key={index} className="saved-searches-btn" onClick={() => handleSavedSearchClick(item)}>
+                {item.name}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </div>
