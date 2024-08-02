@@ -41,12 +41,6 @@ ONLY A REMINDER-- ALL STYLES ARE DEFINED IN main.scss
     gap: var(--spacing-s);
   }
 
-  @media screen and (max-width: 900px) {
-    .grid-row:nth-child(3) {
-      display: none;
-    }
-  }
-
   .grid-item {
     flex: 1;
     aspect-ratio: 1;
