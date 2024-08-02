@@ -1,5 +1,24 @@
 @import "../../main.scss";
+/*
+ONLY A REMINDER-- ALL STYLES ARE DEFINED IN main.scss
+:root {
+--black: #333333;
+  --white: #f0f0f0;
+  --blue: #0066cc;
+  --light-blue: #92bdf9;
+  --white-transparent: rgba(240, 240, 240, 0.2);
+  --black-transparent: rgba(51, 51, 51, 0.4);
 
+  --border-radius: 8px;
+  --font-size: 14px;
+  --font-weight-regular: 400;
+
+  --spacing-xxs: 4px;
+  --spacing-xs: 8px;
+  --spacing-s: 16px;
+  --spacing-m: 32px;
+  --spacing-l: 64px;
+} */
 .scene-card {
   position: absolute;
   top: var(--spacing-s);
@@ -7,23 +26,28 @@
   background-color: var(--black-transparent);
   backdrop-filter: blur(10px);
   color: var(--white);
-  padding: 20px;
-  border-radius: 15px;
-  width: 300px;
+  padding: var(--spacing-s);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size);
+  width: 332px; /*calculated -pls don't change if not necessary*/
   z-index: 100000; /* Ensure it's above other elements */
 }
 
+.select-area {
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--spacing-xs);
+}
+
 .clear-button {
-  float: right;
-  background-color: transparent;
-  border: none;
-  color: white;
+  float: left;
+  background-color: var(--white);
+  border: var(--border-radius);
   cursor: pointer;
-  font-size: 14px;
-  padding: 5px 10px;
-  border-radius: 5px;
+  transition: all 0.2s ease;
+  margin-top: var(--spacing-m);
 }
 
 .clear-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--light-blue);
 }

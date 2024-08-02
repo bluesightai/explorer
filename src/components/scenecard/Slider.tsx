@@ -1,6 +1,5 @@
-import React from 'react'
 import "./Slider.scss"
-
+import React from "react"
 
 interface SliderProps {
   min: number
@@ -14,6 +13,11 @@ interface SliderProps {
 const Slider: React.FC<SliderProps> = React.memo(({ min, max, value, onChange, onRelease, isLoading }) => {
   return (
     <div className="slider">
+      <div className="slider-labels">
+        <span>{min}</span>
+        <span className="slider-labels-value">{value}</span>
+        <span>{max}</span>
+      </div>
       <input
         type="range"
         min={min}
@@ -24,11 +28,7 @@ const Slider: React.FC<SliderProps> = React.memo(({ min, max, value, onChange, o
         onTouchEnd={onRelease}
         disabled={isLoading}
       />
-      <div className="slider-labels">
-        <span>{min}</span>
-        <span>{value}</span>
-        <span>{max}</span>
-      </div>
+
       {isLoading && <span className="slider-loading">Searching...</span>}
     </div>
   )

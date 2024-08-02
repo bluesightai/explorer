@@ -1,8 +1,32 @@
+@import "../../main.scss";
+/*
+ONLY A REMINDER-- ALL STYLES ARE DEFINED IN main.scss
+:root {
+--black: #333333;
+  --white: #f0f0f0;
+  --blue: #0066cc;
+  --light-blue: #92bdf9;
+  --white-transparent: rgba(240, 240, 240, 0.2);
+  --black-transparent: rgba(51, 51, 51, 0.4);
+
+  --border-radius: 8px;
+  --font-size: 14px;
+  --font-weight-regular: 400;
+
+  --spacing-xxs: 4px;
+  --spacing-xs: 8px;
+  --spacing-s: 16px;
+  --spacing-m: 32px;
+  --spacing-l: 64px;
+} */
+
 .carousel__container {
   width: 100%;
   overflow: hidden;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin: var(--spacing-s) 0;
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--spacing-xs);
 }
 
 .carousel__container-pinned {
@@ -11,8 +35,6 @@
 }
 
 .carousel__label {
-  font-weight: bold;
-  padding-top: 10px;
   white-space: nowrap;
 }
 
@@ -29,15 +51,14 @@
 
 .carousel {
   display: flex;
-  gap: 10px;
-  // padding: 10px 0;
+  gap: calc(var(--spacing-s) + 4px);
 }
 
 .carousel-item-wrapper {
   position: relative;
   flex: 0 0 auto;
-  width: 150px; /* Adjust this value to change the size of the images */
-  height: 150px; /* Adjust this value to change the size of the images */
+  width: 100px;
+  height: 100px;
 }
 
 .carousel-item {
@@ -51,6 +72,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: var(--border-radius);
 }
 
 .remove-box-button {
@@ -73,6 +95,20 @@
 }
 
 .remove-box-button:hover {
-  background-color: rgba(255, 0, 0, 0.7);
+  background-color: var(--blue);
   color: white;
+}
+
+.find-similar-btn {
+  background-color: var(--blue);
+  color: var(--white);
+  transition: all 0.2s ease;
+  &:hover {
+    background-color: #0056b3;
+  }
+}
+
+.find-similar-icon {
+  width: 18px;
+  height: 18px;
 }

@@ -1,39 +1,135 @@
+@import "../../main.scss";
+/*
+STYLITIC REMINDER-- ALL STYLES ARE DEFINED IN main.scss
+:root {
+--black: #333333;
+  --white: #f0f0f0;
+  --blue: #0066cc;
+  --light-blue: #92bdf9;
+  --white-transparent: rgba(240, 240, 240, 0.2);
+  --black-transparent: rgba(51, 51, 51, 0.4);
+
+  --border-radius: 8px;
+  --font-size: 14px;
+  --font-weight-regular: 400;
+
+  --spacing-xxs: 4px;
+  --spacing-xs: 8px;
+  --spacing-s: 16px;
+  --spacing-m: 32px;
+  --spacing-l: 64px;
+} */
+
+.logo {
+  position: absolute;
+  top: var(--spacing-s);
+  left: var(--spacing-s);
+  z-index: 1000;
+  display: flex;
+  row-gap: var(--spacing-s);
+  background-color: var(--white);
+  padding: var(--spacing-xs) var(--spacing-s);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size);
+
+  &-full {
+    display: flex;
+    align-items: center;
+    column-gap: var(--spacing-s);
+    text-decoration: none;
+    font-weight: 600;
+    color: var(--blue);
+  }
+  &-dot {
+    display: inline-block;
+    width: var(--spacing-s);
+    height: var(--spacing-s);
+    border-radius: 50%;
+    background-color: var(--light-blue);
+  }
+
+  &-name {
+    text-decoration: none;
+  }
+}
 .control-widget {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  bottom: var(--spacing-s);
+  left: var(--spacing-s);
   z-index: 1000;
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  width: 200px;
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--spacing-s);
+  // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .control-button {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 100%;
-  padding: 10px;
-  margin: 5px 0;
   border: none;
   border-radius: 5px;
-  background-color: white;
   cursor: pointer;
   text-align: left;
-  font-size: 14px;
-}
+  transition: all 0.2s ease;
 
-.control-button:hover {
-  background-color: #f0f0f0;
-}
+  &:hover {
+    background-color: var(--light-blue);
+  }
+  &:focus {
+    outline: none;
+  }
 
-.control-button.active {
-  background-color: lightblue;
+  &.active {
+    background-color: var(--blue);
+    color: var(--white);
+    border: none;
+  }
 }
 
 .control-button-icon {
-  margin-right: 10px;
-  font-size: 20px;
+  font-size: 18px;
+  &.active {
+    filter: brightness(0) invert(1);
+  }
+}
+
+.saved-searches {
+  background-color: var(--black-transparent);
+  backdrop-filter: blur(10px);
+  padding: var(--spacing-s);
+  border-radius: var(--border-radius);
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--spacing-s);
+
+  &-title {
+    color: var(--white);
+    font-size: var(--font-size);
+  }
+
+  &-buttons {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--spacing-xs);
+  }
+
+  &-btn {
+    width: fit-content;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: var(--light-blue);
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &.active {
+      background-color: var(--blue);
+      color: var(--white);
+      border: none;
+    }
+  }
 }
