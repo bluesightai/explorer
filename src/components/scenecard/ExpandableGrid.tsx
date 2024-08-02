@@ -1,7 +1,7 @@
 import { BoundingBoxResponse } from "../../hooks/supabaseTypes"
 import "./ExpandableGrid.scss"
 import LazyImage from "./LazyImage"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 
 interface ExpandableGridProps {
   setNegativeId: (id: number) => void
@@ -11,16 +11,30 @@ interface ExpandableGridProps {
   onTileClick: (boundingBox: [number, number, number, number]) => void
 }
 
-const ITEMS_PER_PAGE = 9
-const GRID_ROWS = 3
+const ITEMS_PER_PAGE_LARGE = 9
+const ITEMS_PER_PAGE_SMALL = 6
 const GRID_COLS = 3
 
 const ExpandableGrid: React.FC<ExpandableGridProps> = ({ setNegativeId, boxes, count, fetchImage, onTileClick }) => {
   const [currentPage, setCurrentPage] = useState(1)
+  const [isSmallScreen, setIsSmallScreen] = useState(false)
 
-  const totalPages = Math.ceil(boxes.length / ITEMS_PER_PAGE)
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
-  const visibleBoxes = boxes.slice(startIndex, startIndex + ITEMS_PER_PAGE)
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 768) // Adjust this breakpoint as needed
+    }
+
+    handleResize() // Set initial value
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  const itemsPerPage = isSmallScreen ? ITEMS_PER_PAGE_SMALL : ITEMS_PER_PAGE_LARGE
+  const gridRows = isSmallScreen ? 2 : 3
+
+  const totalPages = Math.ceil(boxes.length / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const visibleBoxes = boxes.slice(startIndex, startIndex + itemsPerPage)
 
   const renderGridItem = (box: BoundingBoxResponse | null, index: number) => {
     if (box) {
@@ -46,7 +60,7 @@ const ExpandableGrid: React.FC<ExpandableGridProps> = ({ setNegativeId, boxes, c
 
   const renderGrid = () => {
     const grid = []
-    for (let i = 0; i < GRID_ROWS; i++) {
+    for (let i = 0; i < gridRows; i++) {
       const row = []
       for (let j = 0; j < GRID_COLS; j++) {
         const index = i * GRID_COLS + j
