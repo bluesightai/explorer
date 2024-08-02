@@ -10,7 +10,6 @@ interface CarouselProps {
   onTileClick: (boundingBox: [number, number, number, number]) => void
 }
 
-
 interface CarouselProps {
   boxes: BoundingBoxResponse[]
   removeBox: (id: number) => void
@@ -18,10 +17,9 @@ interface CarouselProps {
   onTileClick: (boundingBox: [number, number, number, number]) => void
 }
 
-
 const Carousel: React.FC<CarouselProps> = ({ boxes, removeBox, fetchImage, onTileClick }) => (
   <div className="carousel__container">
-    <span className="carousel__label">Selected tiles:</span>
+    <span className="carousel__label">Pinned tiles:</span>
     <div className="carousel__container-pinned">
       <div className="carousel__wrapper">
         <div className="carousel">
@@ -29,21 +27,15 @@ const Carousel: React.FC<CarouselProps> = ({ boxes, removeBox, fetchImage, onTil
             const { id, max_lat, min_lat, max_lon, min_lon } = box
 
             return (
-              <div
-                key={id}
-                className="carousel-item-wrapper"
-              >
-                <div
-                  onClick={() => onTileClick([min_lon, min_lat, max_lon, max_lat])}
-                  className="carousel-item"
-                >
+              <div key={id} className="carousel-item-wrapper">
+                <div onClick={() => onTileClick([min_lon, min_lat, max_lon, max_lat])} className="carousel-item">
                   <LazyImage boxData={box} fetchImage={fetchImage} alt={`Target ${index}`} />
                 </div>
                 <button
                   className="remove-box-button"
                   onClick={(e) => {
-                    e.stopPropagation();
-                    removeBox(id);
+                    e.stopPropagation()
+                    removeBox(id)
                   }}
                 >
                   ×

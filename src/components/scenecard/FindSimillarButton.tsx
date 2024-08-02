@@ -1,15 +1,10 @@
-const FindButton = ({ handleFindSimilar, isLoading }: { handleFindSimilar: () => void; isLoading: boolean; }) => isLoading ? <span className="slider-loading">Searching...</span> : < button
-    onClick={handleFindSimilar}
-    className="carousel__container-button button"
-    disabled={isLoading}
->
-
-
-    <>
-        <span>
-            <i className="fas fa-search"></i>
-        </span>
-        Find Similar
-    </>
-</button >
+const FindButton = ({ handleFindSimilar, isLoading }: { handleFindSimilar: () => void; isLoading: boolean }) =>
+  isLoading ? (
+    <span className="slider-loading">Searching...</span>
+  ) : (
+    <button onClick={handleFindSimilar} className="find-similar-btn" disabled={isLoading}>
+      <img src="src/assets/icons/magnifing-glass.svg" alt="pin icon" className="find-similar-icon" />
+      Find Similar
+    </button>
+  )
 export default FindButton

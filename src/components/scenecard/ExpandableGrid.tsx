@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
 import { BoundingBoxResponse } from "../../hooks/supabaseTypes"
 import "./ExpandableGrid.scss"
 import LazyImage from "./LazyImage"
+import React, { useState } from "react"
 
 interface ExpandableGridProps {
   setNegativeId: (id: number) => void
@@ -26,25 +26,17 @@ const ExpandableGrid: React.FC<ExpandableGridProps> = ({ setNegativeId, boxes, c
     if (box) {
       const { id, max_lat, min_lat, max_lon, min_lon } = box
       return (
-        <div
-          key={id}
-          onClick={() => onTileClick([min_lon, min_lat, max_lon, max_lat])}
-          className="grid-item"
-        >
-          <LazyImage
-            boxData={box}
-            fetchImage={fetchImage}
-            alt={`Similar ${startIndex + index}`}
-          />
+        <div key={id} onClick={() => onTileClick([min_lon, min_lat, max_lon, max_lat])} className="grid-item">
+          <LazyImage boxData={box} fetchImage={fetchImage} alt={`Similar ${startIndex + index}`} />
           <button
             className="negative-box-button"
             onClick={(e) => {
-              e.stopPropagation();
-              setNegativeId(id);
+              e.stopPropagation()
+              setNegativeId(id)
             }}
             title="Mark as negative example"
           >
-            👎
+            <img src="src/assets/icons/thumbs-down-solidd.svg" alt="thumbs down" className="negative-button-thumb" />
           </button>
         </div>
       )
@@ -60,7 +52,11 @@ const ExpandableGrid: React.FC<ExpandableGridProps> = ({ setNegativeId, boxes, c
         const index = i * GRID_COLS + j
         row.push(renderGridItem(visibleBoxes[index] || null, index))
       }
-      grid.push(<div key={`row-${i}`} className="grid-row">{row}</div>)
+      grid.push(
+        <div key={`row-${i}`} className="grid-row">
+          {row}
+        </div>,
+      )
     }
     return grid
   }
@@ -68,23 +64,22 @@ const ExpandableGrid: React.FC<ExpandableGridProps> = ({ setNegativeId, boxes, c
   return (
     <div className="expandable-grid">
       <div className="grid-header">
-        <span>{count} similar found</span>
+        <span className="grid-header-count">{count}</span> <span>similar found</span>
       </div>
       <div className="grid">{renderGrid()}</div>
       {totalPages > 1 && (
         <div className="pagination">
-          <button
-            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}
-          >
-            Previous
+          <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
+            <img src="src/assets/icons/previous.svg" alt="prev" />
           </button>
-          <span>{currentPage} / {totalPages}</span>
+          <span>
+            {currentPage} / {totalPages}
+          </span>
           <button
-            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
             disabled={currentPage === totalPages}
           >
-            Next
+            <img src="src/assets/icons/next.svg" alt="next" />
           </button>
         </div>
       )}
