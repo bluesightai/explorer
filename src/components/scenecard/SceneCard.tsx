@@ -98,7 +98,7 @@ const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleFindSimilar, h
       {state.resultBoundingBoxes.length > 0 && (
         <button onClick={handleCleanSearch} className="clear-button">
           clear search
-          <img src="src/assets/icons/bin.svg" alt="bin" />
+          <img src="./bin.svg" alt="bin" />
         </button>
       )}
     </div>

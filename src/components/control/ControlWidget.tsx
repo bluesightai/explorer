@@ -86,7 +86,7 @@ const ControlWidget = ({ isPinning, handlePinPoint }: { isPinning: boolean; hand
       <div className="control-widget">
         <button onClick={handlePinPoint} className={`control-button ${isPinning ? "active" : ""}`}>
           <img
-            src="src/assets/icons/pin.svg"
+            src="./pin.svg"
             alt="pin icon"
             className={`control-button-icon ${isPinning ? "active" : ""}`}
           />

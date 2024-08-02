@@ -50,7 +50,7 @@ const ExpandableGrid: React.FC<ExpandableGridProps> = ({ setNegativeId, boxes, c
             }}
             title="Mark as negative example"
           >
-            <img src="src/assets/icons/thumbs-down-solidd.svg" alt="thumbs down" className="negative-button-thumb" />
+            <img src="./thumbs-down-solidd.svg" alt="thumbs down" className="negative-button-thumb" />
           </button>
         </div>
       )
@@ -84,7 +84,7 @@ const ExpandableGrid: React.FC<ExpandableGridProps> = ({ setNegativeId, boxes, c
       {totalPages > 1 && (
         <div className="pagination">
           <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
-            <img src="src/assets/icons/previous.svg" alt="prev" />
+            <img src="./previous.svg" alt="prev" />
           </button>
           <span>
             {currentPage} / {totalPages}
@@ -93,7 +93,7 @@ const ExpandableGrid: React.FC<ExpandableGridProps> = ({ setNegativeId, boxes, c
             onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
             disabled={currentPage === totalPages}
           >
-            <img src="src/assets/icons/next.svg" alt="next" />
+            <img src="./next.svg" alt="next" />
           </button>
         </div>
       )}
