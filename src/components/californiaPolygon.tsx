@@ -215,6 +215,27 @@ export const californiaPolygon: Feature<Polygon> = {
 
 
 
+export const clipPolygon: Feature<Polygon> = {
+
+    "type": "Feature",
+    "properties": {},
+    "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+            [
+                [-122.57737947038578, 37.60017493901343],
+                [-122.16318333310667, 37.60017493901343],
+                [-122.16318333310667, 37.81328055907987],
+                [-122.57737947038578, 37.81328055907987],
+                [-122.57737947038578, 37.60017493901343]
+
+            ]]
+    }
+}
+
+
+
+
 export const inverseCaliforniaPolygon: Feature<Polygon> = {
     type: "Feature",
     properties: {},
@@ -229,7 +250,7 @@ export const inverseCaliforniaPolygon: Feature<Polygon> = {
                 [-180, -90]
             ],
             // Use the coordinates from californiaPolygon as a hole
-            californiaPolygon.geometry.coordinates[0]
+            clipPolygon.geometry.coordinates[0]
         ]
     }
 };
