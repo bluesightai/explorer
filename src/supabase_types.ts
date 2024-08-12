@@ -9,23 +9,41 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      clip_boxes: {
+        Row: {
+          embedding: string | null
+          id: number
+          location: unknown
+        }
+        Insert: {
+          embedding?: string | null
+          id?: number
+          location: unknown
+        }
+        Update: {
+          embedding?: string | null
+          id?: number
+          location?: unknown
+        }
+        Relationships: []
+      }
       files_metadata: {
         Row: {
-          bytes: number
+          bytes: number | null
           created_at: string | null
-          filename: string
+          filename: string | null
           id: string
         }
         Insert: {
-          bytes: number
+          bytes?: number | null
           created_at?: string | null
-          filename: string
-          id: string
+          filename?: string | null
+          id?: string
         }
         Update: {
-          bytes?: number
+          bytes?: number | null
           created_at?: string | null
-          filename?: string
+          filename?: string | null
           id?: string
         }
         Relationships: []
@@ -34,17 +52,38 @@ export type Database = {
         Row: {
           created_at: string
           data: Json | null
-          ip: string
+          id: string
         }
         Insert: {
           created_at?: string
           data?: Json | null
-          ip: string
+          id: string
         }
         Update: {
           created_at?: string
           data?: Json | null
-          ip?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      models_metadata: {
+        Row: {
+          bytes: number | null
+          created_at: string | null
+          id: string
+          task: Database["public"]["Enums"]["task_type"]
+        }
+        Insert: {
+          bytes?: number | null
+          created_at?: string | null
+          id?: string
+          task: Database["public"]["Enums"]["task_type"]
+        }
+        Update: {
+          bytes?: number | null
+          created_at?: string | null
+          id?: string
+          task?: Database["public"]["Enums"]["task_type"]
         }
         Relationships: []
       }
@@ -79,7 +118,7 @@ export type Database = {
       }
       requests: {
         Row: {
-          body: Json
+          body: Json | null
           created_at: string
           headers: Json | null
           id: string
@@ -92,7 +131,7 @@ export type Database = {
           url: string | null
         }
         Insert: {
-          body: Json
+          body?: Json | null
           created_at?: string
           headers?: Json | null
           id?: string
@@ -105,7 +144,7 @@ export type Database = {
           url?: string | null
         }
         Update: {
-          body?: Json
+          body?: Json | null
           created_at?: string
           headers?: Json | null
           id?: string
@@ -123,7 +162,7 @@ export type Database = {
             columns: ["ip"]
             isOneToOne: false
             referencedRelation: "ip_data"
-            referencedColumns: ["ip"]
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -226,12 +265,12 @@ export type Database = {
           validation_file: string | null
         }
         Insert: {
-          created_at: string
+          created_at?: string
           error?: string | null
           finished_at?: string | null
           hyperparameters?: Json | null
-          id: string
-          status: string
+          id?: string
+          status?: string
           task: string
           trained_model?: string | null
           training_file: string
@@ -298,6 +337,13 @@ export type Database = {
           max_lon: number
         }[]
       }
+      generate_uid: {
+        Args: {
+          prefix: string
+          size?: number
+        }
+        Returns: string
+      }
       get_complete_saved_search_data: {
         Args: {
           p_saved_search_id: number
@@ -359,6 +405,20 @@ export type Database = {
           max_lon: number
         }[]
       }
+      get_top_k_clip: {
+        Args: {
+          query_embedding: number[]
+          k: number
+        }
+        Returns: {
+          id: number
+          similarity: number
+          min_lat: number
+          min_lon: number
+          max_lat: number
+          max_lon: number
+        }[]
+      }
       update_search_boxes_area: {
         Args: {
           box_ids: number[]
@@ -369,6 +429,7 @@ export type Database = {
     }
     Enums: {
       region_enum: "San Francisco" | "Los Angeles" | "San Diego" | "Central"
+      task_type: "classification" | "segmentation"
     }
     CompositeTypes: {
       [_ in never]: never

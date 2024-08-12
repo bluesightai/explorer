@@ -40,6 +40,23 @@ export const useSupabase = () => {
     })
   }
 
+  const fetchClipBoxes = async (embedding: number[], k: number): Promise<BoundingBoxResponse[]> => {
+    return retryOperation(async () => {
+      const { data, error }: PostgrestResponse<BoundingBoxResponse> = await supabase.rpc("get_top_k_clip", {
+        query_embedding: embedding,
+        k: k,
+      })
+
+      if (error) {
+        console.error("Error fetching search boxes:", error)
+        throw error
+      }
+
+      console.log("Data is", data)
+      return data || []
+    })
+  }
+
   const findSimilarTiles = async (ids: number[], top_k: number, negativeids: number[]): Promise<SimilarBox[]> => {
     return retryOperation(async () => {
       console.log("Ids are", ids)
@@ -93,5 +110,5 @@ export const useSupabase = () => {
     })
   }
 
-  return { fetchBoundingBoxes, findSimilarTiles, findSimilarIndex, supabase }
+  return { fetchBoundingBoxes, findSimilarTiles, findSimilarIndex, supabase, fetchClipBoxes }
 }

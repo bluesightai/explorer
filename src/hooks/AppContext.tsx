@@ -10,11 +10,13 @@ export interface AppState {
   sliderValue: number;
   isLoading: boolean;
   isRestoringSearch: boolean;
+  query: string
 
 }
 
 // Define all possible action types
 export type AppAction =
+  | { type: 'SET_TEXT'; payload: string }
   | { type: 'SET_TARGET_BOXES'; payload: BoundingBoxResponse[] }
   | { type: 'SET_RESULT_BOXES'; payload: BoundingBoxResponse[] }
   | { type: 'SET_AREA_ID'; payload: number }
@@ -26,6 +28,7 @@ export type AppAction =
 
 // Initial state
 const initialState: AppState = {
+  query: '',
   targetBoundingBoxes: [],
   negativeIDs: [],
   resultBoundingBoxes: [],
@@ -39,6 +42,11 @@ const initialState: AppState = {
 // Reducer function
 function appReducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
+    case 'SET_TEXT':
+      return {
+        ...state,
+        query: action.payload,
+      };
     case 'FINISH_RESTORE_SEARCH':
       return {
         ...state,

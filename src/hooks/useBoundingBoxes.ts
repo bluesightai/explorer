@@ -4,7 +4,7 @@ import { useSupabase } from "./useSupabase"
 
 export const useBoundingBoxes = () => {
   const { state, dispatch } = useAppState()
-  const { fetchBoundingBoxes, findSimilarTiles, findSimilarIndex } = useSupabase()
+  const { fetchBoundingBoxes, findSimilarTiles, findSimilarIndex, fetchClipBoxes } = useSupabase()
 
   const handleFetchBoundingBoxes = async (latitude: number, longitude: number) => {
     const bboxes = await fetchBoundingBoxes(latitude, longitude)
@@ -13,6 +13,34 @@ export const useBoundingBoxes = () => {
       const filteredBoxes = state.targetBoundingBoxes.filter((item) => !newIds.includes(item.id))
       const mergedBoxes = [...bboxes, ...filteredBoxes]
       dispatch({ type: "SET_TARGET_BOXES", payload: mergedBoxes })
+    }
+  }
+
+  const handleTextSearch = async () => {
+    const query = state.query
+
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify([query]), // Properly format the query as an array of strings
+    }
+
+    try {
+      const response = await fetch("https://api.bluesight.ai/embeddings/text", options)
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+      const { embeddings } = data
+      const flat = embeddings.flat()
+      const result = await fetchClipBoxes(flat, 500)
+      dispatch({ type: "SET_RESULT_BOXES", payload: result })
+
+      // Process the response data here
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error)
     }
   }
 
@@ -35,6 +63,7 @@ export const useBoundingBoxes = () => {
   }
 
   return {
+    handleTextSearch,
     handleFetchBoundingBoxes,
     handleFindSimilar,
   }

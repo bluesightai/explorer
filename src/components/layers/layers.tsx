@@ -16,13 +16,13 @@ export const createMapLayers = (
     // searchAreaGeometry: SearchAreaGeometry | null  // New parameter
 ): LayersList => {
     const layers: LayersList = [
-        new GeoJsonLayer({
-            id: "inverse-california-layer",
-            data: inverseCaliforniaPolygon,
-            filled: true,
-            getFillColor: [0, 0, 0, 128],
-            pickable: true,
-        }),
+        // new GeoJsonLayer({
+        //     id: "inverse-california-layer",
+        //     data: inverseCaliforniaPolygon,
+        //     filled: true,
+        //     getFillColor: [0, 0, 0, 128],
+        //     pickable: true,
+        // }),
 
         BoundingBoxLayer({
             color: [0, 0, 255],  // This is blue
