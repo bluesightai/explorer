@@ -4,7 +4,6 @@ import { useSupabase } from "../../hooks/useSupabase"
 import { Tables } from "../../supabase_types"
 import "./ControlWidget.scss"
 import { useEffect, useState } from "react"
-import QueryInput from "./QueryInput"
 
 type SavedSearches = Tables<"saved_searches">
 const ControlWidget = ({ isPinning, handlePinPoint }: { isPinning: boolean; handlePinPoint: (arg0: any) => void }) => {
@@ -104,7 +103,6 @@ const ControlWidget = ({ isPinning, handlePinPoint }: { isPinning: boolean; hand
             ))}
           </div>
         </div>
-        <QueryInput />
       </div>
     </div>
   )

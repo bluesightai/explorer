@@ -1,4 +1,5 @@
 import { useAppState } from "../../hooks/AppContext"
+import { useBoundingBoxes } from "../../hooks/useBoundingBoxes"
 import { useNaipImagery } from "../../hooks/useNaipImagery"
 import AreaSelector from "./AreaSelector"
 import Carousel from "./Carousel"
@@ -10,18 +11,18 @@ import React, { useEffect } from "react"
 
 interface SceneCardProps {
   onTileClick: (boundingBox: [number, number, number, number]) => void
-  handleFindSimilar: () => void
   handleCleanSearch: () => void
+  handleFindSimilar: () => void
 }
 
-const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleFindSimilar, handleCleanSearch }) => {
+const SceneCard: React.FC<SceneCardProps> = ({ handleFindSimilar, onTileClick, handleCleanSearch }) => {
   const { state, dispatch } = useAppState()
   const { fetchNaipImage } = useNaipImagery()
+  const { handleTextSearch } = useBoundingBoxes();
 
   useEffect(() => {
-    console.log("We are in scene card", state.isRestoringSearch)
     if (state.resultBoundingBoxes.length > 0 && !state.isRestoringSearch) {
-      handleFindSimilar()
+      handleTextSearch()
     }
   }, [state.areaId, state.targetBoundingBoxes, state.negativeIDs])
 
@@ -45,33 +46,36 @@ const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleFindSimilar, h
 
   const handleSliderRelease = () => {
     if (state.resultBoundingBoxes.length > 0) {
-      handleFindSimilar()
+      handleTextSearch()
     }
   }
 
-  if (state.targetBoundingBoxes.length < 1) {
+  if (state.targetBoundingBoxes.length < 1 && state.resultBoundingBoxes.length == 0) {
     return (
-      <div className="scene-card">
-        <AreaSelector areaId={state.areaId} setAreaId={handleAreaChange} />
-      </div>
+      null
+      // <div className="scene-card">
+      //   <AreaSelector areaId={state.areaId} setAreaId={handleAreaChange} />
+      // </div>
     )
   }
 
-  return (
-    <div className="scene-card">
-      <div className="select-area">
+  {/* <div className="select-area">
         <span className="select-area-title">Choose search area:</span>
         <AreaSelector areaId={state.areaId} setAreaId={handleAreaChange} />
-        {/* <SaveSearchButton /> */}
-      </div>
+        // <SaveSearchButton />
+      </div> */}
 
-      <Carousel
-        removeBox={removeBox}
-        onTileClick={onTileClick}
-        boxes={state.targetBoundingBoxes}
-        fetchImage={fetchNaipImage}
-      />
+  return (
+    <div className="scene-card">
 
+      {state.targetBoundingBoxes.length > 1 &&
+        < Carousel
+          removeBox={removeBox}
+          onTileClick={onTileClick}
+          boxes={state.targetBoundingBoxes}
+          fetchImage={fetchNaipImage}
+        />
+      }
       {state.resultBoundingBoxes.length > 0 ? (
         <Slider
           min={1}
@@ -82,7 +86,7 @@ const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleFindSimilar, h
           isLoading={state.isLoading}
         />
       ) : (
-        <FindButton handleFindSimilar={handleFindSimilar} isLoading={state.isLoading} />
+        < FindButton handleFindSimilar={handleFindSimilar} isLoading={state.isLoading} />
       )}
 
       {state.resultBoundingBoxes.length > 0 && (

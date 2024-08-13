@@ -18,6 +18,7 @@ export const useBoundingBoxes = () => {
 
   const handleTextSearch = async () => {
     const query = state.query
+    dispatch({ type: "SET_LOADING", payload: true })
 
     const options = {
       method: "POST",
@@ -35,12 +36,14 @@ export const useBoundingBoxes = () => {
       const data = await response.json()
       const { embeddings } = data
       const flat = embeddings.flat()
-      const result = await fetchClipBoxes(flat, 500)
+      const result = await fetchClipBoxes(flat, state.sliderValue, state.negativeIDs)
       dispatch({ type: "SET_RESULT_BOXES", payload: result })
 
       // Process the response data here
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error)
+    } finally {
+      dispatch({ type: "SET_LOADING", payload: false })
     }
   }
 

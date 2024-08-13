@@ -13,6 +13,7 @@ import { MapboxOverlay } from "@deck.gl/mapbox"
 import "mapbox-gl/dist/mapbox-gl.css"
 import { useCallback, useEffect } from "react"
 import { Map, Popup, ViewStateChangeEvent, useControl } from "react-map-gl"
+import QueryInput from "./input/QueryInput"
 
 function DeckGLOverlay(props: DeckProps) {
   // @ts-ignore
@@ -25,7 +26,7 @@ export default function MapComponent() {
   const { viewState, setViewState, popupInfo, setPopupInfo } = useMapState()
   const { isPinning, pinnedPoints, setPinnedPoints, handlePinPoint } = usePinning()
   const { state, dispatch } = useAppState()
-  const { handleFetchBoundingBoxes, handleFindSimilar } = useBoundingBoxes()
+  const { handleFetchBoundingBoxes, handleTextSearch } = useBoundingBoxes()
 
   const handleClick = useCallback(
     (info: any) => {
@@ -65,9 +66,9 @@ export default function MapComponent() {
   const layers = createMapLayers(state.targetBoundingBoxes, state.resultBoundingBoxes)
 
   const handleSearchAndCancelPin = useCallback(() => {
-    handleFindSimilar()
+    handleTextSearch()
     handlePinPoint()
-  }, [handleFindSimilar, handlePinPoint])
+  }, [handleTextSearch, handlePinPoint])
 
   const handleCleanSearch = useCallback(() => {
     dispatch({ type: "SET_TARGET_BOXES", payload: [] })
@@ -109,6 +110,7 @@ export default function MapComponent() {
         handleFindSimilar={handleSearchAndCancelPin}
         handleCleanSearch={handleCleanSearch}
       />
+      <QueryInput />
     </Map>
   )
 }
