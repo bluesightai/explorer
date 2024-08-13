@@ -87,6 +87,7 @@ export const useSupabase = () => {
 
   const findSimilarClip = async (ids: number[], top_k: number, negative_input_ids: number[]): Promise<SimilarBox[]> => {
     return retryOperation(async () => {
+      console.log("Calling image search with input_ids", ids, "top_k", top_k, "negativeids", negative_input_ids)
       const { data, error } = await supabase.rpc("search_similar_clip_boxes", {
         input_ids: ids,
         top_k: top_k, // optional, defaults to 5 if not provided
