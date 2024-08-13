@@ -9,7 +9,7 @@ import SceneCard from "./scenecard/SceneCard"
 import { DeckProps } from "@deck.gl/core"
 import { MapboxOverlay } from "@deck.gl/mapbox"
 import "mapbox-gl/dist/mapbox-gl.css"
-import { useCallback } from "react"
+import { useCallback, useState } from "react"
 import { Map, Popup, ViewStateChangeEvent, useControl } from "react-map-gl"
 import SearchBox from "./input/SearchBox"
 import { createMapLayers } from "./layers/layers"
@@ -25,6 +25,7 @@ function DeckGLOverlay(props: DeckProps) {
 export default function MapComponent() {
   const { viewState, setViewState, popupInfo, setPopupInfo } = useMapState()
   const { isPinning, pinnedPoints, setPinnedPoints, handlePinPoint } = usePinning()
+  const [isDragging, setDragging] = useState(false)
   const { state, dispatch } = useAppState()
   const { handleFetchBoundingBoxes, handleFindSimilar } = useBoundingBoxes()
 
@@ -55,7 +56,6 @@ export default function MapComponent() {
     [setViewState],
   )
 
-  // const searchAreaGeometry = useSearchArea(state.areaId)
 
   const layers = state.mode.type == 'image' ? createMapLayers(state.mode.targetBoundingBoxes, state.resultBoundingBoxes, viewState.zoom) : createMapLayers([], state.resultBoundingBoxes, viewState.zoom)
 
@@ -69,6 +69,9 @@ export default function MapComponent() {
     dispatch({ type: "SET_RESULT_BOXES", payload: [] })
   }, [dispatch])
 
+  const cursor = isDragging ? "grabbing" : isPinning ? 'crosshair' : "pointed"
+
+
   return (
     <Map
       logoPosition={"bottom-right"}
@@ -77,12 +80,14 @@ export default function MapComponent() {
       mapboxAccessToken={mapboxToken}
       interactive={true}
       attributionControl={false}
+      cursor={cursor}
+
       onMove={(e: ViewStateChangeEvent) => setViewState(e.viewState)}
     >
       <DeckGLOverlay
+        onDragStart={() => setDragging(true)}
+        onDragEnd={() => setDragging(false)}
         layers={layers}
-        controller={true}
-        getCursor={({ isDragging }) => (isDragging ? "grabbing" : "pointer")}
         onClick={handleClick}
       />
 
