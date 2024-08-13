@@ -4,7 +4,7 @@ import { useSupabase } from "./useSupabase"
 
 export const useBoundingBoxes = () => {
   const { state, dispatch } = useAppState()
-  const { fetchBoundingBoxes, findSimilarTiles, findSimilarIndex, fetchClipBoxes } = useSupabase()
+  const { fetchBoundingBoxes, fetchClipBoxes, findSimilarClip } = useSupabase()
 
   const handleFetchBoundingBoxes = async (latitude: number, longitude: number) => {
     const bboxes = await fetchBoundingBoxes(latitude, longitude)
@@ -36,7 +36,7 @@ export const useBoundingBoxes = () => {
       const data = await response.json()
       const { embeddings } = data
       const flat = embeddings.flat()
-      const result = await fetchClipBoxes(flat, state.sliderValue)
+      const result = await fetchClipBoxes(flat, state.sliderValue, state.negativeIDs)
       dispatch({ type: "SET_RESULT_BOXES", payload: result })
 
       // Process the response data here
@@ -52,10 +52,11 @@ export const useBoundingBoxes = () => {
       dispatch({ type: "SET_LOADING", payload: true })
       try {
         const targetIds = state.targetBoundingBoxes.map((item) => item.id)
-        const similarBoxes =
-          state.areaId === 5
-            ? await findSimilarTiles(targetIds, state.sliderValue, state.negativeIDs)
-            : await findSimilarIndex(targetIds, state.sliderValue, state.areaId, state.negativeIDs)
+        const similarBoxes = await findSimilarClip(targetIds, state.sliderValue, state.negativeIDs)
+        // const similarBoxes =
+        //   state.areaId === 5
+        //     ? await findSimilarTiles(targetIds, state.sliderValue, state.negativeIDs)
+        //     : await findSimilarIndex(targetIds, state.sliderValue, state.areaId, state.negativeIDs)
         dispatch({ type: "SET_RESULT_BOXES", payload: similarBoxes })
       } catch (error) {
         console.error("Error finding similar tiles:", error)

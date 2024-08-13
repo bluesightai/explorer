@@ -27,6 +27,24 @@ export type Database = {
         }
         Relationships: []
       }
+      clip_boxes_old: {
+        Row: {
+          embedding: string | null
+          id: number
+          location: unknown
+        }
+        Insert: {
+          embedding?: string | null
+          id?: number
+          location: unknown
+        }
+        Update: {
+          embedding?: string | null
+          id?: number
+          location?: unknown
+        }
+        Relationships: []
+      }
       files_metadata: {
         Row: {
           bytes: number | null
@@ -344,6 +362,15 @@ export type Database = {
         }
         Returns: string
       }
+      get_bounding_box_coverage_for_clip: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          min_lon: number
+          min_lat: number
+          max_lon: number
+          max_lat: number
+        }[]
+      }
       get_complete_saved_search_data: {
         Args: {
           p_saved_search_id: number
@@ -409,6 +436,51 @@ export type Database = {
         Args: {
           query_embedding: number[]
           k: number
+        }
+        Returns: {
+          id: number
+          similarity: number
+          min_lat: number
+          min_lon: number
+          max_lat: number
+          max_lon: number
+        }[]
+      }
+      search_similar_boxes: {
+        Args: {
+          input_ids: number[]
+          negativeids: number[]
+          top_k: number
+        }
+        Returns: {
+          id: number
+          similarity: number
+          min_lat: number
+          min_lon: number
+          max_lat: number
+          max_lon: number
+        }[]
+      }
+      search_similar_clip_boxes: {
+        Args: {
+          input_ids: number[]
+          negativeids: number[]
+          top_k: number
+        }
+        Returns: {
+          id: number
+          similarity: number
+          min_lat: number
+          min_lon: number
+          max_lat: number
+          max_lon: number
+        }[]
+      }
+      search_similar_text_clip_boxes: {
+        Args: {
+          query_embedding: number[]
+          k: number
+          negativeids: number[]
         }
         Returns: {
           id: number

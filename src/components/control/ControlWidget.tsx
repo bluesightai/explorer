@@ -94,7 +94,7 @@ const ControlWidget = ({ isPinning, handlePinPoint }: { isPinning: boolean; hand
           {isPinning ? "Cancel Pin" : "Pin a Point"}
         </button>
 
-        <div className="saved-searches">
+        {/* <div className="saved-searches">
           <span className="saved-searches-title">Example search:</span>
           <div className="saved-searches-buttons">
             {savedSearches.map((item, index) => (
@@ -103,7 +103,7 @@ const ControlWidget = ({ isPinning, handlePinPoint }: { isPinning: boolean; hand
               </button>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   )

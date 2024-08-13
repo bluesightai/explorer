@@ -65,10 +65,12 @@ const SceneCard: React.FC<SceneCardProps> = ({ handleFindSimilar, onTileClick, h
         // <SaveSearchButton />
       </div> */}
 
+  console.log("ttarget length is", state.targetBoundingBoxes.length)
+
   return (
     <div className="scene-card">
 
-      {state.targetBoundingBoxes.length > 1 &&
+      {state.targetBoundingBoxes.length > 0 &&
         < Carousel
           removeBox={removeBox}
           onTileClick={onTileClick}

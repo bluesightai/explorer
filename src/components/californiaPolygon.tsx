@@ -228,6 +228,11 @@ export const clipPolygon: Feature<Polygon> = {
                 [-122.247044518633, 37.8771837626192],
                 [-122.565182134572, 37.8771837626192],
                 [-122.565182134572, 37.6852879987652]
+                // [min_lon, min_lat],
+                // [max_lon, min_lat],
+                // [max_lon, max_lat],
+                // [min_lon, max_lat],
+                // [min_lon, min_lat]
 
             ]]
     }
