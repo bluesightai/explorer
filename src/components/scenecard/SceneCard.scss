@@ -1,5 +1,6 @@
 @import "../../main.scss";
 .scene-card {
+  cursor: pointer;
   position: absolute;
   top: var(--spacing-s);
   right: var(--spacing-s);

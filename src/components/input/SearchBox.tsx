@@ -64,7 +64,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ isPinning, handlePinPoint }) => {
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
                     className="search-input"
-                    placeholder="Enter text here"
+                    placeholder="What are you looking for?"
                 />
                 <button
                     onClick={handleSubmit}
