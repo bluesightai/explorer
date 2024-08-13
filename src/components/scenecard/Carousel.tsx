@@ -14,7 +14,7 @@ interface CarouselProps {
 
 const Carousel: React.FC<CarouselProps> = ({ mode, removeBox, fetchImage, onTileClick }) => {
   if (mode.type == 'text') {
-    return <div>You are searching for {mode.query}</div>
+    return <span>You are searching for: <strong> {mode.query}</strong></span>
   }
   const boxes = mode.targetBoundingBoxes
   return (

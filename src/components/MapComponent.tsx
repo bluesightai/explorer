@@ -68,8 +68,9 @@ export default function MapComponent() {
     dispatch({ type: "SET_TEXT", payload: '' })
     dispatch({ type: "SET_RESULT_BOXES", payload: [] })
   }, [dispatch])
-
-  const cursor = isDragging ? "grabbing" : isPinning ? 'crosshair' : "pointed"
+  console.log("is pinning", isPinning)
+  const cursor = isDragging ? "grabbing" : isPinning ? 'crosshair' : "pointer"
+  console.log("cursor", cursor)
 
 
   return (

@@ -2,6 +2,7 @@ import React, { KeyboardEvent, useState } from 'react';
 import { useAppState } from "../../hooks/AppContext";
 import { useBoundingBoxes } from "../../hooks/useBoundingBoxes";
 import './SearchBox.scss'
+
 interface SearchBoxProps {
     isPinning: boolean;
     handlePinPoint: () => void;
@@ -43,28 +44,28 @@ const SearchBox: React.FC<SearchBoxProps> = ({ isPinning, handlePinPoint }) => {
 
     return (
         <div className={`search-box ${isFocused ? 'focused' : ''}`}>
-            <input
-                type="text"
-                value={state.mode.type === 'text' ? state.mode.query : ''}
-                onChange={handleInputChange}
-                onKeyPress={handleKeyPress}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
-                className="search-input"
-                placeholder="Enter text here"
-            />
-            <div className="search-actions">
-                <button
-                    onClick={handlePinClick}
-                    className={`pin-button ${isPinning ? 'active' : ''}`}
-                    title={isPinning ? 'Cancel pin' : 'Select point'}
-                >
-                    <img
-                        src="./pin.svg"
-                        alt="pin icon"
-                        className={`pin-icon ${isPinning ? 'active' : ''}`}
-                    />
-                </button>
+            <button
+                onClick={handlePinClick}
+                className={`pin-button ${isPinning ? 'active' : ''}`}
+                title={isPinning ? 'Cancel pin' : 'Select point'}
+            >
+                <img
+                    src="./pin.svg"
+                    alt="pin icon"
+                    className={`pin-icon ${isPinning ? 'active' : ''}`}
+                />
+            </button>
+            <div className="search-input-wrapper">
+                <input
+                    type="text"
+                    value={state.mode.type === 'text' ? state.mode.query : ''}
+                    onChange={handleInputChange}
+                    onKeyPress={handleKeyPress}
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
+                    className="search-input"
+                    placeholder="Enter text here"
+                />
                 <button
                     onClick={handleSubmit}
                     className="submit-button"

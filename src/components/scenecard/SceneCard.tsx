@@ -29,9 +29,8 @@ const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch })
     state.mode.type,
     state.negativeIDs,
     state.isRestoringSearch,
-    state.mode.type === 'text' ? null : state.mode.targetBoundingBoxes,
+    state.mode.type === 'text' ? state.mode.query : state.mode.targetBoundingBoxes,
   ]);
-
 
 
   const removeBox = (toBeRemovedId: number) => {
@@ -66,9 +65,7 @@ const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch })
   }
   if (state.mode.type == 'image' && state.mode.targetBoundingBoxes.length < 1) {
     return null
-
   }
-
   // TODO
   // handle Area selector if we use multiple partial indices
 

@@ -1,3 +1,5 @@
+@import "../../main.scss";
+
 .search-box {
   position: absolute;
   bottom: var(--spacing-s);
@@ -18,27 +20,7 @@
     box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
   }
 
-  .search-input {
-    flex-grow: 1;
-    border: none;
-    padding: 10px 15px;
-    font-size: 16px;
-    outline: none;
-    height: 34px;
-    background: transparent;
-
-    &::placeholder {
-      color: #9aa0a6;
-    }
-  }
-
-  .search-actions {
-    display: flex;
-    align-items: center;
-  }
-
-  .pin-button,
-  .submit-button {
+  .pin-button {
     background: none;
     border: none;
     padding: 8px;
@@ -48,7 +30,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: 4px;
+    margin-right: 4px;
 
     &:hover {
       background-color: #f1f3f4;
@@ -57,9 +39,7 @@
     &:focus {
       outline: none;
     }
-  }
 
-  .pin-button {
     .pin-icon {
       width: 20px;
       height: 20px;
@@ -75,8 +55,46 @@
     }
   }
 
+  .search-input-wrapper {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+  }
+
+  .search-input {
+    flex-grow: 1;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    outline: none;
+    height: 34px;
+    background: transparent;
+
+    &::placeholder {
+      color: #9aa0a6;
+    }
+  }
+
   .submit-button {
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 4px;
     font-size: 20px;
+
+    &:hover {
+      background-color: #f1f3f4;
+    }
+
+    &:focus {
+      outline: none;
+    }
 
     &:disabled {
       cursor: not-allowed;
