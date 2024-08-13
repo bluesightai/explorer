@@ -11,7 +11,7 @@ import { MapboxOverlay } from "@deck.gl/mapbox"
 import "mapbox-gl/dist/mapbox-gl.css"
 import { useCallback } from "react"
 import { Map, Popup, ViewStateChangeEvent, useControl } from "react-map-gl"
-import QueryInput from "./input/QueryInput"
+import SearchBox from "./input/SearchBox"
 import { createMapLayers } from "./layers/layers"
 import ControlWidget from "./control/ControlWidget"
 
@@ -104,7 +104,9 @@ export default function MapComponent() {
         handleFindSimilar={handleSearchAndCancelPin}
         handleCleanSearch={handleCleanSearch}
       />
-      <QueryInput isPinning={isPinning} handlePinPoint={handlePinPoint} />
+
+
+      <SearchBox isPinning={isPinning} handlePinPoint={handlePinPoint} />
     </Map>
   )
 }

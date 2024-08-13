@@ -41,37 +41,6 @@
   // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.control-button {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  text-align: left;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background-color: var(--light-blue);
-  }
-  &:focus {
-    outline: none;
-  }
-
-  &.active {
-    background-color: var(--blue);
-    color: var(--white);
-    border: none;
-  }
-}
-
-.control-button-icon {
-  font-size: 18px;
-  &.active {
-    filter: brightness(0) invert(1);
-  }
-}
-
 .saved-searches {
   background-color: var(--black-transparent);
   backdrop-filter: blur(10px);
