@@ -5,8 +5,6 @@ import { useMapState } from "../hooks/useMapState"
 import { mapboxToken, style_url } from "../hooks/useNaipImagery"
 import { usePinning } from "../hooks/usePinning"
 import { calculateCenterAndZoom, isPointInCalifornia } from "../utils/mapUtils"
-import ControlWidget from "./control/ControlWidget"
-import { createMapLayers } from "./layers/layers"
 import SceneCard from "./scenecard/SceneCard"
 import { DeckProps } from "@deck.gl/core"
 import { MapboxOverlay } from "@deck.gl/mapbox"
@@ -14,6 +12,8 @@ import "mapbox-gl/dist/mapbox-gl.css"
 import { useCallback } from "react"
 import { Map, Popup, ViewStateChangeEvent, useControl } from "react-map-gl"
 import QueryInput from "./input/QueryInput"
+import { createMapLayers } from "./layers/layers"
+import ControlWidget from "./control/ControlWidget"
 
 function DeckGLOverlay(props: DeckProps) {
   // @ts-ignore
@@ -97,14 +97,14 @@ export default function MapComponent() {
         </Popup>
       )}
 
-      <ControlWidget isPinning={isPinning} handlePinPoint={handlePinPoint} />
+      <ControlWidget />
 
       <SceneCard
         onTileClick={handleTileClick}
         handleFindSimilar={handleSearchAndCancelPin}
         handleCleanSearch={handleCleanSearch}
       />
-      <QueryInput />
+      <QueryInput isPinning={isPinning} handlePinPoint={handlePinPoint} />
     </Map>
   )
 }

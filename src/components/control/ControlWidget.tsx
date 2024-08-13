@@ -2,14 +2,12 @@
 // // import { BoundingBoxResponse } from "../../hooks/supabaseTypes"
 // import { useSupabase } from "../../hooks/useSupabase"
 // import { Tables } from "../../supabase_types"
-import { useAppState } from "../../hooks/AppContext";
 import "./ControlWidget.scss"
 // import { useEffect, useState } from "react"
 
 // type SavedSearches = Tables<"saved_searches">
-const ControlWidget = ({ isPinning, handlePinPoint }: { isPinning: boolean; handlePinPoint: () => void }) => {
+const ControlWidget = () => {
   // const { supabase } = useSupabase()
-  const { dispatch } = useAppState()
   // const [savedSearches, setSavedSearches] = useState<SavedSearches[]>([])
 
   // useEffect(() => {
@@ -85,34 +83,7 @@ const ControlWidget = ({ isPinning, handlePinPoint }: { isPinning: boolean; hand
         </a>
 
       </div>
-      <div className="control-widget">
-        <button onClick={() => {
-          handlePinPoint()
-          dispatch({ type: 'SET_TARGET_BOXES', payload: [] })
 
-
-
-
-        }} className={`control-button ${isPinning ? "active" : ""}`}>
-          <img
-            src="./pin.svg"
-            alt="pin icon"
-            className={`control-button-icon ${isPinning ? "active" : ""}`}
-          />
-          {isPinning ? "Cancel Pin" : "Pin a Point"}
-        </button>
-
-        {/* <div className="saved-searches">
-          <span className="saved-searches-title">Example search:</span>
-          <div className="saved-searches-buttons">
-            {savedSearches.map((item, index) => (
-              <button key={index} className="saved-searches-btn" onClick={() => handleSavedSearchClick(item)}>
-                {item.name}
-              </button>
-            ))}
-          </div>
-        </div> */}
-      </div>
     </div>
   )
 }

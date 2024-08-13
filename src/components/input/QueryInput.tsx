@@ -2,8 +2,9 @@ import React, { KeyboardEvent } from 'react';
 import { useAppState } from "../../hooks/AppContext";
 import { useBoundingBoxes } from "../../hooks/useBoundingBoxes";
 import './QueryInput.scss';
+import Button from './PinButton';
 
-const QueryInput: React.FC = () => {
+const QueryInput = ({ isPinning, handlePinPoint }: { isPinning: boolean; handlePinPoint: () => void }) => {
     const { state, dispatch } = useAppState();
     const { handleFindSimilar } = useBoundingBoxes()
 
@@ -34,6 +35,7 @@ const QueryInput: React.FC = () => {
 
     return (
         <div className="query-input">
+            <Button isPinning={isPinning} handlePinPoint={handlePinPoint} />
             <input
                 type="text"
                 value={state.mode.type == 'text' ? state.mode.query : ''}
