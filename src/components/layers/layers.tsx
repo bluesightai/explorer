@@ -33,6 +33,7 @@ export const createMapLayers = (
         position: getBoundingBoxCenter(box),
         weight: rescaledScores[index]
     }));
+    console.log("Heatmap data", heatmapData)
 
     const layers: LayersList = [
         new GeoJsonLayer({
@@ -52,6 +53,7 @@ export const createMapLayers = (
         new HeatmapLayer({
             id: 'heatmap-layer',
             data: heatmapData,
+            weightsTextureSize: 256,
             getPosition: d => d.position,
             getWeight: d => d.weight,
             radiusPixels: 10,
