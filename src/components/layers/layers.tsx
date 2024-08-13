@@ -53,12 +53,9 @@ export const createMapLayers = (
         new HeatmapLayer({
             id: 'heatmap-layer',
             data: heatmapData,
-            weightsTextureSize: 256,
+            weightsTextureSize: 512,
             getPosition: d => d.position,
             getWeight: d => d.weight,
-            radiusPixels: 10,
-            intensity: 1,
-            threshold: 0.1,
             colorRange: [
                 [255, 255, 178],
                 [254, 204, 92],
@@ -71,8 +68,8 @@ export const createMapLayers = (
                 getWeight: heatmapData
             },
             pickable: false,
-            autoHighlight: false,
-            opacity: 0.8,
+            autoHighlight: true,
+            opacity: 0.5,
         })
     ];
 
