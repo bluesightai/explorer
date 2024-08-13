@@ -82,6 +82,7 @@ const ControlWidget = ({ isPinning, handlePinPoint }: { isPinning: boolean; hand
         <a href="https://bluesight.ai/" className="logo-full" target="_blank" rel="noopener noreferrer">
           <span className="logo-dot"></span> <span className="logo-name">Bluesight.ai</span>
         </a>
+
       </div>
       <div className="control-widget">
         <button onClick={handlePinPoint} className={`control-button ${isPinning ? "active" : ""}`}>
