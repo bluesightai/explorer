@@ -31,6 +31,9 @@ ONLY A REMINDER-- ALL STYLES ARE DEFINED IN main.scss
   font-size: var(--font-size);
   width: 332px; /*calculated -pls don't change if not necessary*/
   z-index: 100000; /* Ensure it's above other elements */
+  max-height: calc(100vh - var(--spacing-s) * 2);
+  overflow: auto;
+  box-sizing: border-box;
 }
 
 .select-area {
@@ -45,7 +48,7 @@ ONLY A REMINDER-- ALL STYLES ARE DEFINED IN main.scss
   border: var(--border-radius);
   cursor: pointer;
   transition: all 0.2s ease;
-  margin-top: var(--spacing-m);
+  margin-top: var(--spacing-s);
 }
 
 .clear-button:hover {
