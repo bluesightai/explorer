@@ -65,7 +65,7 @@ export default function MapComponent() {
   }, [handleFindSimilar, handlePinPoint])
 
   const handleCleanSearch = useCallback(() => {
-    dispatch({ type: "SET_TARGET_BOXES", payload: [] })
+    dispatch({ type: "SET_TEXT", payload: '' })
     dispatch({ type: "SET_RESULT_BOXES", payload: [] })
   }, [dispatch])
 

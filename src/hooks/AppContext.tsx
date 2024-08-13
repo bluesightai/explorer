@@ -1,5 +1,5 @@
 import React, { createContext, useReducer, useContext, Dispatch } from 'react';
-import { BoundingBoxResponse } from './supabaseTypes';
+import { BoundingBoxResponse, SimilarBox } from './supabaseTypes';
 
 
 // Define the possible modes with their associated data
@@ -15,19 +15,19 @@ export interface AppState {
   isLoading: boolean;
   isRestoringSearch: boolean;
   negativeIDs: number[];
-  resultBoundingBoxes: BoundingBoxResponse[];
+  resultBoundingBoxes: SimilarBox[];
 }
 
 // Define all possible action types
 export type AppAction =
   | { type: 'SET_TEXT'; payload: string }
   | { type: 'SET_TARGET_BOXES'; payload: BoundingBoxResponse[] }
-  | { type: 'SET_RESULT_BOXES'; payload: BoundingBoxResponse[] }
+  | { type: 'SET_RESULT_BOXES'; payload: SimilarBox[] }
   | { type: 'SET_AREA_ID'; payload: number }
   | { type: 'SET_SLIDER_VALUE'; payload: number }
   | { type: 'SET_NEGATIVE_IDS'; payload: number[] }
   | { type: 'FINISH_RESTORE_SEARCH'; }
-  | { type: 'RESTORE_SEARCH'; payload: { negativeIDs: number[], targetBoundingBoxes: BoundingBoxResponse[], resultBoundingBoxes: BoundingBoxResponse[], areaId: number, sliderValue: number } }
+  | { type: 'RESTORE_SEARCH'; payload: { negativeIDs: number[], targetBoundingBoxes: BoundingBoxResponse[], resultBoundingBoxes: SimilarBox[], areaId: number, sliderValue: number } }
   | { type: 'SET_LOADING'; payload: boolean };
 
 // Initial state

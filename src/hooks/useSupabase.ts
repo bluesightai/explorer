@@ -40,20 +40,13 @@ export const useSupabase = () => {
     })
   }
 
-  const fetchClipBoxes = async (
-    embedding: number[],
-    top_k: number,
-    negativeids: number[],
-  ): Promise<BoundingBoxResponse[]> => {
+  const fetchClipBoxes = async (embedding: number[], top_k: number, negativeids: number[]): Promise<SimilarBox[]> => {
     return retryOperation(async () => {
-      const { data, error }: PostgrestResponse<BoundingBoxResponse> = await supabase.rpc(
-        "search_similar_text_clip_boxes",
-        {
-          query_embedding: embedding,
-          k: top_k,
-          negativeids,
-        },
-      )
+      const { data, error }: PostgrestResponse<SimilarBox> = await supabase.rpc("search_similar_text_clip_boxes", {
+        query_embedding: embedding,
+        k: top_k,
+        negativeids,
+      })
 
       if (error) {
         console.error("Error fetching search boxes:", error)
