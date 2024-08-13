@@ -25,11 +25,11 @@ export const createMapLayers = (
         }),
 
         BoundingBoxLayer({
-            color: [0, 0, 255],  // This is blue
+            fillColor: [0, 0, 255, 120],  // This is blue
             boundingBoxes: targetBoundingBoxes
         }),
         BoundingBoxLayer({
-            color: [255, 0, 0],  // This is red (for result boxes)
+            fillColor: [240, 0, 0, 80],  // This is red (for result boxes)
             boundingBoxes: resultBoundingBoxes
         })
     ]

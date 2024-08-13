@@ -4,15 +4,14 @@ import { Feature, Polygon } from "geojson"
 import { BoundingBoxResponse } from "../../hooks/supabaseTypes"
 
 
-type RGB = [number, number, number];
 type RGBA = [number, number, number, number];
 
 interface BoundingBoxLayerProps {
   boundingBoxes: BoundingBoxResponse[],
-  color?: RGB  // RGB array, e.g., [255, 0, 0] for red
+  fillColor?: RGBA  // RGB array, e.g., [255, 0, 0] for red
 }
 
-export const BoundingBoxLayer = ({ boundingBoxes, color = [255, 0, 0] }: BoundingBoxLayerProps) => {
+export const BoundingBoxLayer = ({ boundingBoxes, fillColor }: BoundingBoxLayerProps) => {
   // Convert BoundingBoxResponse array to GeoJSON features
   const features: Feature<Polygon>[] = boundingBoxes.map((box) => ({
     type: "Feature",
@@ -33,8 +32,7 @@ export const BoundingBoxLayer = ({ boundingBoxes, color = [255, 0, 0] }: Boundin
     },
   }))
 
-  const fillColor: RGBA = [...color, 120]  // Add alpha for semi-transparency
-  const lineColor: RGB = color
+
 
   return new GeoJsonLayer({
     id: `bounding-box-layer-${boundingBoxes.length}`,
@@ -44,7 +42,6 @@ export const BoundingBoxLayer = ({ boundingBoxes, color = [255, 0, 0] }: Boundin
     },
     filled: true,
     getFillColor: fillColor,
-    getLineColor: lineColor,
     getLineWidth: 2,
     lineWidthMinPixels: 1,
     pickable: true,

@@ -8,18 +8,18 @@ export const useBoundingBoxes = () => {
 
   const handleFetchBoundingBoxes = async (latitude: number, longitude: number) => {
     const bboxes = await fetchBoundingBoxes(latitude, longitude)
+    if (state.mode.type != "image") {
+      throw Error("We should be in image mode")
+    }
     if (bboxes.length > 0) {
       const newIds = bboxes.map((item) => item.id)
-      const filteredBoxes = state.targetBoundingBoxes.filter((item) => !newIds.includes(item.id))
+      const filteredBoxes = state.mode.targetBoundingBoxes.filter((item) => !newIds.includes(item.id))
       const mergedBoxes = [...bboxes, ...filteredBoxes]
       dispatch({ type: "SET_TARGET_BOXES", payload: mergedBoxes })
     }
   }
 
-  const handleTextSearch = async () => {
-    const query = state.query
-    dispatch({ type: "SET_LOADING", payload: true })
-
+  const handleTextSearch = async (query: string) => {
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -48,10 +48,16 @@ export const useBoundingBoxes = () => {
   }
 
   const handleFindSimilar = async () => {
-    if (state.targetBoundingBoxes.length > 0) {
-      dispatch({ type: "SET_LOADING", payload: true })
+    const mode = state.mode
+    const mode_type = mode.type
+    console.log("We called handleFindSimilar in mode", mode_type)
+    dispatch({ type: "SET_LOADING", payload: true })
+
+    if (mode_type == "text") {
+      handleTextSearch(mode.query)
+    } else {
       try {
-        const targetIds = state.targetBoundingBoxes.map((item) => item.id)
+        const targetIds = mode.targetBoundingBoxes.map((item) => item.id)
         const similarBoxes = await findSimilarClip(targetIds, state.sliderValue, state.negativeIDs)
         // const similarBoxes =
         //   state.areaId === 5
@@ -67,7 +73,6 @@ export const useBoundingBoxes = () => {
   }
 
   return {
-    handleTextSearch,
     handleFetchBoundingBoxes,
     handleFindSimilar,
   }

@@ -1,17 +1,21 @@
 import React, { createContext, useReducer, useContext, Dispatch } from 'react';
 import { BoundingBoxResponse } from './supabaseTypes';
 
-// Define the shape of your state
+
+// Define the possible modes with their associated data
+export type Mode =
+  | { type: "text"; query: string }
+  | { type: "image"; targetBoundingBoxes: BoundingBoxResponse[] }
+
+
 export interface AppState {
-  targetBoundingBoxes: BoundingBoxResponse[];
-  resultBoundingBoxes: BoundingBoxResponse[];
-  negativeIDs: number[],
+  mode: Mode;
   areaId: number;
   sliderValue: number;
   isLoading: boolean;
   isRestoringSearch: boolean;
-  query: string
-
+  negativeIDs: number[];
+  resultBoundingBoxes: BoundingBoxResponse[];
 }
 
 // Define all possible action types
@@ -28,15 +32,16 @@ export type AppAction =
 
 // Initial state
 const initialState: AppState = {
-  query: '',
-  targetBoundingBoxes: [],
   negativeIDs: [],
   resultBoundingBoxes: [],
   areaId: 5,
   sliderValue: 9,
   isLoading: false,
   isRestoringSearch: false,
-
+  mode: {
+    type: 'text',
+    query: ''
+  }
 };
 
 // Reducer function
@@ -45,7 +50,8 @@ function appReducer(state: AppState, action: AppAction): AppState {
     case 'SET_TEXT':
       return {
         ...state,
-        query: action.payload,
+        mode: { type: 'text', query: action.payload, }
+
       };
     case 'FINISH_RESTORE_SEARCH':
       return {
@@ -59,7 +65,9 @@ function appReducer(state: AppState, action: AppAction): AppState {
     case 'SET_NEGATIVE_IDS':
       return { ...state, negativeIDs: action.payload };
     case 'SET_TARGET_BOXES':
-      return { ...state, targetBoundingBoxes: action.payload };
+      return {
+        ...state, mode: { type: 'image', targetBoundingBoxes: action.payload }
+      };
     case 'SET_RESULT_BOXES':
       return { ...state, resultBoundingBoxes: action.payload };
     case 'SET_AREA_ID':

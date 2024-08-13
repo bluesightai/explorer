@@ -11,7 +11,7 @@ import SceneCard from "./scenecard/SceneCard"
 import { DeckProps } from "@deck.gl/core"
 import { MapboxOverlay } from "@deck.gl/mapbox"
 import "mapbox-gl/dist/mapbox-gl.css"
-import { useCallback, useEffect } from "react"
+import { useCallback } from "react"
 import { Map, Popup, ViewStateChangeEvent, useControl } from "react-map-gl"
 import QueryInput from "./input/QueryInput"
 
@@ -26,7 +26,7 @@ export default function MapComponent() {
   const { viewState, setViewState, popupInfo, setPopupInfo } = useMapState()
   const { isPinning, pinnedPoints, setPinnedPoints, handlePinPoint } = usePinning()
   const { state, dispatch } = useAppState()
-  const { handleFetchBoundingBoxes, handleTextSearch } = useBoundingBoxes()
+  const { handleFetchBoundingBoxes, handleFindSimilar } = useBoundingBoxes()
 
   const handleClick = useCallback(
     (info: any) => {
@@ -55,20 +55,14 @@ export default function MapComponent() {
     [setViewState],
   )
 
-  useEffect(() => {
-    if (state.targetBoundingBoxes.length === 0) {
-      setPopupInfo(null)
-    }
-  }, [state.targetBoundingBoxes, setPopupInfo])
-
   // const searchAreaGeometry = useSearchArea(state.areaId)
 
-  const layers = createMapLayers(state.targetBoundingBoxes, state.resultBoundingBoxes)
+  const layers = state.mode.type == 'image' ? createMapLayers(state.mode.targetBoundingBoxes, state.resultBoundingBoxes) : createMapLayers([], state.resultBoundingBoxes)
 
   const handleSearchAndCancelPin = useCallback(() => {
-    handleTextSearch()
+    handleFindSimilar()
     handlePinPoint()
-  }, [handleTextSearch, handlePinPoint])
+  }, [handleFindSimilar, handlePinPoint])
 
   const handleCleanSearch = useCallback(() => {
     dispatch({ type: "SET_TARGET_BOXES", payload: [] })

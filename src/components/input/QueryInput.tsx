@@ -5,8 +5,7 @@ import './QueryInput.scss';
 
 const QueryInput: React.FC = () => {
     const { state, dispatch } = useAppState();
-    const { handleTextSearch } = useBoundingBoxes();
-    const query = state.query;
+    const { handleFindSimilar } = useBoundingBoxes()
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         dispatch({
@@ -16,8 +15,13 @@ const QueryInput: React.FC = () => {
     };
 
     const handleSubmit = () => {
+        if (state.mode.type != 'text') {
+            throw Error("We should be in text mode")
+        }
+
+        const query = state.mode.query
         if (query.trim()) {
-            handleTextSearch();
+            handleFindSimilar();
         }
     };
 
@@ -27,11 +31,12 @@ const QueryInput: React.FC = () => {
         }
     };
 
+
     return (
         <div className="query-input">
             <input
                 type="text"
-                value={query}
+                value={state.mode.type == 'text' ? state.mode.query : ''}
                 onChange={handleInputChange}
                 onKeyPress={handleKeyPress}
                 className="input-field"

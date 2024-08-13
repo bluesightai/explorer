@@ -15,19 +15,30 @@ interface SceneCardProps {
   handleFindSimilar: () => void
 }
 
-const SceneCard: React.FC<SceneCardProps> = ({ handleFindSimilar, onTileClick, handleCleanSearch }) => {
+const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch }) => {
   const { state, dispatch } = useAppState()
   const { fetchNaipImage } = useNaipImagery()
-  const { handleTextSearch } = useBoundingBoxes();
+  const { handleFindSimilar } = useBoundingBoxes();
 
   useEffect(() => {
     if (state.resultBoundingBoxes.length > 0 && !state.isRestoringSearch) {
-      handleTextSearch()
+      handleFindSimilar();
     }
-  }, [state.areaId, state.targetBoundingBoxes, state.negativeIDs])
+  }, [
+    state.areaId,
+    state.mode.type,
+    state.negativeIDs,
+    state.isRestoringSearch,
+    state.mode.type === 'text' ? state.mode.query : state.mode.targetBoundingBoxes,
+  ]);
+
+
 
   const removeBox = (toBeRemovedId: number) => {
-    const newBoxes = state.targetBoundingBoxes.filter((item) => item.id != toBeRemovedId)
+    if (state.mode.type != 'image') {
+      throw Error("we should be in image mode")
+    }
+    const newBoxes = state.mode.targetBoundingBoxes.filter((item) => item.id != toBeRemovedId)
     dispatch({ type: "SET_TARGET_BOXES", payload: newBoxes })
   }
 
@@ -46,38 +57,31 @@ const SceneCard: React.FC<SceneCardProps> = ({ handleFindSimilar, onTileClick, h
 
   const handleSliderRelease = () => {
     if (state.resultBoundingBoxes.length > 0) {
-      handleTextSearch()
+      handleFindSimilar()
     }
   }
 
-  if (state.targetBoundingBoxes.length < 1 && state.resultBoundingBoxes.length == 0) {
-    return (
-      null
-      // <div className="scene-card">
-      //   <AreaSelector areaId={state.areaId} setAreaId={handleAreaChange} />
-      // </div>
-    )
+  if (state.mode.type == 'text' && state.mode.query.length < 1) {
+    return null
+  }
+  if (state.mode.type == 'image' && state.mode.targetBoundingBoxes.length < 1) {
+    return null
+
   }
 
-  {/* <div className="select-area">
-        <span className="select-area-title">Choose search area:</span>
-        <AreaSelector areaId={state.areaId} setAreaId={handleAreaChange} />
-        // <SaveSearchButton />
-      </div> */}
+  // TODO
+  // handle Area selector if we use multiple partial indices
 
-  console.log("ttarget length is", state.targetBoundingBoxes.length)
 
   return (
     <div className="scene-card">
 
-      {state.targetBoundingBoxes.length > 0 &&
-        < Carousel
-          removeBox={removeBox}
-          onTileClick={onTileClick}
-          boxes={state.targetBoundingBoxes}
-          fetchImage={fetchNaipImage}
-        />
-      }
+      < Carousel
+        removeBox={removeBox}
+        onTileClick={onTileClick}
+        mode={state.mode}
+        fetchImage={fetchNaipImage}
+      />
       {state.resultBoundingBoxes.length > 0 ? (
         <Slider
           min={1}
