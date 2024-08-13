@@ -20,9 +20,17 @@ const getBoundingBoxCenter = (box: BoundingBoxResponse): [number, number] => {
     ];
 };
 
+const getHeatmapRadius = (zoom: number) => {
+    const baseRadius = 30;
+    const scaleFactor = 0.5
+    return baseRadius * Math.pow(2, (zoom - 10) * scaleFactor);
+};
+
+
 export const createMapLayers = (
     targetBoundingBoxes: BoundingBoxResponse[],
     resultBoundingBoxes: SimilarBox[],
+    zoom: number
 ): LayersList => {
     // Rescale similarity scores
     const similarityScores = resultBoundingBoxes.map(box => box.similarity);
@@ -33,7 +41,7 @@ export const createMapLayers = (
         position: getBoundingBoxCenter(box),
         weight: rescaledScores[index]
     }));
-    console.log("Heatmap data", heatmapData)
+
 
     const layers: LayersList = [
         new GeoJsonLayer({
@@ -54,8 +62,9 @@ export const createMapLayers = (
             id: 'heatmap-layer',
             data: heatmapData,
             weightsTextureSize: 512,
-            getPosition: d => d.position,
             getWeight: d => d.weight,
+            radiusPixels: getHeatmapRadius(zoom),
+
             colorRange: [
                 [255, 255, 178],
                 [254, 204, 92],
@@ -63,13 +72,8 @@ export const createMapLayers = (
                 [240, 59, 32],
                 [189, 0, 38]
             ],
-            updateTriggers: {
-                getPosition: heatmapData,
-                getWeight: heatmapData
-            },
-            pickable: false,
-            autoHighlight: true,
-            opacity: 0.5,
+
+            opacity: 0.4,
         })
     ];
 

@@ -57,7 +57,7 @@ export default function MapComponent() {
 
   // const searchAreaGeometry = useSearchArea(state.areaId)
 
-  const layers = state.mode.type == 'image' ? createMapLayers(state.mode.targetBoundingBoxes, state.resultBoundingBoxes) : createMapLayers([], state.resultBoundingBoxes)
+  const layers = state.mode.type == 'image' ? createMapLayers(state.mode.targetBoundingBoxes, state.resultBoundingBoxes, viewState.zoom) : createMapLayers([], state.resultBoundingBoxes, viewState.zoom)
 
   const handleSearchAndCancelPin = useCallback(() => {
     handleFindSimilar()
