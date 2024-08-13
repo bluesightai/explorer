@@ -36,7 +36,7 @@ export const useBoundingBoxes = () => {
       const data = await response.json()
       const { embeddings } = data
       const flat = embeddings.flat()
-      const result = await fetchClipBoxes(flat, state.sliderValue, state.negativeIDs)
+      const result = await fetchClipBoxes(flat, state.sliderValue)
       dispatch({ type: "SET_RESULT_BOXES", payload: result })
 
       // Process the response data here

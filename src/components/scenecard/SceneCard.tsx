@@ -1,7 +1,7 @@
 import { useAppState } from "../../hooks/AppContext"
 import { useBoundingBoxes } from "../../hooks/useBoundingBoxes"
 import { useNaipImagery } from "../../hooks/useNaipImagery"
-import AreaSelector from "./AreaSelector"
+// import AreaSelector from "./AreaSelector"
 import Carousel from "./Carousel"
 import ExpandableGrid from "./ExpandableGrid"
 import FindButton from "./FindSimillarButton"
@@ -40,9 +40,9 @@ const SceneCard: React.FC<SceneCardProps> = ({ handleFindSimilar, onTileClick, h
   const handleSliderChange = (newValue: number) => {
     dispatch({ type: "SET_SLIDER_VALUE", payload: newValue })
   }
-  const handleAreaChange = (id: number) => {
-    dispatch({ type: "SET_AREA_ID", payload: id })
-  }
+  // const handleAreaChange = (id: number) => {
+  //   dispatch({ type: "SET_AREA_ID", payload: id })
+  // }
 
   const handleSliderRelease = () => {
     if (state.resultBoundingBoxes.length > 0) {

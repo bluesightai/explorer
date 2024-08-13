@@ -40,11 +40,7 @@ export const useSupabase = () => {
     })
   }
 
-  const fetchClipBoxes = async (
-    embedding: number[],
-    top_k: number,
-    negativeids: number[],
-  ): Promise<BoundingBoxResponse[]> => {
+  const fetchClipBoxes = async (embedding: number[], top_k: number): Promise<BoundingBoxResponse[]> => {
     return retryOperation(async () => {
       const { data, error }: PostgrestResponse<BoundingBoxResponse> = await supabase.rpc("get_top_k_clip", {
         query_embedding: embedding,
