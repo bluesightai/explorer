@@ -1,15 +1,14 @@
 // BoundingBoxLayer.tsx
+import { BoundingBoxResponse } from "../../hooks/supabaseTypes"
 import { GeoJsonLayer } from "@deck.gl/layers"
 import { Feature, Polygon } from "geojson"
-import { BoundingBoxResponse } from "../../hooks/supabaseTypes"
 
-
-type RGBA = [number, number, number, number];
-type RGB = [number, number, number];
+type RGBA = [number, number, number, number]
+type RGB = [number, number, number]
 interface BoundingBoxLayerProps {
-  borderColor: RGB,
-  boundingBoxes: BoundingBoxResponse[],
-  fillColor: RGBA  // RGB array, e.g., [255, 0, 0] for red
+  borderColor: RGB
+  boundingBoxes: BoundingBoxResponse[]
+  fillColor: RGBA // RGB array, e.g., [255, 0, 0] for red
 }
 
 export const BoundingBoxLayer = ({ boundingBoxes, fillColor, borderColor }: BoundingBoxLayerProps) => {
@@ -32,8 +31,6 @@ export const BoundingBoxLayer = ({ boundingBoxes, fillColor, borderColor }: Boun
       id: box.id,
     },
   }))
-
-
 
   return new GeoJsonLayer({
     id: `bounding-box-layer-${boundingBoxes.length}`,

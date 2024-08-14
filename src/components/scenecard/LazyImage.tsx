@@ -1,6 +1,6 @@
 // LazyImage.tsx
-import React, { useEffect, useState } from "react"
 import { BoundingBoxResponse } from "../../hooks/supabaseTypes"
+import React, { useEffect, useState } from "react"
 
 interface LazyImageProps {
   boxData: BoundingBoxResponse

@@ -1,20 +1,23 @@
+import type { Mode } from "../../hooks/AppContext"
 import { BoundingBoxResponse } from "../../hooks/supabaseTypes"
 import "./Carousel.scss"
 import LazyImage from "./LazyImage"
 import React from "react"
-import type { Mode } from '../../hooks/AppContext'
-
 
 interface CarouselProps {
-  mode: Mode,
+  mode: Mode
   removeBox: (id: number) => void
   fetchImage: (box: BoundingBoxResponse) => Promise<string>
   onTileClick: (boundingBox: [number, number, number, number]) => void
 }
 
 const Carousel: React.FC<CarouselProps> = ({ mode, removeBox, fetchImage, onTileClick }) => {
-  if (mode.type == 'text') {
-    return <span>You are searching for: <strong> {mode.query}</strong></span>
+  if (mode.type == "text") {
+    return (
+      <span>
+        You are searching for: <strong> {mode.query}</strong>
+      </span>
+    )
   }
   const boxes = mode.targetBoundingBoxes
   return (

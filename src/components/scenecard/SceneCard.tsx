@@ -18,23 +18,22 @@ interface SceneCardProps {
 const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch }) => {
   const { state, dispatch } = useAppState()
   const { fetchNaipImage } = useNaipImagery()
-  const { handleFindSimilar } = useBoundingBoxes();
+  const { handleFindSimilar } = useBoundingBoxes()
 
   useEffect(() => {
     if (state.resultBoundingBoxes.length > 0 && !state.isRestoringSearch) {
-      handleFindSimilar();
+      handleFindSimilar()
     }
   }, [
     state.areaId,
     state.mode.type,
     state.negativeIDs,
     state.isRestoringSearch,
-    state.mode.type === 'text' ? state.mode.query : state.mode.targetBoundingBoxes,
-  ]);
-
+    state.mode.type === "text" ? state.mode.query : state.mode.targetBoundingBoxes,
+  ])
 
   const removeBox = (toBeRemovedId: number) => {
-    if (state.mode.type != 'image') {
+    if (state.mode.type != "image") {
       throw Error("we should be in image mode")
     }
     const newBoxes = state.mode.targetBoundingBoxes.filter((item) => item.id != toBeRemovedId)
@@ -60,25 +59,18 @@ const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch })
     }
   }
 
-  if (state.mode.type == 'text' && state.mode.query.length < 1) {
+  if (state.mode.type == "text" && state.mode.query.length < 1) {
     return null
   }
-  if (state.mode.type == 'image' && state.mode.targetBoundingBoxes.length < 1) {
+  if (state.mode.type == "image" && state.mode.targetBoundingBoxes.length < 1) {
     return null
   }
   // TODO
   // handle Area selector if we use multiple partial indices
 
-
   return (
     <div className="scene-card">
-
-      < Carousel
-        removeBox={removeBox}
-        onTileClick={onTileClick}
-        mode={state.mode}
-        fetchImage={fetchNaipImage}
-      />
+      <Carousel removeBox={removeBox} onTileClick={onTileClick} mode={state.mode} fetchImage={fetchNaipImage} />
       {state.resultBoundingBoxes.length > 0 ? (
         <Slider
           min={1}
@@ -88,11 +80,9 @@ const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch })
           onRelease={handleSliderRelease}
           isLoading={state.isLoading}
         />
-      ) : (
-        state.mode.type === 'image' ? (
-          <FindButton handleFindSimilar={handleFindSimilar} isLoading={state.isLoading} />
-        ) : null
-      )}
+      ) : state.mode.type === "image" ? (
+        <FindButton handleFindSimilar={handleFindSimilar} isLoading={state.isLoading} />
+      ) : null}
 
       {state.resultBoundingBoxes.length > 0 && (
         <ExpandableGrid

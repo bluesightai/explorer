@@ -1,19 +1,18 @@
-
 import { useAppState } from "../hooks/AppContext"
 import { useBoundingBoxes } from "../hooks/useBoundingBoxes"
 import { useMapState } from "../hooks/useMapState"
 import { mapboxToken, style_url } from "../hooks/useNaipImagery"
 import { usePinning } from "../hooks/usePinning"
 import { calculateCenterAndZoom, isPointInCalifornia } from "../utils/mapUtils"
+import ControlWidget from "./control/ControlWidget"
+import SearchBox from "./input/SearchBox"
+import { createMapLayers } from "./layers/layers"
 import SceneCard from "./scenecard/SceneCard"
 import { DeckProps } from "@deck.gl/core"
 import { MapboxOverlay } from "@deck.gl/mapbox"
 import "mapbox-gl/dist/mapbox-gl.css"
 import { useCallback, useState } from "react"
 import { Map, Popup, ViewStateChangeEvent, useControl } from "react-map-gl"
-import SearchBox from "./input/SearchBox"
-import { createMapLayers } from "./layers/layers"
-import ControlWidget from "./control/ControlWidget"
 
 function DeckGLOverlay(props: DeckProps) {
   // @ts-ignore
@@ -56,8 +55,10 @@ export default function MapComponent() {
     [setViewState],
   )
 
-
-  const layers = state.mode.type == 'image' ? createMapLayers(state.mode.targetBoundingBoxes, state.resultBoundingBoxes, viewState.zoom) : createMapLayers([], state.resultBoundingBoxes, viewState.zoom)
+  const layers =
+    state.mode.type == "image"
+      ? createMapLayers(state.mode.targetBoundingBoxes, state.resultBoundingBoxes, viewState.zoom)
+      : createMapLayers([], state.resultBoundingBoxes, viewState.zoom)
 
   const handleSearchAndCancelPin = useCallback(() => {
     handleFindSimilar()
@@ -65,13 +66,12 @@ export default function MapComponent() {
   }, [handleFindSimilar, handlePinPoint])
 
   const handleCleanSearch = useCallback(() => {
-    dispatch({ type: "SET_TEXT", payload: '' })
+    dispatch({ type: "SET_TEXT", payload: "" })
     dispatch({ type: "SET_RESULT_BOXES", payload: [] })
   }, [dispatch])
   console.log("is pinning", isPinning)
-  const cursor = isDragging ? "grabbing" : isPinning ? 'crosshair' : "pointer"
+  const cursor = isDragging ? "grabbing" : isPinning ? "crosshair" : "pointer"
   console.log("cursor", cursor)
-
 
   return (
     <Map
@@ -82,7 +82,6 @@ export default function MapComponent() {
       interactive={true}
       attributionControl={false}
       cursor={cursor}
-
       onMove={(e: ViewStateChangeEvent) => setViewState(e.viewState)}
     >
       <DeckGLOverlay
@@ -110,7 +109,6 @@ export default function MapComponent() {
         handleFindSimilar={handleSearchAndCancelPin}
         handleCleanSearch={handleCleanSearch}
       />
-
 
       <SearchBox isPinning={isPinning} handlePinPoint={handlePinPoint} />
     </Map>

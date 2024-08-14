@@ -1,7 +1,7 @@
 import { BoundingBoxResponse } from "../../hooks/supabaseTypes"
 import "./ExpandableGrid.scss"
 import LazyImage from "./LazyImage"
-import React, { useState, useEffect } from "react"
+import React, { useEffect, useState } from "react"
 
 interface ExpandableGridProps {
   setNegativeId: (id: number) => void
@@ -25,8 +25,8 @@ const ExpandableGrid: React.FC<ExpandableGridProps> = ({ setNegativeId, boxes, c
     }
 
     handleResize() // Set initial value
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
   }, [])
 
   const itemsPerPage = isSmallScreen ? ITEMS_PER_PAGE_SMALL : ITEMS_PER_PAGE_LARGE

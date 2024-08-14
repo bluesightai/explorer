@@ -3,6 +3,7 @@
 // import { useSupabase } from "../../hooks/useSupabase"
 // import { Tables } from "../../supabase_types"
 import "./ControlWidget.scss"
+
 // import { useEffect, useState } from "react"
 
 // type SavedSearches = Tables<"saved_searches">
@@ -81,9 +82,7 @@ const ControlWidget = () => {
         <a href="https://bluesight.ai/" className="logo-full" target="_blank" rel="noopener noreferrer">
           <span className="logo-dot"></span> <span className="logo-name">Bluesight.ai</span>
         </a>
-
       </div>
-
     </div>
   )
 }
