@@ -2,8 +2,8 @@ import { MapViewState } from "@deck.gl/core"
 import { useState } from "react"
 
 const INITIAL_VIEW_STATE: MapViewState = {
-  latitude: 37.759639,
-  longitude: -122.427393,
+  latitude: 37.53126258079075,
+  longitude: -122.0620083919965,
   zoom: 10,
   maxZoom: 16,
   maxPitch: 85,
