@@ -21,7 +21,7 @@ const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch })
   const { handleFindSimilar } = useBoundingBoxes()
 
   useEffect(() => {
-    if (state.resultBoundingBoxes.length > 0 && !state.isRestoringSearch) {
+    if (!state.isRestoringSearch) {
       handleFindSimilar()
     }
   }, [
