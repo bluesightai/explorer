@@ -98,7 +98,7 @@ export default function MapComponent() {
           closeOnClick={false}
           onClose={() => setPopupInfo(null)}
         >
-          Clicking outside California is not allowed.
+          Clicking outside Bay Area is not allowed.
         </Popup>
       )}
 
