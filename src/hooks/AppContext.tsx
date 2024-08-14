@@ -24,15 +24,15 @@ export type AppAction =
   | { type: "SET_NEGATIVE_IDS"; payload: number[] }
   | { type: "FINISH_RESTORE_SEARCH" }
   | {
-      type: "RESTORE_SEARCH"
-      payload: {
-        negativeIDs: number[]
-        targetBoundingBoxes: BoundingBoxResponse[]
-        resultBoundingBoxes: SimilarBox[]
-        areaId: number
-        sliderValue: number
-      }
+    type: "RESTORE_SEARCH"
+    payload: {
+      negativeIDs: number[]
+      targetBoundingBoxes: BoundingBoxResponse[]
+      resultBoundingBoxes: SimilarBox[]
+      areaId: number
+      sliderValue: number
     }
+  }
   | { type: "SET_LOADING"; payload: boolean }
 
 // Initial state

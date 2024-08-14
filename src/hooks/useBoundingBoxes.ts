@@ -50,7 +50,6 @@ export const useBoundingBoxes = () => {
   const handleFindSimilar = async () => {
     const mode = state.mode
     const mode_type = mode.type
-    console.log("We called handleFindSimilar in mode", mode_type)
     dispatch({ type: "SET_LOADING", payload: true })
 
     if (mode_type == "text") {

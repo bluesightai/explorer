@@ -65,13 +65,14 @@ export default function MapComponent() {
     handlePinPoint()
   }, [handleFindSimilar, handlePinPoint])
 
-  const handleCleanSearch = useCallback(() => {
+  const handleCleanSearch = () => {
+    handlePinPoint()
     dispatch({ type: "SET_TEXT", payload: "" })
     dispatch({ type: "SET_RESULT_BOXES", payload: [] })
-  }, [dispatch])
-  console.log("is pinning", isPinning)
-  const cursor = isDragging ? "grabbing" : isPinning ? "crosshair" : "pointer"
-  console.log("cursor", cursor)
+  }
+
+
+
 
   return (
     <Map
@@ -81,7 +82,7 @@ export default function MapComponent() {
       mapboxAccessToken={mapboxToken}
       interactive={true}
       attributionControl={false}
-      cursor={cursor}
+      cursor={isDragging ? "grabbing" : isPinning ? "crosshair" : "pointer"}
       onMove={(e: ViewStateChangeEvent) => setViewState(e.viewState)}
     >
       <DeckGLOverlay

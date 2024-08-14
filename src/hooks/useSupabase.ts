@@ -35,7 +35,6 @@ export const useSupabase = () => {
         console.error("Error fetching covered boxes:", error)
         throw error
       }
-      console.log("Data is", data)
       return data || []
     })
   }
@@ -52,8 +51,6 @@ export const useSupabase = () => {
         console.error("Error fetching search boxes:", error)
         throw error
       }
-
-      console.log("Data is", data)
       return data || []
     })
   }
@@ -73,14 +70,12 @@ export const useSupabase = () => {
         console.error("Error finding similar tiles:", error)
         throw error
       }
-      console.log("length of data is", data.length)
       return data
     })
   }
 
   const findSimilarClip = async (ids: number[], top_k: number, negative_input_ids: number[]): Promise<SimilarBox[]> => {
     return retryOperation(async () => {
-      console.log("Calling image search with input_ids", ids, "top_k", top_k, "negativeids", negative_input_ids)
       const { data, error } = await supabase.rpc("search_similar_clip_boxes", {
         input_ids: ids,
         top_k: top_k, // optional, defaults to 5 if not provided
@@ -91,9 +86,6 @@ export const useSupabase = () => {
         console.error("Error finding similar tiles:", error)
         throw error
       }
-      console.log("data os", data)
-
-      console.log("length of data is", data.length)
       return data
     })
   }
@@ -105,10 +97,6 @@ export const useSupabase = () => {
     negative_input_ids: number[],
   ): Promise<SimilarBox[]> => {
     return retryOperation(async () => {
-      console.log("Ids are", ids)
-      console.log("negative_input_ids", negative_input_ids)
-      console.log("top k is", top_k)
-
       const { data, error } = await supabase.rpc("get_similar_tiles_with_negative_and_index", {
         input_ids: ids,
         top_k: top_k, // optional, defaults to 5 if not provided
@@ -120,9 +108,7 @@ export const useSupabase = () => {
         console.error("Error finding similar tiles:", error)
         throw error
       }
-      console.log("data os", data)
 
-      console.log("length of data is", data.length)
       return data
     })
   }
