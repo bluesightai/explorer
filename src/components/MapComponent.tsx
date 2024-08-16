@@ -15,6 +15,10 @@ import "mapbox-gl/dist/mapbox-gl.css"
 import { useCallback, useState } from "react"
 import { Map, Popup, ViewStateChangeEvent, useControl } from "react-map-gl"
 
+function selectByIndices<T extends { id: number }>(list: T[], indices: number[]): T[] {
+  return list.filter((item) => indices.includes(item.id))
+}
+
 function DeckGLOverlay(props: DeckProps) {
   // @ts-ignore
   const overlay = useControl<MapboxOverlay>(() => new MapboxOverlay(props))
@@ -58,8 +62,22 @@ export default function MapComponent() {
 
   const layers =
     state.mode.type == "image"
-      ? createMapLayers(state.mode.targetBoundingBoxes, state.resultBoundingBoxes, viewState.zoom)
-      : createMapLayers([], state.resultBoundingBoxes, viewState.zoom)
+      ? createMapLayers(
+          state.visibleBoundingBoxes
+            ? selectByIndices(state.mode.targetBoundingBoxes, state.visibleBoundingBoxes)
+            : state.mode.targetBoundingBoxes,
+          state.visibleBoundingBoxes
+            ? selectByIndices(state.resultBoundingBoxes, state.visibleBoundingBoxes)
+            : state.resultBoundingBoxes,
+          viewState.zoom,
+        )
+      : createMapLayers(
+          [],
+          state.visibleBoundingBoxes
+            ? selectByIndices(state.resultBoundingBoxes, state.visibleBoundingBoxes)
+            : state.resultBoundingBoxes,
+          viewState.zoom,
+        )
 
   const handleSearchAndCancelPin = useCallback(() => {
     handleFindSimilar()
