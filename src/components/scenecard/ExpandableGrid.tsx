@@ -4,18 +4,26 @@ import LazyImage from "./LazyImage"
 import React, { useEffect, useState } from "react"
 
 interface ExpandableGridProps {
-  setNegativeId: (id: number) => void
   boxes: BoundingBoxResponse[]
   count: number
   fetchImage: (box: BoundingBoxResponse) => Promise<string>
   onTileClick: (boundingBox: [number, number, number, number]) => void
+  setNegativeId?: (id: number) => void
+  showDislikeButton?: boolean
 }
 
 const ITEMS_PER_PAGE_LARGE = 9
 const ITEMS_PER_PAGE_SMALL = 6
 const GRID_COLS = 3
 
-const ExpandableGrid: React.FC<ExpandableGridProps> = ({ setNegativeId, boxes, count, fetchImage, onTileClick }) => {
+const ExpandableGrid: React.FC<ExpandableGridProps> = ({
+  setNegativeId,
+  boxes,
+  count,
+  fetchImage,
+  onTileClick,
+  showDislikeButton = true,
+}) => {
   const [currentPage, setCurrentPage] = useState(1)
   const [isSmallScreen, setIsSmallScreen] = useState(false)
 
@@ -42,16 +50,18 @@ const ExpandableGrid: React.FC<ExpandableGridProps> = ({ setNegativeId, boxes, c
       return (
         <div key={id} onClick={() => onTileClick([min_lon, min_lat, max_lon, max_lat])} className="grid-item">
           <LazyImage boxData={box} fetchImage={fetchImage} alt={`Similar ${startIndex + index}`} />
-          <button
-            className="negative-box-button"
-            onClick={(e) => {
-              e.stopPropagation()
-              setNegativeId(id)
-            }}
-            title="Mark as negative example"
-          >
-            <img src="./thumbs-down-solidd.svg" alt="thumbs down" className="negative-button-thumb" />
-          </button>
+          {showDislikeButton && setNegativeId && (
+            <button
+              className="negative-box-button"
+              onClick={(e) => {
+                e.stopPropagation()
+                setNegativeId(id)
+              }}
+              title="Mark as negative example"
+            >
+              <img src="./thumbs-down-solidd.svg" alt="thumbs down" className="negative-button-thumb" />
+            </button>
+          )}
         </div>
       )
     }
