@@ -4,6 +4,7 @@ import { useMapState } from "../hooks/useMapState"
 import { mapboxToken, style_url } from "../hooks/useNaipImagery"
 import { usePinning } from "../hooks/usePinning"
 import { calculateCenterAndZoom, isPointInCalifornia } from "../utils/mapUtils"
+import ClusteringCard from "./clusteringcard/ClusteringCard"
 import ControlWidget from "./control/ControlWidget"
 import SearchBox from "./input/SearchBox"
 import { createMapLayers } from "./layers/layers"
@@ -106,6 +107,12 @@ export default function MapComponent() {
         onTileClick={handleTileClick}
         handleFindSimilar={handleSearchAndCancelPin}
         handleCleanSearch={handleCleanSearch}
+      />
+
+      <ClusteringCard
+        onTileClick={handleTileClick}
+        handleCleanSearch={handleCleanSearch}
+        handleFindSimilar={handleSearchAndCancelPin}
       />
 
       <SearchBox isPinning={isPinning} handlePinPoint={handlePinPoint} />
