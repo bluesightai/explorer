@@ -71,9 +71,6 @@ export default function MapComponent() {
     dispatch({ type: "SET_RESULT_BOXES", payload: [] })
   }
 
-
-
-
   return (
     <Map
       logoPosition={"bottom-right"}
