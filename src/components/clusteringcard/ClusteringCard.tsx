@@ -71,7 +71,7 @@ function clusterBoundingBoxes(boxes: SimilarBox[]): SimilarBox[][] {
   return clusters.sort((a, b) => b.length - a.length)
 }
 
-const ClusteringCard: React.FC<ClusteringCardProps> = ({ onTileClick, handleCleanSearch }) => {
+const ClusteringCard: React.FC<ClusteringCardProps> = ({ onTileClick }) => {
   const { state, dispatch } = useAppState()
   const { fetchNaipImage } = useNaipImagery()
   const { handleFindSimilar } = useBoundingBoxes()
