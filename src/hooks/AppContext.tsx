@@ -12,6 +12,7 @@ export interface AppState {
   isRestoringSearch: boolean
   negativeIDs: number[]
   resultBoundingBoxes: SimilarBox[]
+  visibleBoundingBoxes: number[] | null
 }
 
 // Define all possible action types
@@ -24,16 +25,17 @@ export type AppAction =
   | { type: "SET_NEGATIVE_IDS"; payload: number[] }
   | { type: "FINISH_RESTORE_SEARCH" }
   | {
-    type: "RESTORE_SEARCH"
-    payload: {
-      negativeIDs: number[]
-      targetBoundingBoxes: BoundingBoxResponse[]
-      resultBoundingBoxes: SimilarBox[]
-      areaId: number
-      sliderValue: number
+      type: "RESTORE_SEARCH"
+      payload: {
+        negativeIDs: number[]
+        targetBoundingBoxes: BoundingBoxResponse[]
+        resultBoundingBoxes: SimilarBox[]
+        areaId: number
+        sliderValue: number
+      }
     }
-  }
   | { type: "SET_LOADING"; payload: boolean }
+  | { type: "SET_VISIBLE_BOXES"; payload: number[] | null }
 
 // Initial state
 const initialState: AppState = {
@@ -47,6 +49,7 @@ const initialState: AppState = {
     type: "text",
     query: "",
   },
+  visibleBoundingBoxes: [],
 }
 
 // Reducer function
@@ -83,6 +86,8 @@ function appReducer(state: AppState, action: AppAction): AppState {
       return { ...state, sliderValue: action.payload }
     case "SET_LOADING":
       return { ...state, isLoading: action.payload }
+    case "SET_VISIBLE_BOXES":
+      return { ...state, visibleBoundingBoxes: action.payload }
     default:
       return state
   }

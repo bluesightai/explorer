@@ -1,0 +1,79 @@
+@import "../../main.scss";
+
+.clustering-card {
+  cursor: pointer;
+  position: fixed; // Changed from absolute to fixed
+  top: calc(var(--spacing-s) * 5); // Adjusted top
+  left: var(--spacing-s);
+  background-color: var(--black-transparent);
+  backdrop-filter: blur(10px);
+  color: var(--white);
+  padding: var(--spacing-s);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size);
+  width: 332px; /*calculated -pls don't change if not necessary*/
+  z-index: 100000; /* Ensure it's above other elements */
+  max-height: calc(100vh - (var(--spacing-s) * 12)); // Adjusted max-height
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+
+  // Scrollbar styles
+  &::-webkit-scrollbar {
+    width: 8px;
+    background-color: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  .cluster-size-slider {
+    margin-bottom: 20px;
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    
+    input[type="range"] {
+      width: 100%;
+    }
+  }
+
+  .cluster-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+
+  .cluster-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .cluster-button {
+    padding: 5px 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    &.selected {
+      background-color: #007bff;
+      color: white;
+    }
+    &.expanded {
+      font-weight: bold;
+    }
+  }
+}

@@ -4,6 +4,7 @@ import { useMapState } from "../hooks/useMapState"
 import { mapboxToken, style_url } from "../hooks/useNaipImagery"
 import { usePinning } from "../hooks/usePinning"
 import { calculateCenterAndZoom, isPointInCalifornia } from "../utils/mapUtils"
+import ClusteringCard from "./clusteringcard/ClusteringCard"
 import ControlWidget from "./control/ControlWidget"
 import SearchBox from "./input/SearchBox"
 import { createMapLayers } from "./layers/layers"
@@ -13,6 +14,10 @@ import { MapboxOverlay } from "@deck.gl/mapbox"
 import "mapbox-gl/dist/mapbox-gl.css"
 import { useCallback, useState } from "react"
 import { Map, Popup, ViewStateChangeEvent, useControl } from "react-map-gl"
+
+function selectByIndices<T extends { id: number }>(list: T[], indices: number[]): T[] {
+  return list.filter((item) => indices.includes(item.id))
+}
 
 function DeckGLOverlay(props: DeckProps) {
   // @ts-ignore
@@ -57,8 +62,22 @@ export default function MapComponent() {
 
   const layers =
     state.mode.type == "image"
-      ? createMapLayers(state.mode.targetBoundingBoxes, state.resultBoundingBoxes, viewState.zoom)
-      : createMapLayers([], state.resultBoundingBoxes, viewState.zoom)
+      ? createMapLayers(
+          state.visibleBoundingBoxes
+            ? selectByIndices(state.mode.targetBoundingBoxes, state.visibleBoundingBoxes)
+            : state.mode.targetBoundingBoxes,
+          state.visibleBoundingBoxes
+            ? selectByIndices(state.resultBoundingBoxes, state.visibleBoundingBoxes)
+            : state.resultBoundingBoxes,
+          viewState.zoom,
+        )
+      : createMapLayers(
+          [],
+          state.visibleBoundingBoxes
+            ? selectByIndices(state.resultBoundingBoxes, state.visibleBoundingBoxes)
+            : state.resultBoundingBoxes,
+          viewState.zoom,
+        )
 
   const handleSearchAndCancelPin = useCallback(() => {
     handleFindSimilar()
@@ -70,9 +89,6 @@ export default function MapComponent() {
     dispatch({ type: "SET_TEXT", payload: "" })
     dispatch({ type: "SET_RESULT_BOXES", payload: [] })
   }
-
-
-
 
   return (
     <Map
@@ -109,6 +125,12 @@ export default function MapComponent() {
         onTileClick={handleTileClick}
         handleFindSimilar={handleSearchAndCancelPin}
         handleCleanSearch={handleCleanSearch}
+      />
+
+      <ClusteringCard
+        onTileClick={handleTileClick}
+        handleCleanSearch={handleCleanSearch}
+        handleFindSimilar={handleSearchAndCancelPin}
       />
 
       <SearchBox isPinning={isPinning} handlePinPoint={handlePinPoint} />
