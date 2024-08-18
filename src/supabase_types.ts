@@ -1,4 +1,10 @@
-export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
 
 export type Database = {
   public: {
@@ -33,6 +39,45 @@ export type Database = {
           location: unknown
         }
         Update: {
+          embedding?: string | null
+          id?: number
+          location?: unknown
+        }
+        Relationships: []
+      }
+      clip_boxes_sf: {
+        Row: {
+          embedding: string | null
+          id: number
+          location: unknown
+        }
+        Insert: {
+          embedding?: string | null
+          id?: number
+          location: unknown
+        }
+        Update: {
+          embedding?: string | null
+          id?: number
+          location?: unknown
+        }
+        Relationships: []
+      }
+      defense_boxes: {
+        Row: {
+          chip_id: number | null
+          embedding: string | null
+          id: number
+          location: unknown
+        }
+        Insert: {
+          chip_id?: number | null
+          embedding?: string | null
+          id?: number
+          location: unknown
+        }
+        Update: {
+          chip_id?: number | null
           embedding?: string | null
           id?: number
           location?: unknown
@@ -309,8 +354,9 @@ export type Database = {
     Functions: {
       find_polygon: {
         Args: {
-          lat: number
+          table_name: string
           lon: number
+          lat: number
         }
         Returns: {
           id: number
@@ -426,20 +472,6 @@ export type Database = {
           max_lon: number
         }[]
       }
-      get_top_k_clip: {
-        Args: {
-          query_embedding: number[]
-          k: number
-        }
-        Returns: {
-          id: number
-          similarity: number
-          min_lat: number
-          min_lon: number
-          max_lat: number
-          max_lon: number
-        }[]
-      }
       search_similar_boxes: {
         Args: {
           input_ids: number[]
@@ -455,8 +487,9 @@ export type Database = {
           max_lon: number
         }[]
       }
-      search_similar_clip_boxes: {
+      search_using_image: {
         Args: {
+          table_name: string
           input_ids: number[]
           negativeids: number[]
           top_k: number
@@ -470,11 +503,12 @@ export type Database = {
           max_lon: number
         }[]
       }
-      search_similar_text_clip_boxes: {
+      search_using_text: {
         Args: {
+          table_name: string
           query_embedding: number[]
-          k: number
           negativeids: number[]
+          k: number
         }
         Returns: {
           id: number
@@ -506,7 +540,9 @@ export type Database = {
 type PublicSchema = Database[Extract<keyof Database, "public">]
 
 export type Tables<
-  PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] & PublicSchema["Views"]) | { schema: keyof Database },
+  PublicTableNameOrOptions extends
+    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
+    | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
         Database[PublicTableNameOrOptions["schema"]]["Views"])
@@ -518,8 +554,10 @@ export type Tables<
     }
     ? R
     : never
-  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] & PublicSchema["Views"])
-    ? (PublicSchema["Tables"] & PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
+        PublicSchema["Views"])
+    ? (PublicSchema["Tables"] &
+        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
         Row: infer R
       }
       ? R
@@ -527,7 +565,9 @@ export type Tables<
     : never
 
 export type TablesInsert<
-  PublicTableNameOrOptions extends keyof PublicSchema["Tables"] | { schema: keyof Database },
+  PublicTableNameOrOptions extends
+    | keyof PublicSchema["Tables"]
+    | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
     : never = never,
@@ -546,7 +586,9 @@ export type TablesInsert<
     : never
 
 export type TablesUpdate<
-  PublicTableNameOrOptions extends keyof PublicSchema["Tables"] | { schema: keyof Database },
+  PublicTableNameOrOptions extends
+    | keyof PublicSchema["Tables"]
+    | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
     : never = never,
@@ -565,7 +607,9 @@ export type TablesUpdate<
     : never
 
 export type Enums<
-  PublicEnumNameOrOptions extends keyof PublicSchema["Enums"] | { schema: keyof Database },
+  PublicEnumNameOrOptions extends
+    | keyof PublicSchema["Enums"]
+    | { schema: keyof Database },
   EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
     : never = never,
