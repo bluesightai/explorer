@@ -73,7 +73,7 @@ function clusterBoundingBoxes(boxes: SimilarBox[]): SimilarBox[][] {
 
 const ClusteringCard: React.FC<ClusteringCardProps> = ({ onTileClick }) => {
   const { state, dispatch } = useAppState()
-  const { fetchNaipImage } = useNaipImagery()
+  const { fetchNaipImage } = useNaipImagery(state.config.style_id)
   const { handleFindSimilar } = useBoundingBoxes()
   const [expandedCluster, setExpandedCluster] = useState<number | null>(null)
   const [minClusterSize, setMinClusterSize] = useState<number>(1)

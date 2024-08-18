@@ -1,11 +1,10 @@
 import { useAppState } from "../hooks/AppContext"
 import { useBoundingBoxes } from "../hooks/useBoundingBoxes"
 import { useMapState } from "../hooks/useMapState"
-import { mapboxToken, style_url } from "../hooks/useNaipImagery"
 import { usePinning } from "../hooks/usePinning"
 import { calculateCenterAndZoom, isPointInCalifornia } from "../utils/mapUtils"
 import ClusteringCard from "./clusteringcard/ClusteringCard"
-import { Config } from "../config"
+import { Config, get_style_url, mapboxToken } from "../config"
 import ControlWidget from "./control/ControlWidget"
 import SearchBox from "./input/SearchBox"
 import { createMapLayers } from "./layers/layers"
@@ -15,11 +14,12 @@ import { MapboxOverlay } from "@deck.gl/mapbox"
 import "mapbox-gl/dist/mapbox-gl.css"
 import { useCallback, useState } from "react"
 import { Map, Popup, ViewStateChangeEvent, useControl } from "react-map-gl"
-import DropDown from "./Dropdown/Dropdown"
 
 function selectByIndices<T extends { id: number }>(list: T[], indices: number[]): T[] {
   return list.filter((item) => indices.includes(item.id))
 }
+
+
 
 function DeckGLOverlay(props: DeckProps) {
   // @ts-ignore
@@ -75,7 +75,6 @@ export default function MapComponent() {
         state.visibleBoundingBoxes
           ? selectByIndices(state.resultBoundingBoxes, state.visibleBoundingBoxes)
           : state.resultBoundingBoxes,
-        bounding_box,
         viewState.zoom,
       )
       : createMapLayers(
@@ -83,7 +82,6 @@ export default function MapComponent() {
         state.visibleBoundingBoxes
           ? selectByIndices(state.resultBoundingBoxes, state.visibleBoundingBoxes)
           : state.resultBoundingBoxes,
-        bounding_box,
         viewState.zoom,
       )
 
@@ -102,7 +100,7 @@ export default function MapComponent() {
     <Map
       logoPosition={"bottom-right"}
       {...viewState}
-      mapStyle={style_url}
+      mapStyle={get_style_url(state.config.style_id)}
       mapboxAccessToken={mapboxToken}
       interactive={true}
       attributionControl={false}
@@ -127,14 +125,7 @@ export default function MapComponent() {
         </Popup>
       )}
 
-      <ControlWidget />
-
-      <SceneCard
-        onTileClick={handleTileClick}
-        handleFindSimilar={handleSearchAndCancelPin}
-        handleCleanSearch={handleCleanSearch}
-      />
-      <DropDown setViewState={(config: Config) => {
+      <ControlWidget setViewState={(config: Config) => {
 
         setViewState((prevState) => ({
           ...prevState,
@@ -146,6 +137,12 @@ export default function MapComponent() {
 
       }
       } />
+
+      <SceneCard
+        onTileClick={handleTileClick}
+        handleFindSimilar={handleSearchAndCancelPin}
+        handleCleanSearch={handleCleanSearch}
+      />
 
       <ClusteringCard
         onTileClick={handleTileClick}

@@ -17,7 +17,7 @@ interface SceneCardProps {
 
 const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch }) => {
   const { state, dispatch } = useAppState()
-  const { fetchNaipImage } = useNaipImagery()
+  const { fetchNaipImage } = useNaipImagery(state.config.style_id)
   const { handleFindSimilar } = useBoundingBoxes()
 
   useEffect(() => {

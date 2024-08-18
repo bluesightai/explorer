@@ -1,9 +1,10 @@
 import { BoundingBoxResponse, SimilarBox } from "../../hooks/supabaseTypes"
-import { inverseCaliforniaPolygon } from "../californiaPolygon"
+import { darkMapWithBrightPolygon } from "../highlightPolygon"
 import { BoundingBoxLayer } from "./BoundingBoxLayer"
 import { HeatmapLayer } from "@deck.gl/aggregation-layers"
 import { LayersList } from "@deck.gl/core"
 import { GeoJsonLayer } from "@deck.gl/layers"
+import { useAppState } from "../../hooks/AppContext"
 
 // Helper function to rescale similarity scores
 const rescaleSimilarityScores = (scores: number[]): number[] => {
@@ -26,9 +27,11 @@ const getHeatmapRadius = (zoom: number) => {
 export const createMapLayers = (
   targetBoundingBoxes: BoundingBoxResponse[],
   resultBoundingBoxes: SimilarBox[],
-  bounding_box: number[][],
   zoom: number,
 ): LayersList => {
+  const { state } = useAppState()
+  const bounding_box = state.config.polygon
+
   // Rescale similarity scores
   const similarityScores = resultBoundingBoxes.map((box) => box.similarity)
   const rescaledScores = rescaleSimilarityScores(similarityScores)
@@ -41,8 +44,8 @@ export const createMapLayers = (
 
   const layers: LayersList = [
     new GeoJsonLayer({
-      id: "inverse-california-layer",
-      data: inverseCaliforniaPolygon(bounding_box),
+      id: "highlight-layer",
+      data: darkMapWithBrightPolygon(bounding_box),
       filled: true,
       getFillColor: [0, 0, 0, 128],
       pickable: true,
@@ -50,7 +53,7 @@ export const createMapLayers = (
 
     BoundingBoxLayer({
       borderColor: [0, 0, 255],
-      fillColor: [0, 0, 255, 120], // This is blue
+      fillColor: [0, 0, 255, 250], // This is blue
       boundingBoxes: targetBoundingBoxes,
     }),
 

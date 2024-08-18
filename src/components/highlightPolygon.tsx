@@ -13,7 +13,7 @@ export const brightPolygon = (bounding_box: number[][]): Feature<Polygon> => {
   }
 }
 
-export const inverseCaliforniaPolygon = (bounding_box: number[][]): Feature<Polygon> => {
+export const darkMapWithBrightPolygon = (bounding_box: number[][]): Feature<Polygon> => {
   return {
     type: "Feature",
     properties: {},
@@ -27,7 +27,7 @@ export const inverseCaliforniaPolygon = (bounding_box: number[][]): Feature<Poly
           [180, -90],
           [-180, -90],
         ],
-        // Use the coordinates from californiaPolygon as a hole
+        // Use the coordinates from bounding as a bright hole
         bounding_box
       ],
     },

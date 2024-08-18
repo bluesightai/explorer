@@ -1,5 +1,5 @@
 // src/components/map/mapUtils.ts
-import { brightPolygon } from "../components/californiaPolygon"
+import { brightPolygon } from "../components/highlightPolygon"
 import { booleanPointInPolygon } from "@turf/turf"
 
 export const isPointInCalifornia = (bounding_box: number[][], longitude: number, latitude: number): boolean => {
