@@ -25,10 +25,10 @@ async function retryOperation<T>(operation: () => Promise<T>): Promise<T> {
 }
 
 export const useSupabase = () => {
-  const fetchBoundingBoxes = async (lat: number, lon: number): Promise<BoundingBoxResponse[]> => {
+  const fetchBoundingBoxes = async (table_name: string, lat: number, lon: number): Promise<BoundingBoxResponse[]> => {
     return retryOperation(async () => {
       const { data, error }: PostgrestResponse<BoundingBoxResponse> = await supabase.rpc("find_polygon", {
-        table_name: "clip_boxes",
+        table_name: table_name,
         lat,
         lon,
       })
@@ -40,10 +40,15 @@ export const useSupabase = () => {
     })
   }
 
-  const fetchClipBoxes = async (embedding: number[], top_k: number, negativeids: number[]): Promise<SimilarBox[]> => {
+  const fetchClipBoxes = async (
+    table_name: string,
+    embedding: number[],
+    top_k: number,
+    negativeids: number[],
+  ): Promise<SimilarBox[]> => {
     return retryOperation(async () => {
       const { data, error }: PostgrestResponse<SimilarBox> = await supabase.rpc("search_using_text", {
-        table_name: "clip_boxes",
+        table_name: table_name,
         query_embedding: embedding,
         k: top_k,
         negativeids,
@@ -57,10 +62,15 @@ export const useSupabase = () => {
     })
   }
 
-  const findSimilarClip = async (ids: number[], top_k: number, negative_input_ids: number[]): Promise<SimilarBox[]> => {
+  const findSimilarClip = async (
+    table_name: string,
+    ids: number[],
+    top_k: number,
+    negative_input_ids: number[],
+  ): Promise<SimilarBox[]> => {
     return retryOperation(async () => {
       const { data, error } = await supabase.rpc("search_using_image", {
-        table_name: "clip_boxes",
+        table_name: table_name,
         input_ids: ids,
         top_k: top_k, // optional, defaults to 5 if not provided
         negativeids: negative_input_ids,

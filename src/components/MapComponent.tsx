@@ -5,6 +5,7 @@ import { mapboxToken, style_url } from "../hooks/useNaipImagery"
 import { usePinning } from "../hooks/usePinning"
 import { calculateCenterAndZoom, isPointInCalifornia } from "../utils/mapUtils"
 import ClusteringCard from "./clusteringcard/ClusteringCard"
+import { Config } from "../config"
 import ControlWidget from "./control/ControlWidget"
 import SearchBox from "./input/SearchBox"
 import { createMapLayers } from "./layers/layers"
@@ -14,6 +15,7 @@ import { MapboxOverlay } from "@deck.gl/mapbox"
 import "mapbox-gl/dist/mapbox-gl.css"
 import { useCallback, useState } from "react"
 import { Map, Popup, ViewStateChangeEvent, useControl } from "react-map-gl"
+import DropDown from "./Dropdown/Dropdown"
 
 function selectByIndices<T extends { id: number }>(list: T[], indices: number[]): T[] {
   return list.filter((item) => indices.includes(item.id))
@@ -27,10 +29,13 @@ function DeckGLOverlay(props: DeckProps) {
 }
 
 export default function MapComponent() {
-  const { viewState, setViewState, popupInfo, setPopupInfo } = useMapState()
   const { isPinning, pinnedPoints, setPinnedPoints, handlePinPoint } = usePinning()
   const [isDragging, setDragging] = useState(false)
   const { state, dispatch } = useAppState()
+
+  const { viewState, setViewState, popupInfo, setPopupInfo } = useMapState()
+
+
   const { handleFetchBoundingBoxes, handleFindSimilar } = useBoundingBoxes()
 
   const handleClick = useCallback(
@@ -38,7 +43,7 @@ export default function MapComponent() {
       if (!info.coordinate) return
 
       const [longitude, latitude] = info.coordinate
-      if (isPointInCalifornia(longitude, latitude)) {
+      if (isPointInCalifornia(bounding_box, longitude, latitude)) {
         if (isPinning) {
           setPinnedPoints([...pinnedPoints, [longitude, latitude]])
           handleFetchBoundingBoxes(latitude, longitude)
@@ -59,25 +64,28 @@ export default function MapComponent() {
     },
     [setViewState],
   )
+  const bounding_box = state.config.polygon
 
   const layers =
     state.mode.type == "image"
       ? createMapLayers(
-          state.visibleBoundingBoxes
-            ? selectByIndices(state.mode.targetBoundingBoxes, state.visibleBoundingBoxes)
-            : state.mode.targetBoundingBoxes,
-          state.visibleBoundingBoxes
-            ? selectByIndices(state.resultBoundingBoxes, state.visibleBoundingBoxes)
-            : state.resultBoundingBoxes,
-          viewState.zoom,
-        )
+        state.visibleBoundingBoxes
+          ? selectByIndices(state.mode.targetBoundingBoxes, state.visibleBoundingBoxes)
+          : state.mode.targetBoundingBoxes,
+        state.visibleBoundingBoxes
+          ? selectByIndices(state.resultBoundingBoxes, state.visibleBoundingBoxes)
+          : state.resultBoundingBoxes,
+        bounding_box,
+        viewState.zoom,
+      )
       : createMapLayers(
-          [],
-          state.visibleBoundingBoxes
-            ? selectByIndices(state.resultBoundingBoxes, state.visibleBoundingBoxes)
-            : state.resultBoundingBoxes,
-          viewState.zoom,
-        )
+        [],
+        state.visibleBoundingBoxes
+          ? selectByIndices(state.resultBoundingBoxes, state.visibleBoundingBoxes)
+          : state.resultBoundingBoxes,
+        bounding_box,
+        viewState.zoom,
+      )
 
   const handleSearchAndCancelPin = useCallback(() => {
     handleFindSimilar()
@@ -126,6 +134,18 @@ export default function MapComponent() {
         handleFindSimilar={handleSearchAndCancelPin}
         handleCleanSearch={handleCleanSearch}
       />
+      <DropDown setViewState={(config: Config) => {
+
+        setViewState((prevState) => ({
+          ...prevState,
+          latitude: config.initial_lat,
+          longitude: config.initial_lon,
+
+        }))
+        handleCleanSearch()
+
+      }
+      } />
 
       <ClusteringCard
         onTileClick={handleTileClick}

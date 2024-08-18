@@ -26,6 +26,7 @@ const getHeatmapRadius = (zoom: number) => {
 export const createMapLayers = (
   targetBoundingBoxes: BoundingBoxResponse[],
   resultBoundingBoxes: SimilarBox[],
+  bounding_box: number[][],
   zoom: number,
 ): LayersList => {
   // Rescale similarity scores
@@ -41,7 +42,7 @@ export const createMapLayers = (
   const layers: LayersList = [
     new GeoJsonLayer({
       id: "inverse-california-layer",
-      data: inverseCaliforniaPolygon,
+      data: inverseCaliforniaPolygon(bounding_box),
       filled: true,
       getFillColor: [0, 0, 0, 128],
       pickable: true,

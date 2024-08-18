@@ -1,10 +1,13 @@
+import { cali_config, Config } from "../config";
 import { BoundingBoxResponse, SimilarBox } from "./supabaseTypes"
 import React, { Dispatch, createContext, useContext, useReducer } from "react"
 
 // Define the possible modes with their associated data
 export type Mode = { type: "text"; query: string } | { type: "image"; targetBoundingBoxes: BoundingBoxResponse[] }
 
+
 export interface AppState {
+  config: Config
   mode: Mode
   areaId: number
   sliderValue: number
@@ -17,6 +20,8 @@ export interface AppState {
 
 // Define all possible action types
 export type AppAction =
+  | { type: "SET_CONFIG"; payload: Config }
+
   | { type: "SET_TEXT"; payload: string }
   | { type: "SET_TARGET_BOXES"; payload: BoundingBoxResponse[] }
   | { type: "SET_RESULT_BOXES"; payload: SimilarBox[] }
@@ -25,20 +30,21 @@ export type AppAction =
   | { type: "SET_NEGATIVE_IDS"; payload: number[] }
   | { type: "FINISH_RESTORE_SEARCH" }
   | {
-      type: "RESTORE_SEARCH"
-      payload: {
-        negativeIDs: number[]
-        targetBoundingBoxes: BoundingBoxResponse[]
-        resultBoundingBoxes: SimilarBox[]
-        areaId: number
-        sliderValue: number
-      }
+    type: "RESTORE_SEARCH"
+    payload: {
+      negativeIDs: number[]
+      targetBoundingBoxes: BoundingBoxResponse[]
+      resultBoundingBoxes: SimilarBox[]
+      areaId: number
+      sliderValue: number
     }
+  }
   | { type: "SET_LOADING"; payload: boolean }
   | { type: "SET_VISIBLE_BOXES"; payload: number[] | null }
 
 // Initial state
 const initialState: AppState = {
+  config: cali_config,
   negativeIDs: [],
   resultBoundingBoxes: [],
   areaId: 5,
@@ -55,6 +61,11 @@ const initialState: AppState = {
 // Reducer function
 function appReducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
+    case "SET_CONFIG":
+      return {
+        ...state,
+        config: action.payload
+      }
     case "SET_TEXT":
       return {
         ...state,

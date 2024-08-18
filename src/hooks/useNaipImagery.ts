@@ -5,7 +5,8 @@ import { useState } from "react"
 export const mapboxToken =
   "pk.eyJ1Ijoic3p5bW9uem15c2xvbnkiLCJhIjoiY2x5eDYxb2JqMWxkaTJrczZjZ3Nhd2hrZSJ9.jpzoW1-5ILOP-hIWtXBPxA"
 
-const style_id = "clz17ert500in01pf3em1aeor"
+// const style_id = "clz17ert500in01pf3em1aeor"
+const style_id = "clzyzkpvm005j01pn6xcwcq8f"
 const user_name = "szymonzmyslony"
 
 export const style_url = `mapbox://styles/${user_name}/${style_id}`

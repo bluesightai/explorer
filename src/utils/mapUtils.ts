@@ -1,8 +1,8 @@
 // src/components/map/mapUtils.ts
-import { californiaPolygon } from "../components/californiaPolygon"
+import { brightPolygon } from "../components/californiaPolygon"
 import { booleanPointInPolygon } from "@turf/turf"
 
-export const isPointInCalifornia = (longitude: number, latitude: number): boolean => {
+export const isPointInCalifornia = (bounding_box: number[][], longitude: number, latitude: number): boolean => {
   const clickedPoint = {
     type: "Feature",
     properties: {},
@@ -12,7 +12,7 @@ export const isPointInCalifornia = (longitude: number, latitude: number): boolea
     },
   }
   // @ts-ignore
-  return booleanPointInPolygon(clickedPoint, californiaPolygon)
+  return booleanPointInPolygon(clickedPoint, brightPolygon(bounding_box))
 }
 
 export const calculateCenterAndZoom = (bbox: [number, number, number, number]) => {

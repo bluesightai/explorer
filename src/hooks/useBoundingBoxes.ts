@@ -7,7 +7,7 @@ export const useBoundingBoxes = () => {
   const { fetchBoundingBoxes, fetchClipBoxes, findSimilarClip } = useSupabase()
 
   const handleFetchBoundingBoxes = async (latitude: number, longitude: number) => {
-    const bboxes = await fetchBoundingBoxes(latitude, longitude)
+    const bboxes = await fetchBoundingBoxes(state.config.table_name, latitude, longitude)
     if (state.mode.type != "image") {
       throw Error("We should be in image mode")
     }
@@ -36,7 +36,7 @@ export const useBoundingBoxes = () => {
       const data = await response.json()
       const { embeddings } = data
       const flat = embeddings.flat()
-      const result = await fetchClipBoxes(flat, state.sliderValue, state.negativeIDs)
+      const result = await fetchClipBoxes(state.config.table_name, flat, state.sliderValue, state.negativeIDs)
       dispatch({ type: "SET_RESULT_BOXES", payload: result })
 
       // Process the response data here
@@ -57,7 +57,12 @@ export const useBoundingBoxes = () => {
     } else {
       try {
         const targetIds = mode.targetBoundingBoxes.map((item) => item.id)
-        const similarBoxes = await findSimilarClip(targetIds, state.sliderValue, state.negativeIDs)
+        const similarBoxes = await findSimilarClip(
+          state.config.table_name,
+          targetIds,
+          state.sliderValue,
+          state.negativeIDs,
+        )
 
         dispatch({ type: "SET_RESULT_BOXES", payload: similarBoxes })
       } catch (error) {
