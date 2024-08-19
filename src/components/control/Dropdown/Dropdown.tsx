@@ -39,8 +39,8 @@ const DropDown = ({ setViewState }: { setViewState: (config: Config) => void }) 
       </div>
       {isOpen && (
         <ul className="styled-select__options">
-          <li onClick={() => handleConfigChange(ukraine_config)}>Ukraine</li>
-          <li onClick={() => handleConfigChange(cali_config)}>California</li>
+          <li onClick={() => handleConfigChange(ukraine_config)}>{ukraine_config.name}</li>
+          <li onClick={() => handleConfigChange(cali_config)}>{cali_config.name}</li>
         </ul>
       )}
     </div>
