@@ -14,10 +14,10 @@ export const mapboxToken =
 export const get_style_url = (style_id: string) => `mapbox://styles/${user_name}/${style_id}`
 
 export const ukraine_config: Config = {
-  style_id: "clzyzkpvm005j01pn6xcwcq8f",
+  style_id: "cm01n4thc00b701psg73r14ww",
   name: "Ukraine",
-  initial_lat: 51.201676776472034,
-  initial_lon: 35.34085886509449,
+  initial_lat: 51.191,
+  initial_lon: 35.285,
   table_name: "defense_boxes",
   polygon: [
     [35.22523850097286, 51.22252531315613],

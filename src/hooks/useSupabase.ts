@@ -32,7 +32,6 @@ export const useSupabase = () => {
         lat,
         lon,
       })
-      console.log("Found polygon with data", data)
       if (error) {
         console.error("Error fetching covered boxes:", error)
         throw error

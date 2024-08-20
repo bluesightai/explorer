@@ -9,6 +9,7 @@ const DropDown = ({ setViewState }: { setViewState: (config: Config) => void }) 
     const selectRef = useRef<HTMLDivElement>(null);
 
     const handleConfigChange = (value: Config) => {
+        console.log("Dispatching set config", value)
         dispatch({ type: "SET_CONFIG", payload: value });
         setIsOpen(false);
         setViewState(value);

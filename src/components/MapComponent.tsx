@@ -95,7 +95,15 @@ export default function MapComponent() {
     dispatch({ type: "SET_TEXT", payload: "" })
     dispatch({ type: "SET_RESULT_BOXES", payload: [] })
   }
-
+  const handleSetViewState = useCallback((config: Config) => {
+    setViewState(prevState => ({
+      ...prevState,
+      latitude: config.initial_lat,
+      longitude: config.initial_lon,
+    }));
+    dispatch({ type: "SET_TEXT", payload: "" })
+    dispatch({ type: "SET_RESULT_BOXES", payload: [] })
+  }, [setViewState, handleCleanSearch]);
   return (
     <Map
       logoPosition={"bottom-right"}
@@ -125,18 +133,8 @@ export default function MapComponent() {
         </Popup>
       )}
 
-      <ControlWidget setViewState={(config: Config) => {
+      <ControlWidget setViewState={handleSetViewState} />
 
-        setViewState((prevState) => ({
-          ...prevState,
-          latitude: config.initial_lat,
-          longitude: config.initial_lon,
-
-        }))
-        handleCleanSearch()
-
-      }
-      } />
 
       <SceneCard
         onTileClick={handleTileClick}
