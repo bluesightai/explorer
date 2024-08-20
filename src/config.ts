@@ -128,7 +128,7 @@ export const ukraine_config: Config = {
 }
 
 export const cali_config: Config = {
-  name: "Cali",
+  name: "Bay Area",
   style_id: "clz17ert500in01pf3em1aeor",
 
   table_name: "clip_boxes",

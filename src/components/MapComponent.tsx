@@ -1,10 +1,10 @@
+import { Config, get_style_url, mapboxToken } from "../config"
 import { useAppState } from "../hooks/AppContext"
 import { useBoundingBoxes } from "../hooks/useBoundingBoxes"
 import { useMapState } from "../hooks/useMapState"
 import { usePinning } from "../hooks/usePinning"
 import { calculateCenterAndZoom, isPointInCalifornia } from "../utils/mapUtils"
 import ClusteringCard from "./clusteringcard/ClusteringCard"
-import { Config, get_style_url, mapboxToken } from "../config"
 import ControlWidget from "./control/ControlWidget"
 import SearchBox from "./input/SearchBox"
 import { createMapLayers } from "./layers/layers"
@@ -19,8 +19,6 @@ function selectByIndices<T extends { id: number }>(list: T[], indices: number[])
   return list.filter((item) => indices.includes(item.id))
 }
 
-
-
 function DeckGLOverlay(props: DeckProps) {
   // @ts-ignore
   const overlay = useControl<MapboxOverlay>(() => new MapboxOverlay(props))
@@ -34,7 +32,6 @@ export default function MapComponent() {
   const { state, dispatch } = useAppState()
 
   const { viewState, setViewState, popupInfo, setPopupInfo } = useMapState()
-
 
   const { handleFetchBoundingBoxes, handleFindSimilar } = useBoundingBoxes()
 

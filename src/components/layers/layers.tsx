@@ -1,10 +1,10 @@
+import { useAppState } from "../../hooks/AppContext"
 import { BoundingBoxResponse, SimilarBox } from "../../hooks/supabaseTypes"
 import { darkMapWithBrightPolygon } from "../highlightPolygon"
 import { BoundingBoxLayer } from "./BoundingBoxLayer"
 import { HeatmapLayer } from "@deck.gl/aggregation-layers"
 import { LayersList } from "@deck.gl/core"
 import { GeoJsonLayer } from "@deck.gl/layers"
-import { useAppState } from "../../hooks/AppContext"
 
 // Helper function to rescale similarity scores
 const rescaleSimilarityScores = (scores: number[]): number[] => {
