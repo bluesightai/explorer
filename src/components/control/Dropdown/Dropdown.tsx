@@ -1,4 +1,4 @@
-import { Config, cali_config, ukraine_config } from "../../../config"
+import { Config, cali_config } from "../../../config"
 import { useAppState } from "../../../hooks/AppContext"
 import "./Dropdown.scss"
 import { useEffect, useRef, useState } from "react"
