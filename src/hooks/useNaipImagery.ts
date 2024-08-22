@@ -15,10 +15,9 @@ export const useNaipImagery = (style_id: string) => {
       // Construct the bounding box string
       const bbox = `${box.min_lon},${box.min_lat},${box.max_lon},${box.max_lat}`
 
-      console.log(bbox)
+      const url = `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/[${bbox}]/256x256?access_token=pk.eyJ1Ijoic3p5bW9uem15c2xvbnkiLCJhIjoiY2x5eDYxb2JqMWxkaTJrczZjZ3Nhd2hrZSJ9.jpzoW1-5ILOP-hIWtXBPxA`
 
-      const timestamp = Date.now()
-      const url = `https://api.mapbox.com/styles/v1/${user_name}/${style_id}/static/[${bbox}]/256x256?access_token=${mapboxToken}&attribution=true&cache=${timestamp}`
+      console.log("URl is ")
 
       return url
     } catch (err) {

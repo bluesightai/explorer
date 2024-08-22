@@ -53,7 +53,6 @@ export const useSupabase = () => {
         k: top_k,
         negativeids,
       })
-      console.log("data", data)
 
       if (error) {
         console.error("Error fetching search boxes:", error)
