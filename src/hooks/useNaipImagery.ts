@@ -1,9 +1,9 @@
 // useNaipImagery.ts
-import { mapboxToken, user_name } from "../config"
+// import { mapboxToken, user_name } from "../config"
 import { BoundingBoxResponse } from "./supabaseTypes"
 import { useState } from "react"
 
-export const useNaipImagery = (style_id: string) => {
+export const useNaipImagery = (_style_id: string) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 

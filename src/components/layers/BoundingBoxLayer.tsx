@@ -44,8 +44,8 @@ export const BoundingBoxLayer = ({ boundingBoxes, fillColor, borderColor }: Boun
     getLineWidth: 2,
     lineWidthMinPixels: 1,
     pickable: true,
-    onClick: (info) => {
-    },
+    // onClick: (info) => {
+    // },
     autoHighlight: true,
     highlightColor: [255, 255, 0, 150], // Highlight color when hovered
   })
