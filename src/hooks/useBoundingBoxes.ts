@@ -53,6 +53,12 @@ export const useBoundingBoxes = () => {
     dispatch({ type: "SET_LOADING", payload: true })
 
     if (mode_type == "text") {
+      const query = mode.query.trim()
+      if (query.length < 3) {
+        dispatch({ type: "SET_LOADING", payload: false })
+        dispatch({ type: "SET_RESULT_BOXES", payload: [] })
+        return
+      }
       handleTextSearch(mode.query)
     } else {
       try {
