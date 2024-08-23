@@ -66,21 +66,21 @@ export default function MapComponent() {
   const layers =
     state.mode.type == "image"
       ? createMapLayers(
-        state.visibleBoundingBoxes
-          ? selectByIndices(state.mode.targetBoundingBoxes, state.visibleBoundingBoxes)
-          : state.mode.targetBoundingBoxes,
-        state.visibleBoundingBoxes
-          ? selectByIndices(state.resultBoundingBoxes, state.visibleBoundingBoxes)
-          : state.resultBoundingBoxes,
-        viewState.zoom,
-      )
+          state.visibleBoundingBoxes
+            ? selectByIndices(state.mode.targetBoundingBoxes, state.visibleBoundingBoxes)
+            : state.mode.targetBoundingBoxes,
+          state.visibleBoundingBoxes
+            ? selectByIndices(state.resultBoundingBoxes, state.visibleBoundingBoxes)
+            : state.resultBoundingBoxes,
+          viewState.zoom,
+        )
       : createMapLayers(
-        [],
-        state.visibleBoundingBoxes
-          ? selectByIndices(state.resultBoundingBoxes, state.visibleBoundingBoxes)
-          : state.resultBoundingBoxes,
-        viewState.zoom,
-      )
+          [],
+          state.visibleBoundingBoxes
+            ? selectByIndices(state.resultBoundingBoxes, state.visibleBoundingBoxes)
+            : state.resultBoundingBoxes,
+          viewState.zoom,
+        )
 
   const handleSearchAndCancelPin = useCallback(() => {
     handleFindSimilar()
@@ -92,15 +92,18 @@ export default function MapComponent() {
     dispatch({ type: "SET_TEXT", payload: "" })
     dispatch({ type: "SET_RESULT_BOXES", payload: [] })
   }
-  const handleSetViewState = useCallback((config: Config) => {
-    setViewState(prevState => ({
-      ...prevState,
-      latitude: config.initial_lat,
-      longitude: config.initial_lon,
-    }));
-    dispatch({ type: "SET_TEXT", payload: "" })
-    dispatch({ type: "SET_RESULT_BOXES", payload: [] })
-  }, [setViewState, handleCleanSearch]);
+  const handleSetViewState = useCallback(
+    (config: Config) => {
+      setViewState((prevState) => ({
+        ...prevState,
+        latitude: config.initial_lat,
+        longitude: config.initial_lon,
+      }))
+      dispatch({ type: "SET_TEXT", payload: "" })
+      dispatch({ type: "SET_RESULT_BOXES", payload: [] })
+    },
+    [setViewState, handleCleanSearch],
+  )
   return (
     <Map
       logoPosition={"bottom-right"}
@@ -131,7 +134,6 @@ export default function MapComponent() {
       )}
 
       <ControlWidget setViewState={handleSetViewState} />
-
 
       <SceneCard
         onTileClick={handleTileClick}
