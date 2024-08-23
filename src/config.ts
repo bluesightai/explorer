@@ -1,3 +1,5 @@
+import { useSupabase } from "./hooks/useSupabase"
+
 export type Config = {
   style_id: string
   name: string
@@ -131,14 +133,32 @@ export const cali_config: Config = {
   name: "Bay Area",
   style_id: "cm05fx10r00im01rb7h3haudx",
 
-  table_name: "clip_boxes",
+  table_name: "clip_boxes_gcp",
   initial_lat: 37.53126258079075,
   initial_lon: -122.0620083919965,
   polygon: [
-    [-122.62763794718, 37.1849048387767],
-    [-121.496378836813, 37.1849048387767],
-    [-121.496378836813, 37.8776203228048],
-    [-122.62763794718, 37.8776203228048],
-    [-122.62763794718, 37.1849048387767],
+    [-122.331390380859, 37.809783953011],
+    [-122.32177734375, 37.809783953011],
+    [-122.32177734375, 37.8119538591927],
+    [-122.331390380859, 37.8119538591927],
+    [-122.331390380859, 37.809783953011],
   ],
 }
+
+const updateConfigCoordinates = async (config: Config) => {
+  const supabase = useSupabase()
+  const data = await supabase.getBoundingBox(config.table_name)
+  if (data) {
+    config.polygon = [
+      [data.min_lon, data.min_lat],
+      [data.max_lon, data.min_lat],
+      [data.max_lon, data.max_lat],
+      [data.min_lon, data.max_lat],
+      [data.min_lon, data.min_lat],
+    ]
+    config.initial_lat = (data.min_lat + data.max_lat) / 2
+    config.initial_lon = (data.min_lon + data.max_lon) / 2
+  }
+}
+
+await updateConfigCoordinates(cali_config)
