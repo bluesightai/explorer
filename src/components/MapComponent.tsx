@@ -1,4 +1,5 @@
 import { Config, get_style_url, mapboxToken } from "../config"
+import { updateConfigs } from "../config"
 import { useAppState } from "../hooks/AppContext"
 import { useBoundingBoxes } from "../hooks/useBoundingBoxes"
 import { useMapState } from "../hooks/useMapState"
@@ -12,7 +13,7 @@ import SceneCard from "./scenecard/SceneCard"
 import { DeckProps } from "@deck.gl/core"
 import { MapboxOverlay } from "@deck.gl/mapbox"
 import "mapbox-gl/dist/mapbox-gl.css"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Map, Popup, ViewStateChangeEvent, useControl } from "react-map-gl"
 
 function selectByIndices<T extends { id: number }>(list: T[], indices: number[]): T[] {
@@ -26,7 +27,25 @@ function DeckGLOverlay(props: DeckProps) {
   return null
 }
 
-export default function MapComponent() {
+export default function App() {
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  useEffect(() => {
+    async function loadConfig() {
+      await updateConfigs()
+      setIsLoaded(true)
+    }
+    loadConfig()
+  }, [])
+
+  if (!isLoaded) {
+    return <div>Loading...</div>
+  }
+
+  return <MapComponent />
+}
+
+export function MapComponent() {
   const { isPinning, pinnedPoints, setPinnedPoints, handlePinPoint } = usePinning()
   const [isDragging, setDragging] = useState(false)
   const { state, dispatch } = useAppState()

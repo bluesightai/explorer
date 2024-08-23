@@ -161,4 +161,6 @@ const updateConfigCoordinates = async (config: Config) => {
   }
 }
 
-await updateConfigCoordinates(cali_config)
+export const updateConfigs = async () => {
+  await updateConfigCoordinates(cali_config)
+}
