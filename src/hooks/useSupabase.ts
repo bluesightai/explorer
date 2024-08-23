@@ -84,5 +84,20 @@ export const useSupabase = () => {
     })
   }
 
-  return { fetchBoundingBoxes, supabase, fetchClipBoxes, findSimilarClip }
+  const getBoundingBox = async (
+    table_name: string,
+  ): Promise<{ min_lon: number; min_lat: number; max_lon: number; max_lat: number } | null> => {
+    return retryOperation(async () => {
+      const { data, error } = await supabase.rpc("get_bounding_box", { table_name: table_name }).single()
+
+      if (error) {
+        console.error("Error fetching bounding box:", error)
+        throw error
+      }
+
+      return data
+    })
+  }
+
+  return { fetchBoundingBoxes, supabase, fetchClipBoxes, findSimilarClip, getBoundingBox }
 }
