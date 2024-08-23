@@ -4,9 +4,9 @@ WORKDIR /app
 
 COPY package.json bun.lockb ./
 RUN bun install
-RUN bun run format:check
 
 COPY . .
+RUN bun run format:check
 RUN bun run build
 
 FROM scratch
