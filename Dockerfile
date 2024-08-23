@@ -6,6 +6,8 @@ COPY package.json bun.lockb ./
 RUN bun install
 
 COPY . .
+RUN bun prettier --version
+RUN bun prettier --help
 RUN bun run format:check
 RUN bun run build
 
