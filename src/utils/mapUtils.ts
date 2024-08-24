@@ -21,9 +21,12 @@ export const calculateCenterAndZoom = (bbox: [number, number, number, number]) =
   const centerLat = (minLat + maxLat) / 2
 
   return {
-    longitude: centerLng,
-    latitude: centerLat,
-    zoom: 16,
+    center: {
+      lng: centerLng,
+      lat: centerLat,
+    },
+
+    zoom: 20,
     transitionDuration: 1000,
   }
 }

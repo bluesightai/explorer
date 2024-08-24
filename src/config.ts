@@ -9,6 +9,16 @@ export type Config = {
   initial_lon: number
 }
 
+export const mapOptions = {
+  disableDefaultUI: true,
+  tilt: 0,
+  mapTypeControl: false,
+  streetViewControl: false,
+}
+
+export const GOOGLE_MAPS_API_KEY = "AIzaSyAuQYBLOs6UfgdRw7lliJ7ik1sVVWhbvM0"
+export const GOOGLE_MAP_ID = "41d48ce57cfb9b71"
+
 export const user_name = "szymonzmyslony"
 export const mapboxToken =
   "pk.eyJ1Ijoic3p5bW9uem15c2xvbnkiLCJhIjoiY2x5eDYxb2JqMWxkaTJrczZjZ3Nhd2hrZSJ9.jpzoW1-5ILOP-hIWtXBPxA"

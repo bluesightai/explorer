@@ -1,4 +1,4 @@
-import { GOOGLE_MAPS_API_KEY, GOOGLE_MAP_ID, mapOptions } from "../../config"
+import { GOOGLE_MAPS_API_KEY, GOOGLE_MAP_ID, mapOptions, updateConfigs } from "../../config"
 import { useAppState } from "../../hooks/AppContext"
 import { useBoundingBoxes } from "../../hooks/useBoundingBoxes"
 import { useMapState } from "../../hooks/useMapState"
@@ -12,10 +12,10 @@ import SceneCard from "../scenecard/SceneCard"
 import DeckGlOverlay from "./DeckOverlay"
 import { APIProvider, MapCameraChangedEvent } from "@vis.gl/react-google-maps"
 import { Map } from "@vis.gl/react-google-maps"
-import { useCallback } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Popup } from "react-map-gl"
 
-export default function MapComponent() {
+export function MapComponent() {
   const { isPinning, pinnedPoints, setPinnedPoints, handlePinPoint } = usePinning()
   const { state, dispatch } = useAppState()
   const { handleFetchBoundingBoxes, handleFindSimilar } = useBoundingBoxes()
@@ -54,21 +54,21 @@ export default function MapComponent() {
   const layers =
     state.mode.type == "image"
       ? createMapLayers(
-        state.visibleBoundingBoxes
-          ? selectByIndices(state.mode.targetBoundingBoxes, state.visibleBoundingBoxes)
-          : state.mode.targetBoundingBoxes,
-        state.visibleBoundingBoxes
-          ? selectByIndices(state.resultBoundingBoxes, state.visibleBoundingBoxes)
-          : state.resultBoundingBoxes,
-        viewState.zoom,
-      )
+          state.visibleBoundingBoxes
+            ? selectByIndices(state.mode.targetBoundingBoxes, state.visibleBoundingBoxes)
+            : state.mode.targetBoundingBoxes,
+          state.visibleBoundingBoxes
+            ? selectByIndices(state.resultBoundingBoxes, state.visibleBoundingBoxes)
+            : state.resultBoundingBoxes,
+          viewState.zoom,
+        )
       : createMapLayers(
-        [],
-        state.visibleBoundingBoxes
-          ? selectByIndices(state.resultBoundingBoxes, state.visibleBoundingBoxes)
-          : state.resultBoundingBoxes,
-        viewState.zoom,
-      )
+          [],
+          state.visibleBoundingBoxes
+            ? selectByIndices(state.resultBoundingBoxes, state.visibleBoundingBoxes)
+            : state.resultBoundingBoxes,
+          viewState.zoom,
+        )
 
   const handleSearchAndCancelPin = useCallback(() => {
     handleFindSimilar()
@@ -84,8 +84,6 @@ export default function MapComponent() {
   const handleSetViewState = useCallback(
     (ev: MapCameraChangedEvent) => {
       setViewState(ev.detail)
-      dispatch({ type: "SET_TEXT", payload: "" })
-      dispatch({ type: "SET_RESULT_BOXES", payload: [] })
     },
     [dispatch, setViewState],
   )
@@ -129,4 +127,22 @@ export default function MapComponent() {
       </Map>
     </APIProvider>
   )
+}
+
+export default function App() {
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  useEffect(() => {
+    async function loadConfig() {
+      await updateConfigs()
+      setIsLoaded(true)
+    }
+    loadConfig()
+  }, [])
+
+  if (!isLoaded) {
+    return <div>Loading...</div>
+  }
+
+  return <MapComponent />
 }

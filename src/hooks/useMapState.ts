@@ -5,7 +5,7 @@ import { useState } from "react"
 export const useMapState = () => {
   const INITIAL_VIEW_STATE: MapCameraProps = {
     center: { lat: cali_config.initial_lat, lng: cali_config.initial_lon },
-    zoom: 10,
+    zoom: 12,
   }
 
   const [viewState, setViewState] = useState<MapCameraProps>(INITIAL_VIEW_STATE)

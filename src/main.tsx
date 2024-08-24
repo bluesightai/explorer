@@ -1,4 +1,4 @@
-import MapComponent from "./components/MainMap/MapComponent.tsx"
+import MapComponent from "./components/MainMap/MapComponent"
 import { AppProvider } from "./hooks/AppContext"
 import "./main.scss"
 import React from "react"
