@@ -21,6 +21,24 @@ export type Database = {
         }
         Relationships: []
       }
+      clip_boxes_gcp: {
+        Row: {
+          embedding: string | null
+          id: number
+          location: unknown
+        }
+        Insert: {
+          embedding?: string | null
+          id?: number
+          location: unknown
+        }
+        Update: {
+          embedding?: string | null
+          id?: number
+          location?: unknown
+        }
+        Relationships: []
+      }
       clip_boxes_old: {
         Row: {
           embedding: string | null
@@ -395,6 +413,17 @@ export type Database = {
           size?: number
         }
         Returns: string
+      }
+      get_bounding_box: {
+        Args: {
+          table_name?: string
+        }
+        Returns: {
+          min_lon: number
+          min_lat: number
+          max_lon: number
+          max_lat: number
+        }[]
       }
       get_bounding_box_coverage_for_clip: {
         Args: Record<PropertyKey, never>
