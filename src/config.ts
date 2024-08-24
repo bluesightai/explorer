@@ -141,7 +141,8 @@ export const ukraine_config: Config = {
 
 export const cali_config: Config = {
   name: "Bay Area",
-  style_id: "cm05fx10r00im01rb7h3haudx",
+  // style_id: "cm05fx10r00im01rb7h3haudx",
+  style_id: "clip_boxes_gcp",
 
   table_name: "clip_boxes_gcp",
   initial_lat: 37.53126258079075,

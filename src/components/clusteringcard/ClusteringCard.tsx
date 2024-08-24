@@ -1,7 +1,8 @@
 import { useAppState } from "../../hooks/AppContext"
 import { SimilarBox } from "../../hooks/supabaseTypes"
 import { useBoundingBoxes } from "../../hooks/useBoundingBoxes"
-import { useNaipImagery } from "../../hooks/useNaipImagery"
+// import { useNaipImagery } from "../../hooks/useNaipImagery"
+import { useSupabaseImagery } from "../../hooks/useSupabaseImagery"
 import ExpandableGrid from "../scenecard/ExpandableGrid"
 import "./ClusteringCard.scss"
 import React, { useEffect, useState } from "react"
@@ -73,7 +74,8 @@ function clusterBoundingBoxes(boxes: SimilarBox[]): SimilarBox[][] {
 
 const ClusteringCard: React.FC<ClusteringCardProps> = ({ onTileClick }) => {
   const { state, dispatch } = useAppState()
-  const { fetchNaipImage } = useNaipImagery(state.config.style_id)
+  // const { fetchNaipImage } = useNaipImagery(state.config.style_id)
+  const { fetchSupabaseImage } = useSupabaseImagery(state.config.style_id)
   const { handleFindSimilar } = useBoundingBoxes()
   const [expandedCluster, setExpandedCluster] = useState<number | null>(null)
   const [minClusterSize, setMinClusterSize] = useState<number>(1)
@@ -159,7 +161,7 @@ const ClusteringCard: React.FC<ClusteringCardProps> = ({ onTileClick }) => {
                 setNegativeId={setNegativeId}
                 boxes={cluster}
                 count={cluster.length}
-                fetchImage={fetchNaipImage}
+                fetchImage={fetchSupabaseImage}
                 onTileClick={onTileClick}
                 showDislikeButton={false}
               />

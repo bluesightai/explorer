@@ -99,5 +99,24 @@ export const useSupabase = () => {
     })
   }
 
-  return { fetchBoundingBoxes, supabase, fetchClipBoxes, findSimilarClip, getBoundingBox }
+  const loadImageFromSupabase = async (tableName: string, boundingBox: BoundingBoxResponse): Promise<string> => {
+    try {
+      const { data, error } = await supabase.storage.from(tableName).createSignedUrl(`${boundingBox.id}.png`, 60) // 60 seconds expiration
+
+      if (error) {
+        throw error
+      }
+
+      if (!data || !data.signedUrl) {
+        throw new Error("No signed URL returned")
+      }
+
+      return data.signedUrl
+    } catch (error) {
+      console.error("Error loading image from Supabase:", error)
+      throw error
+    }
+  }
+
+  return { fetchBoundingBoxes, supabase, fetchClipBoxes, findSimilarClip, getBoundingBox, loadImageFromSupabase }
 }

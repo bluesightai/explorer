@@ -1,13 +1,15 @@
 import { useAppState } from "../../hooks/AppContext"
 import { useBoundingBoxes } from "../../hooks/useBoundingBoxes"
-import { useNaipImagery } from "../../hooks/useNaipImagery"
-// import AreaSelector from "./AreaSelector"
+import { useSupabaseImagery } from "../../hooks/useSupabaseImagery"
 import Carousel from "./Carousel"
 import ExpandableGrid from "./ExpandableGrid"
 import FindButton from "./FindSimillarButton"
 import "./SceneCard.scss"
 import Slider from "./Slider"
 import React, { useEffect } from "react"
+
+// import { useNaipImagery } from "../../hooks/useNaipImagery"
+// import AreaSelector from "./AreaSelector"
 
 interface SceneCardProps {
   onTileClick: (boundingBox: [number, number, number, number]) => void
@@ -17,7 +19,8 @@ interface SceneCardProps {
 
 const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch }) => {
   const { state, dispatch } = useAppState()
-  const { fetchNaipImage } = useNaipImagery(state.config.style_id)
+  // const { fetchNaipImage } = useNaipImagery(state.config.style_id)
+  const { fetchSupabaseImage } = useSupabaseImagery(state.config.style_id)
   const { handleFindSimilar } = useBoundingBoxes()
 
   useEffect(() => {
@@ -70,7 +73,7 @@ const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch })
 
   return (
     <div className="scene-card">
-      <Carousel removeBox={removeBox} onTileClick={onTileClick} mode={state.mode} fetchImage={fetchNaipImage} />
+      <Carousel removeBox={removeBox} onTileClick={onTileClick} mode={state.mode} fetchImage={fetchSupabaseImage} />
       {state.resultBoundingBoxes.length > 0 ? (
         <Slider
           min={1}
@@ -90,7 +93,7 @@ const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch })
           onTileClick={onTileClick}
           boxes={state.resultBoundingBoxes}
           count={state.resultBoundingBoxes.length}
-          fetchImage={fetchNaipImage}
+          fetchImage={fetchSupabaseImage}
         />
       )}
 
