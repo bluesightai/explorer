@@ -29,7 +29,7 @@ const LazyImage: React.FC<LazyImageProps> = ({ boxData, fetchImage, alt }) => {
     return () => {
       isMounted = false
     }
-  }, [boxData, fetchImage])
+  }, [boxData.id])
 
   return imageUrl ? <img src={imageUrl} alt={alt} /> : <div className="image-placeholder" />
 }
