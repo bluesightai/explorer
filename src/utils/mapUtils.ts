@@ -27,3 +27,7 @@ export const calculateCenterAndZoom = (bbox: [number, number, number, number]) =
     transitionDuration: 1000,
   }
 }
+
+export function selectByIndices<T extends { id: number }>(list: T[], indices: number[]): T[] {
+  return list.filter((item) => indices.includes(item.id))
+}

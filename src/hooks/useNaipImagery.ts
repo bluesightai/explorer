@@ -17,8 +17,6 @@ export const useNaipImagery = (_style_id: string) => {
 
       const url = `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/[${bbox}]/256x256?access_token=pk.eyJ1Ijoic3p5bW9uem15c2xvbnkiLCJhIjoiY2x5eDYxb2JqMWxkaTJrczZjZ3Nhd2hrZSJ9.jpzoW1-5ILOP-hIWtXBPxA`
 
-      console.log("URl is ")
-
       return url
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unknown error occurred")
