@@ -1,4 +1,4 @@
-import { Config, cali_config } from "../../../config"
+import { Config, cali_config, la_config } from "../../../config"
 import { useAppState } from "../../../hooks/AppContext"
 import "./Dropdown.scss"
 import { useEffect, useRef, useState } from "react"
@@ -41,6 +41,7 @@ const DropDown = ({ setViewState }: { setViewState: (config: Config) => void }) 
         <ul className="styled-select__options">
           {/* <li onClick={() => handleConfigChange(ukraine_config)}>{ukraine_config.name}</li> */}
           <li onClick={() => handleConfigChange(cali_config)}>{cali_config.name}</li>
+          <li onClick={() => handleConfigChange(la_config)}>{la_config.name}</li>
         </ul>
       )}
     </div>

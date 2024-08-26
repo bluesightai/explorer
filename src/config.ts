@@ -156,6 +156,15 @@ export const cali_config: Config = {
   ],
 }
 
+export const la_config: Config = {
+  name: "LA port",
+  style_id: "clip_boxes_gcp_la",
+  table_name: "clip_boxes_gcp_la",
+  initial_lat: 0,
+  initial_lon: 0,
+  polygon: [],
+}
+
 const updateConfigCoordinates = async (config: Config) => {
   const supabase = useSupabase()
   const data = await supabase.getBoundingBox(config.table_name)
@@ -174,4 +183,5 @@ const updateConfigCoordinates = async (config: Config) => {
 
 export const updateConfigs = async () => {
   await updateConfigCoordinates(cali_config)
+  await updateConfigCoordinates(la_config)
 }
