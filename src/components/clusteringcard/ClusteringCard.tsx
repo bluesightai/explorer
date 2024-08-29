@@ -84,13 +84,7 @@ const ClusteringCard: React.FC<ClusteringCardProps> = ({ onTileClick }) => {
     if (!state.isRestoringSearch) {
       handleFindSimilar()
     }
-  }, [
-    state.areaId,
-    state.mode.type,
-    state.negativeIDs,
-    state.isRestoringSearch,
-    state.mode.type === "text" ? state.mode.query : state.mode.targetBoundingBoxes,
-  ])
+  }, [state.areaId, state.mode.type, state.negativeIDs, state.isRestoringSearch])
 
   const clusters = clusterBoundingBoxes(state.resultBoundingBoxes)
   const filteredClusters = clusters.filter((cluster) => cluster.length >= minClusterSize)
