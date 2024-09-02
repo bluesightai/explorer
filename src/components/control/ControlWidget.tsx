@@ -1,23 +1,24 @@
-import { useAppState } from "../../hooks/AppContext"
+import HelpButton from "../HelpTour"
+import { MAIN_TOUR_COOKIE_NAME } from "../MainMap/MapApp"
 import "./ControlWidget.scss"
+import Cookies from "js-cookie"
 
-const ControlWidget = () => {
-  const { dispatch } = useAppState()
-
-  const handleStartTour = () => {
-    dispatch({ type: "SET_RUN_TOUR", payload: true })
+function ControlWidget({ setRunTour }: { setRunTour: (payload: boolean) => void }) {
+  const resetTour = () => {
+    Cookies.remove(MAIN_TOUR_COOKIE_NAME)
+    setRunTour(true)
   }
 
   return (
     <div className="left-toolbar">
-      <div className="logo">
-        <a href="https://bluesight.ai/" className="logo-full" target="_blank" rel="noopener noreferrer">
-          <span className="logo-dot"></span> <span className="logo-name">Bluesight.ai</span>
-        </a>
+      <div className="logo-and-help">
+        <div className="logo">
+          <a href="https://bluesight.ai/" className="logo-full" target="_blank" rel="noopener noreferrer">
+            <span className="logo-dot"></span> <span className="logo-name">Bluesight.ai</span>
+          </a>
+        </div>
+        <HelpButton onClick={resetTour} />
       </div>
-      <button onClick={handleStartTour} className="start-tour-button">
-        Start Tour
-      </button>
     </div>
   )
 }

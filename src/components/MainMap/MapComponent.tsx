@@ -8,14 +8,14 @@ import { calculateCenterAndZoom, isPointInCalifornia } from "../../utils/mapUtil
 import ControlWidget from "../control/ControlWidget"
 import SearchBox from "../input/SearchBox"
 import { createMapLayers } from "../layers/layers"
-import SceneCard from "../scenecard/SceneCard"
+import SceneCard from "../scenecard/SceneCardWithTour"
 import DeckGlOverlay from "./DeckOverlay"
 import { APIProvider, MapCameraChangedEvent } from "@vis.gl/react-google-maps"
 import { Map } from "@vis.gl/react-google-maps"
 import { useCallback } from "react"
 import { Popup } from "react-map-gl"
 
-export function MapComponent() {
+export function MapComponent({ setRunTour }: { setRunTour: (payload: boolean) => void }) {
   const { isPinning, pinnedPoints, setPinnedPoints, handlePinPoint } = usePinning()
   const { state, dispatch } = useAppState()
   const { handleFetchBoundingBoxes, handleFindSimilar } = useBoundingBoxes()
@@ -94,7 +94,7 @@ export function MapComponent() {
           </Popup>
         )}
 
-        <ControlWidget />
+        <ControlWidget setRunTour={setRunTour} />
 
         <SceneCard
           onTileClick={handleTileClick}

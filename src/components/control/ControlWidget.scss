@@ -12,10 +12,15 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   width: 240px; // Adjust as needed
 
+  .logo-and-help {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   .logo {
     display: flex;
     align-items: center;
-    margin-bottom: var(--spacing-s);
 
     &-full {
       display: flex;
@@ -39,30 +44,6 @@
       text-decoration: none;
     }
   }
-
-  .start-tour-button {
-    width: 100%;
-    background-color: var(--blue);
-    color: var(--white);
-    border: none;
-    padding: var(--spacing-xs) var(--spacing-s);
-    border-radius: var(--border-radius);
-    font-size: var(--font-size);
-    font-weight: 600;
-    cursor: pointer;
-    transition:
-      background-color 0.3s ease,
-      transform 0.1s ease;
-
-    &:hover {
-      background-color: var(--dark-blue, #0056b3); // Fallback color if --dark-blue is not defined
-      filter: brightness(90%); // Alternative way to darken the button on hover
-    }
-
-    &:active {
-      transform: translateY(1px);
-    }
-  }
 }
 
 // Media query for responsive layout
@@ -75,7 +56,7 @@
     justify-content: space-between;
     align-items: center;
 
-    .logo {
+    .logo-and-help {
       margin-bottom: 0;
     }
 

@@ -1,7 +1,6 @@
 import { Config, cali_config } from "../config"
 import { BoundingBoxResponse, SimilarBox } from "./supabaseTypes"
 import React, { Dispatch, createContext, useContext, useReducer } from "react"
-import { Step } from "react-joyride"
 
 // Define the possible modes with their associated data
 export type Mode = { type: "text"; query: string } | { type: "image"; targetBoundingBoxes: BoundingBoxResponse[] }
@@ -16,11 +15,6 @@ export interface AppState {
   negativeIDs: number[]
   resultBoundingBoxes: SimilarBox[]
   visibleBoundingBoxes: number[] | null
-  tour: {
-    steps: Step[]
-    runTour: boolean
-    stepIndex: number
-  }
 }
 
 // Define all possible action types
@@ -45,9 +39,6 @@ export type AppAction =
     }
   | { type: "SET_LOADING"; payload: boolean }
   | { type: "SET_VISIBLE_BOXES"; payload: number[] | null }
-  | { type: "SET_TOUR_STEPS"; payload: Step[] }
-  | { type: "SET_RUN_TOUR"; payload: boolean }
-  | { type: "SET_TOUR_STEP_INDEX"; payload: number }
 
 // Initial state
 const initialState: AppState = {
@@ -63,11 +54,6 @@ const initialState: AppState = {
     query: "",
   },
   visibleBoundingBoxes: [],
-  tour: {
-    steps: [],
-    runTour: false,
-    stepIndex: 0,
-  },
 }
 
 // Reducer function
@@ -111,12 +97,6 @@ function appReducer(state: AppState, action: AppAction): AppState {
       return { ...state, isLoading: action.payload }
     case "SET_VISIBLE_BOXES":
       return { ...state, visibleBoundingBoxes: action.payload }
-    case "SET_TOUR_STEPS":
-      return { ...state, tour: { ...state.tour, steps: action.payload } }
-    case "SET_RUN_TOUR":
-      return { ...state, tour: { ...state.tour, runTour: action.payload } }
-    case "SET_TOUR_STEP_INDEX":
-      return { ...state, tour: { ...state.tour, stepIndex: action.payload } }
     default:
       return state
   }
