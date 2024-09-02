@@ -15,7 +15,7 @@ import { Map } from "@vis.gl/react-google-maps"
 import { useCallback } from "react"
 import { Popup } from "react-map-gl"
 
-export function MapComponent({ setRunTour }: { setRunTour: (payload: boolean) => void }) {
+export function MapComponent() {
   const { isPinning, pinnedPoints, setPinnedPoints, handlePinPoint } = usePinning()
   const { state, dispatch } = useAppState()
   const { handleFetchBoundingBoxes, handleFindSimilar } = useBoundingBoxes()
@@ -94,7 +94,7 @@ export function MapComponent({ setRunTour }: { setRunTour: (payload: boolean) =>
           </Popup>
         )}
 
-        <ControlWidget setRunTour={setRunTour} />
+        <ControlWidget />
 
         <SceneCard
           onTileClick={handleTileClick}

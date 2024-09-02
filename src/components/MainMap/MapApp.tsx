@@ -1,37 +1,35 @@
 import { updateConfigs } from "../../config"
+import { useAppState } from "../../hooks/AppContext"
 import MapComponent from "./MapComponent"
 import Cookies from "js-cookie"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect } from "react"
 import Joyride, { CallBackProps, EVENTS, STATUS, Step } from "react-joyride"
 
 export const MAIN_TOUR_COOKIE_NAME = "hasSeenTour"
 
-export default function App() {
-  const [isLoaded, setIsLoaded] = useState(false)
-  const [runTour, setRunTour] = useState(false)
-  const [steps, setSteps] = useState<Step[]>([])
+const initialSteps: Step[] = [
+  {
+    target: ".logo",
+    content: "This is the logo of our application.",
+    disableBeacon: true,
+  },
+  {
+    target: ".search-input",
+    content: "Use this search box to find locations.",
+  },
+]
 
-  const initialSteps: Step[] = [
-    {
-      target: ".logo",
-      content: "This is the logo of our application.",
-      disableBeacon: true,
-    },
-    {
-      target: ".search-input",
-      content: "Use this search box to find locations.",
-    },
-  ]
+export default function App() {
+  const { state, dispatch } = useAppState()
 
   useEffect(() => {
     async function loadConfig() {
       await updateConfigs()
-      setIsLoaded(true)
+      dispatch({ type: "SET_LOADING", payload: false })
 
       const hasSeenTour = Cookies.get(MAIN_TOUR_COOKIE_NAME)
       if (!hasSeenTour) {
-        setSteps(initialSteps)
-        setRunTour(true)
+        dispatch({ type: "SET_HELP_TOUR", payload: "first" })
       }
     }
     loadConfig()
@@ -41,31 +39,22 @@ export default function App() {
     const { status, type } = data
 
     if (type === EVENTS.TOUR_END && (status === STATUS.FINISHED || status === STATUS.SKIPPED)) {
-      setRunTour(false)
+      dispatch({ type: "SET_HELP_TOUR", payload: "off" })
       Cookies.set(MAIN_TOUR_COOKIE_NAME, "true", { expires: 365 })
     }
   }, [])
 
-  if (!isLoaded) {
-    return <div>Loading...</div>
-  }
-
   return (
     <>
       <Joyride
-        steps={steps}
-        run={runTour}
+        steps={initialSteps}
+        run={state.helpTour === "first"}
         continuous={true}
         showSkipButton={true}
         showProgress={true}
         callback={handleJoyrideCallback}
-        styles={{
-          options: {
-            zIndex: 10000,
-          },
-        }}
       />
-      <MapComponent setRunTour={(payload: boolean) => setRunTour(payload)} />
+      <MapComponent />
     </>
   )
 }

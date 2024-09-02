@@ -15,10 +15,9 @@ interface SceneCardProps {
   onTileClick: (boundingBox: [number, number, number, number]) => void
   handleCleanSearch: () => void
   handleFindSimilar: () => void
-  renderHelpButton: any
 }
 
-const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch, renderHelpButton }) => {
+const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch }) => {
   const { state, dispatch } = useAppState()
   // const { fetchNaipImage } = useNaipImagery(state.config.style_id)
   const { fetchSupabaseImage } = useSupabaseImagery(state.config.style_id)
@@ -74,7 +73,6 @@ const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch, r
 
   return (
     <div className="scene-card">
-      {renderHelpButton()}
       <Carousel removeBox={removeBox} onTileClick={onTileClick} mode={state.mode} fetchImage={fetchSupabaseImage} />
       {state.resultBoundingBoxes.length > 0 ? (
         <Slider

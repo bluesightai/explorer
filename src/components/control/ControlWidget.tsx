@@ -1,12 +1,17 @@
+import { useAppState } from "../../hooks/AppContext"
 import HelpButton from "../HelpTour"
 import { MAIN_TOUR_COOKIE_NAME } from "../MainMap/MapApp"
 import "./ControlWidget.scss"
 import Cookies from "js-cookie"
 
-function ControlWidget({ setRunTour }: { setRunTour: (payload: boolean) => void }) {
+function ControlWidget() {
+  const { state, dispatch } = useAppState()
+
   const resetTour = () => {
     Cookies.remove(MAIN_TOUR_COOKIE_NAME)
-    setRunTour(true)
+
+    const tourToStart = state.resultBoundingBoxes.length > 0 ? "second" : "first"
+    dispatch({ type: "SET_HELP_TOUR", payload: tourToStart })
   }
 
   return (

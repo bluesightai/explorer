@@ -5,6 +5,8 @@ import React, { Dispatch, createContext, useContext, useReducer } from "react"
 // Define the possible modes with their associated data
 export type Mode = { type: "text"; query: string } | { type: "image"; targetBoundingBoxes: BoundingBoxResponse[] }
 
+type HelpTour = "first" | "second" | "off"
+
 export interface AppState {
   config: Config
   mode: Mode
@@ -15,6 +17,7 @@ export interface AppState {
   negativeIDs: number[]
   resultBoundingBoxes: SimilarBox[]
   visibleBoundingBoxes: number[] | null
+  helpTour: HelpTour
 }
 
 // Define all possible action types
@@ -39,6 +42,7 @@ export type AppAction =
     }
   | { type: "SET_LOADING"; payload: boolean }
   | { type: "SET_VISIBLE_BOXES"; payload: number[] | null }
+  | { type: "SET_HELP_TOUR"; payload: HelpTour }
 
 // Initial state
 const initialState: AppState = {
@@ -54,6 +58,7 @@ const initialState: AppState = {
     query: "",
   },
   visibleBoundingBoxes: [],
+  helpTour: "off",
 }
 
 // Reducer function
@@ -97,6 +102,8 @@ function appReducer(state: AppState, action: AppAction): AppState {
       return { ...state, isLoading: action.payload }
     case "SET_VISIBLE_BOXES":
       return { ...state, visibleBoundingBoxes: action.payload }
+    case "SET_HELP_TOUR":
+      return { ...state, helpTour: action.payload }
     default:
       return state
   }

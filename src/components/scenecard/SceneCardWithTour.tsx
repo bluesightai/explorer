@@ -1,8 +1,7 @@
 import { useAppState } from "../../hooks/AppContext"
-import HelpButton from "../HelpTour"
 import SceneCard from "./SceneCard"
 import Cookies from "js-cookie"
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useEffect } from "react"
 import Joyride, { CallBackProps, EVENTS, STATUS, Step } from "react-joyride"
 
 const SCENE_TOUR_COOKIE_NAME = "hasSeenSceneTour"
@@ -14,9 +13,8 @@ interface SceneCardWrapperProps {
 }
 
 const SceneCardWrapper: React.FC<SceneCardWrapperProps> = (props) => {
-  const [runTour, setRunTour] = useState(false)
-  const [steps, setSteps] = useState<Step[]>([])
-  const haveResultBoxes = useAppState().state.resultBoundingBoxes.length > 0
+  const { state, dispatch } = useAppState()
+  const haveResultBoxes = state.resultBoundingBoxes.length > 0
 
   const sceneCardSteps: Step[] = [
     {
@@ -45,8 +43,7 @@ const SceneCardWrapper: React.FC<SceneCardWrapperProps> = (props) => {
   useEffect(() => {
     const hasSeenTour = Cookies.get(SCENE_TOUR_COOKIE_NAME)
     if (!hasSeenTour && haveResultBoxes) {
-      setSteps(sceneCardSteps)
-      setRunTour(true)
+      dispatch({ type: "SET_HELP_TOUR", payload: "second" })
     }
   }, [haveResultBoxes])
 
@@ -54,24 +51,16 @@ const SceneCardWrapper: React.FC<SceneCardWrapperProps> = (props) => {
     const { status, type } = data
 
     if (type === EVENTS.TOUR_END && (status === STATUS.FINISHED || status === STATUS.SKIPPED)) {
-      setRunTour(false)
+      dispatch({ type: "SET_HELP_TOUR", payload: "off" })
       Cookies.set(SCENE_TOUR_COOKIE_NAME, "true", { expires: 365 })
     }
-  }, [])
-
-  const renderHelpButton = () => <HelpButton onClick={handleHelpClick} className="scene-help-button" />
-
-  const handleHelpClick = useCallback(() => {
-    Cookies.remove(SCENE_TOUR_COOKIE_NAME)
-    setSteps(sceneCardSteps)
-    setRunTour(true)
   }, [])
 
   return (
     <>
       <Joyride
-        steps={steps}
-        run={runTour}
+        steps={sceneCardSteps}
+        run={state.helpTour === "second"}
         continuous={true}
         showSkipButton={true}
         showProgress={true}
@@ -83,7 +72,7 @@ const SceneCardWrapper: React.FC<SceneCardWrapperProps> = (props) => {
         }}
       />
       <div className="scene-card-container">
-        <SceneCard {...props} renderHelpButton={renderHelpButton} />
+        <SceneCard {...props} />
       </div>
     </>
   )
