@@ -19,12 +19,6 @@ export const mapOptions = {
 export const GOOGLE_MAPS_API_KEY = "AIzaSyAuQYBLOs6UfgdRw7lliJ7ik1sVVWhbvM0"
 export const GOOGLE_MAP_ID = "41d48ce57cfb9b71"
 
-export const user_name = "szymonzmyslony"
-export const mapboxToken =
-  "pk.eyJ1Ijoic3p5bW9uem15c2xvbnkiLCJhIjoiY2x5eDYxb2JqMWxkaTJrczZjZ3Nhd2hrZSJ9.jpzoW1-5ILOP-hIWtXBPxA"
-
-export const get_style_url = (style_id: string) => `mapbox://styles/${user_name}/${style_id}`
-
 export const ukraine_config: Config = {
   style_id: "cm01n4thc00b701psg73r14ww",
   name: "Ukraine",
@@ -143,10 +137,9 @@ export const cali_config: Config = {
   name: "Bay Area",
   // style_id: "cm05fx10r00im01rb7h3haudx",
   style_id: "clip_boxes_gcp",
-
   table_name: "clip_boxes_gcp",
-  initial_lat: 37.53126258079075,
-  initial_lon: -122.0620083919965,
+  initial_lat: 37.760912,
+  initial_lon: -122.438506,
   polygon: [
     [-122.331390380859, 37.809783953011],
     [-122.32177734375, 37.809783953011],
@@ -183,5 +176,4 @@ const updateConfigCoordinates = async (config: Config) => {
 
 export const updateConfigs = async () => {
   await updateConfigCoordinates(cali_config)
-  await updateConfigCoordinates(la_config)
 }

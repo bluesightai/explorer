@@ -24,7 +24,7 @@ const SceneCardWrapper: React.FC<SceneCardWrapperProps> = (props) => {
     },
     {
       target: ".carousel",
-      content: "This carousel shows your selected areas or search results.",
+      content: "This carousel shows your selected areas or search results. Click to zoom in.",
     },
     {
       target: ".slider",
@@ -32,7 +32,7 @@ const SceneCardWrapper: React.FC<SceneCardWrapperProps> = (props) => {
     },
     {
       target: ".expandable-grid",
-      content: "This grid shows similar results based on your search.",
+      content: "This grid shows similar results based on your search. Click on a tile zoom in.",
     },
     {
       target: ".clear-button",
@@ -68,6 +68,7 @@ const SceneCardWrapper: React.FC<SceneCardWrapperProps> = (props) => {
         styles={{
           options: {
             zIndex: 10000,
+            primaryColor: "var(--blue)",
           },
         }}
       />

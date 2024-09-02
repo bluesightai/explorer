@@ -9,13 +9,12 @@ export const MAIN_TOUR_COOKIE_NAME = "hasSeenTour"
 
 const initialSteps: Step[] = [
   {
-    target: ".logo",
-    content: "This is the logo of our application.",
-    disableBeacon: true,
+    target: ".search-input",
+    content: "Type in what you are looking for, eg. solar panels, blue car",
   },
   {
-    target: ".search-input",
-    content: "Use this search box to find locations.",
+    target: ".pin-button",
+    content: "You can also use image search, click here and then click on anywhere on the map",
   },
 ]
 
@@ -53,6 +52,12 @@ export default function App() {
         showSkipButton={true}
         showProgress={true}
         callback={handleJoyrideCallback}
+        styles={{
+          options: {
+            zIndex: 10000,
+            primaryColor: "var(--blue)",
+          },
+        }}
       />
       <MapComponent />
     </>
