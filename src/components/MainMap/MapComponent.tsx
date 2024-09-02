@@ -52,16 +52,8 @@ export function MapComponent() {
 
   const layers =
     state.mode.type == "image"
-      ? createMapLayers(
-        state.mode.targetBoundingBoxes,
-        state.resultBoundingBoxes,
-        viewState.zoom,
-      )
-      : createMapLayers(
-        [],
-        state.resultBoundingBoxes,
-        viewState.zoom,
-      )
+      ? createMapLayers(state.mode.targetBoundingBoxes, state.resultBoundingBoxes, viewState.zoom)
+      : createMapLayers([], state.resultBoundingBoxes, viewState.zoom)
 
   const handleSearchAndCancelPin = useCallback(() => {
     handleFindSimilar()
@@ -83,7 +75,6 @@ export function MapComponent() {
 
   return (
     <APIProvider apiKey={GOOGLE_MAPS_API_KEY}>
-
       <Map //@ts-ignore
         options={mapOptions}
         mapTypeId={"satellite"}

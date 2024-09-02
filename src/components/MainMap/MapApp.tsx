@@ -1,97 +1,133 @@
-import { useCallback, useEffect, useState, useMemo } from "react"
 import { updateConfigs } from "../../config"
-import MapComponent from "./MapComponent"
-import Joyride, { CallBackProps, Step } from "react-joyride"
-import Cookies from 'js-cookie'
 import { useAppState } from "../../hooks/AppContext"
+import MapComponent from "./MapComponent"
+import Cookies from "js-cookie"
+import { useCallback, useEffect, useMemo, useState } from "react"
+import Joyride, { CallBackProps, STATUS, Step } from "react-joyride"
 
-const TOUR_COOKIE_NAME = 'hasSeenTour'
+const TOUR_COOKIE_NAME = "hasSeenTour"
 
 export default function App() {
-    const [isLoaded, setIsLoaded] = useState(false)
-    const { state, dispatch } = useAppState()
-    const isSceneCardVisible = state.resultBoundingBoxes.length > 0
+  const [isLoaded, setIsLoaded] = useState(false)
+  const { state, dispatch } = useAppState()
+  const { steps, runTour, stepIndex } = state.tour
+  const isSceneCardVisible = state.resultBoundingBoxes.length > 0
 
-    const steps: Step[] = useMemo(() => {
-        const baseSteps: Step[] = [
-            {
-                target: '.logo',
-                content: 'This is the logo of our application.',
-                disableBeacon: true,
-            },
-            {
-                target: '.search-input',
-                content: 'Use this search box to find locations.',
-            },
-        ]
+  const setRunTour = (setTo: boolean) => {
+    dispatch({ type: "SET_RUN_TOUR", payload: setTo })
+  }
+  const setStepIndex = (index: number) => {
+    dispatch({ type: "SET_TOUR_STEP_INDEX", payload: index })
+  }
+  const setSteps = (newSteps: Step[]) => {
+    dispatch({ type: "SET_TOUR_STEPS", payload: newSteps })
+  }
 
-        if (isSceneCardVisible) {
-            baseSteps.push({
-                target: '.scene-card',
-                content: 'This is scene card with results',
-            })
-        }
+  const updatedSteps: Step[] = useMemo(() => {
+    const baseSteps: Step[] = [
+      {
+        target: ".logo",
+        content: "This is the logo of our application.",
+        disableBeacon: true,
+      },
+      {
+        target: ".search-input",
+        content: "Use this search box to find locations.",
+      },
+    ]
 
-        return baseSteps
-    }, [isSceneCardVisible])
-
-    const handleJoyrideCallback = useCallback((data: CallBackProps) => {
-        const { status, action, index } = data
-        if (status === 'finished' || status === 'skipped') {
-            dispatch({ type: "SET_RUN_TOUR", payload: false })
-            // Only set the cookie if the tour wasn't manually triggered
-            if (action !== "reset") {
-                Cookies.set(TOUR_COOKIE_NAME, 'true', { expires: 365 }) // Cookie expires in 1 year
-            }
-        } else if (status === 'running' && isSceneCardVisible && index === steps.length - 1) {
-            // If the scene card becomes visible during the tour, update the steps
-            dispatch({ type: "SET_STEPS", payload: steps })
-        }
-    }, [dispatch, isSceneCardVisible, steps])
-
-    useEffect(() => {
-        async function loadConfig() {
-            await updateConfigs()
-            setIsLoaded(true)
-
-            // Check if the user has seen the tour before
-            const hasSeenTour = Cookies.get(TOUR_COOKIE_NAME)
-
-            if (!hasSeenTour) {
-                console.log("Scheduling setRunTour")
-                setTimeout(() => {
-                    console.log("Calling setRunTour")
-                    dispatch({ type: "SET_RUN_TOUR", payload: true })
-                }, 500)
-            }
-        }
-        loadConfig()
-    }, [dispatch])
-
-    useEffect(() => {
-        dispatch({ type: "SET_STEPS", payload: steps })
-    }, [steps, dispatch])
-
-    if (!isLoaded) {
-        return <div>Loading...</div>
+    if (isSceneCardVisible) {
+      baseSteps.push({
+        target: ".scene-card",
+        content: "This is scene card with results",
+      })
     }
 
-    return (
-        <>
-            <Joyride
-                steps={steps}
-                run={state.runTour}
-                continuous={true}
-                showSkipButton={true}
-                showProgress={true}
-                callback={handleJoyrideCallback}
-                styles={{
-                    options: {
-                        zIndex: 10000,
-                    },
-                }}
-            />
-            <MapComponent />
-        </>
-    )
+    return baseSteps
+  }, [isSceneCardVisible])
+
+  useEffect(() => {
+    setSteps(updatedSteps)
+  }, [updatedSteps])
+
+  const handleJoyrideCallback = useCallback(
+    (data: CallBackProps) => {
+      const { action, index, status, type } = data
+
+      console.log("Joyride callback:", { action, index, status, type, currentStepIndex: stepIndex })
+
+      if (action === "next") {
+        const nextIndex = stepIndex + 1
+        console.log("Moving to next step:", nextIndex)
+        setStepIndex(nextIndex)
+      } else if (action === "prev") {
+        const prevIndex = Math.max(stepIndex - 1, 0)
+        console.log("Moving to previous step:", prevIndex)
+        setStepIndex(prevIndex)
+      } else if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
+        console.log("Tour finished or skipped")
+        setRunTour(false)
+        setStepIndex(0)
+        Cookies.set(TOUR_COOKIE_NAME, "true", { expires: 365 })
+      }
+
+      if (type === "step:after" && index === steps.length - 1) {
+        console.log("Last step reached")
+        setRunTour(false)
+        setStepIndex(0)
+      }
+
+      if (action === "reset" && isSceneCardVisible && steps.length > 2) {
+        console.log("Resetting tour to scene card step")
+        setStepIndex(2) // Start from the scene card step
+        setRunTour(true)
+      }
+    },
+    [isSceneCardVisible, steps.length],
+  )
+
+  useEffect(() => {
+    async function loadConfig() {
+      await updateConfigs()
+      setIsLoaded(true)
+
+      const hasSeenTour = Cookies.get(TOUR_COOKIE_NAME)
+      if (!hasSeenTour) {
+        setRunTour(true)
+      }
+    }
+    loadConfig()
+  }, [setRunTour])
+
+  useEffect(() => {
+    if (isSceneCardVisible && !runTour && steps.length > 2) {
+      setStepIndex(2)
+      setRunTour(true)
+    }
+  }, [isSceneCardVisible, steps.length, runTour, setStepIndex, setRunTour])
+
+  if (!isLoaded) {
+    return <div>Loading...</div>
+  }
+  console.log("Current step index:", stepIndex)
+
+  return (
+    <>
+      <Joyride
+        steps={steps}
+        run={runTour}
+        stepIndex={stepIndex}
+        continuous={true}
+        showSkipButton={true}
+        showProgress={true}
+        callback={handleJoyrideCallback}
+        styles={{
+          options: {
+            zIndex: 10000,
+          },
+        }}
+      />
+      <MapComponent />
+    </>
+  )
 }

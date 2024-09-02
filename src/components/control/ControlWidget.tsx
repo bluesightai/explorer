@@ -15,10 +15,7 @@ const ControlWidget = () => {
           <span className="logo-dot"></span> <span className="logo-name">Bluesight.ai</span>
         </a>
       </div>
-      <button
-        onClick={handleStartTour}
-        className="start-tour-button"
-      >
+      <button onClick={handleStartTour} className="start-tour-button">
         Start Tour
       </button>
     </div>

@@ -16,8 +16,11 @@ export interface AppState {
   negativeIDs: number[]
   resultBoundingBoxes: SimilarBox[]
   visibleBoundingBoxes: number[] | null
-  runTour: boolean
-  steps: Step[]
+  tour: {
+    steps: Step[]
+    runTour: boolean
+    stepIndex: number
+  }
 }
 
 // Define all possible action types
@@ -31,19 +34,20 @@ export type AppAction =
   | { type: "SET_NEGATIVE_IDS"; payload: number[] }
   | { type: "FINISH_RESTORE_SEARCH" }
   | {
-    type: "RESTORE_SEARCH"
-    payload: {
-      negativeIDs: number[]
-      targetBoundingBoxes: BoundingBoxResponse[]
-      resultBoundingBoxes: SimilarBox[]
-      areaId: number
-      sliderValue: number
+      type: "RESTORE_SEARCH"
+      payload: {
+        negativeIDs: number[]
+        targetBoundingBoxes: BoundingBoxResponse[]
+        resultBoundingBoxes: SimilarBox[]
+        areaId: number
+        sliderValue: number
+      }
     }
-  }
   | { type: "SET_LOADING"; payload: boolean }
   | { type: "SET_VISIBLE_BOXES"; payload: number[] | null }
+  | { type: "SET_TOUR_STEPS"; payload: Step[] }
   | { type: "SET_RUN_TOUR"; payload: boolean }
-  | { type: "SET_STEPS"; payload: Step[] }
+  | { type: "SET_TOUR_STEP_INDEX"; payload: number }
 
 // Initial state
 const initialState: AppState = {
@@ -59,8 +63,11 @@ const initialState: AppState = {
     query: "",
   },
   visibleBoundingBoxes: [],
-  runTour: false,
-  steps: [],
+  tour: {
+    steps: [],
+    runTour: false,
+    stepIndex: 0,
+  },
 }
 
 // Reducer function
@@ -104,10 +111,12 @@ function appReducer(state: AppState, action: AppAction): AppState {
       return { ...state, isLoading: action.payload }
     case "SET_VISIBLE_BOXES":
       return { ...state, visibleBoundingBoxes: action.payload }
+    case "SET_TOUR_STEPS":
+      return { ...state, tour: { ...state.tour, steps: action.payload } }
     case "SET_RUN_TOUR":
-      return { ...state, runTour: action.payload }
-    case "SET_STEPS":
-      return { ...state, steps: action.payload }
+      return { ...state, tour: { ...state.tour, runTour: action.payload } }
+    case "SET_TOUR_STEP_INDEX":
+      return { ...state, tour: { ...state.tour, stepIndex: action.payload } }
     default:
       return state
   }
