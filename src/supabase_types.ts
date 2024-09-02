@@ -1,4 +1,10 @@
-export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
 
 export type Database = {
   public: {
@@ -38,6 +44,154 @@ export type Database = {
           location?: unknown
         }
         Relationships: []
+      }
+      clip_boxes_gcp_bay: {
+        Row: {
+          embedding: string | null
+          id: number
+          location: unknown
+        }
+        Insert: {
+          embedding?: string | null
+          id?: number
+          location: unknown
+        }
+        Update: {
+          embedding?: string | null
+          id?: number
+          location?: unknown
+        }
+        Relationships: []
+      }
+      clip_boxes_gcp_houston: {
+        Row: {
+          embedding: string | null
+          id: number
+          location: unknown
+        }
+        Insert: {
+          embedding?: string | null
+          id?: number
+          location: unknown
+        }
+        Update: {
+          embedding?: string | null
+          id?: number
+          location?: unknown
+        }
+        Relationships: []
+      }
+      clip_boxes_gcp_la: {
+        Row: {
+          embedding: string | null
+          id: number
+          location: unknown
+        }
+        Insert: {
+          embedding?: string | null
+          id?: number
+          location: unknown
+        }
+        Update: {
+          embedding?: string | null
+          id?: number
+          location?: unknown
+        }
+        Relationships: []
+      }
+      clip_boxes_gcp_masks: {
+        Row: {
+          embedding: string | null
+          id: number
+          location: unknown
+          parent_tile_id: number | null
+        }
+        Insert: {
+          embedding?: string | null
+          id?: number
+          location: unknown
+          parent_tile_id?: number | null
+        }
+        Update: {
+          embedding?: string | null
+          id?: number
+          location?: unknown
+          parent_tile_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clip_boxes_gcp_masks_parent_tile_id_fkey"
+            columns: ["parent_tile_id"]
+            isOneToOne: false
+            referencedRelation: "clip_boxes_gcp"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      clip_boxes_gcp_ny: {
+        Row: {
+          embedding: string | null
+          id: number
+          location: unknown
+        }
+        Insert: {
+          embedding?: string | null
+          id?: number
+          location: unknown
+        }
+        Update: {
+          embedding?: string | null
+          id?: number
+          location?: unknown
+        }
+        Relationships: []
+      }
+      clip_boxes_gcp_sf: {
+        Row: {
+          embedding: string | null
+          id: number
+          location: unknown
+        }
+        Insert: {
+          embedding?: string | null
+          id?: number
+          location: unknown
+        }
+        Update: {
+          embedding?: string | null
+          id?: number
+          location?: unknown
+        }
+        Relationships: []
+      }
+      clip_boxes_gcp_sf_masks: {
+        Row: {
+          embedding: string | null
+          id: number
+          location: unknown
+          parent_tile_id: number | null
+        }
+        Insert: {
+          embedding?: string | null
+          id?: number
+          location: unknown
+          parent_tile_id?: number | null
+        }
+        Update: {
+          embedding?: string | null
+          id?: number
+          location?: unknown
+          parent_tile_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clip_boxes_gcp_sf_masks_parent_tile_id_fkey"
+            columns: ["parent_tile_id"]
+            isOneToOne: false
+            referencedRelation: "clip_boxes_gcp_sf"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       clip_boxes_old: {
         Row: {
@@ -542,6 +696,39 @@ export type Database = {
           max_lon: number
         }[]
       }
+      search_within_using_text:
+        | {
+            Args: {
+              query_embedding: string
+              k: number
+              table_name: string
+              search_within?: number[]
+            }
+            Returns: {
+              id: number
+              similarity: number
+              min_lat: number
+              min_lon: number
+              max_lat: number
+              max_lon: number
+            }[]
+          }
+        | {
+            Args: {
+              table_name: string
+              query_text: string
+              k: number
+              search_within?: number[]
+            }
+            Returns: {
+              id: number
+              similarity: number
+              min_lat: number
+              min_lon: number
+              max_lat: number
+              max_lon: number
+            }[]
+          }
       update_search_boxes_area: {
         Args: {
           box_ids: number[]
@@ -563,7 +750,9 @@ export type Database = {
 type PublicSchema = Database[Extract<keyof Database, "public">]
 
 export type Tables<
-  PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] & PublicSchema["Views"]) | { schema: keyof Database },
+  PublicTableNameOrOptions extends
+    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
+    | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
         Database[PublicTableNameOrOptions["schema"]]["Views"])
@@ -575,8 +764,10 @@ export type Tables<
     }
     ? R
     : never
-  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] & PublicSchema["Views"])
-    ? (PublicSchema["Tables"] & PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
+        PublicSchema["Views"])
+    ? (PublicSchema["Tables"] &
+        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
         Row: infer R
       }
       ? R
@@ -584,7 +775,9 @@ export type Tables<
     : never
 
 export type TablesInsert<
-  PublicTableNameOrOptions extends keyof PublicSchema["Tables"] | { schema: keyof Database },
+  PublicTableNameOrOptions extends
+    | keyof PublicSchema["Tables"]
+    | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
     : never = never,
@@ -603,7 +796,9 @@ export type TablesInsert<
     : never
 
 export type TablesUpdate<
-  PublicTableNameOrOptions extends keyof PublicSchema["Tables"] | { schema: keyof Database },
+  PublicTableNameOrOptions extends
+    | keyof PublicSchema["Tables"]
+    | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
     : never = never,
@@ -622,7 +817,9 @@ export type TablesUpdate<
     : never
 
 export type Enums<
-  PublicEnumNameOrOptions extends keyof PublicSchema["Enums"] | { schema: keyof Database },
+  PublicEnumNameOrOptions extends
+    | keyof PublicSchema["Enums"]
+    | { schema: keyof Database },
   EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
     : never = never,

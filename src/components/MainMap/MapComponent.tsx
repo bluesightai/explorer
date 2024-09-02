@@ -1,10 +1,10 @@
-import { GOOGLE_MAPS_API_KEY, GOOGLE_MAP_ID, mapOptions, updateConfigs } from "../../config"
+import { GOOGLE_MAPS_API_KEY, GOOGLE_MAP_ID, mapOptions } from "../../config"
 import { useAppState } from "../../hooks/AppContext"
 import { useBoundingBoxes } from "../../hooks/useBoundingBoxes"
 import { useMapState } from "../../hooks/useMapState"
 import { usePinning } from "../../hooks/usePinning"
-import { calculateCenterAndZoom, isPointInCalifornia, selectByIndices } from "../../utils/mapUtils"
-import ClusteringCard from "../clusteringcard/ClusteringCard"
+import { calculateCenterAndZoom, isPointInCalifornia } from "../../utils/mapUtils"
+// import ClusteringCard from "../clusteringcard/ClusteringCard"
 import ControlWidget from "../control/ControlWidget"
 import SearchBox from "../input/SearchBox"
 import { createMapLayers } from "../layers/layers"
@@ -12,14 +12,13 @@ import SceneCard from "../scenecard/SceneCard"
 import DeckGlOverlay from "./DeckOverlay"
 import { APIProvider, MapCameraChangedEvent } from "@vis.gl/react-google-maps"
 import { Map } from "@vis.gl/react-google-maps"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback } from "react"
 import { Popup } from "react-map-gl"
 
 export function MapComponent() {
   const { isPinning, pinnedPoints, setPinnedPoints, handlePinPoint } = usePinning()
   const { state, dispatch } = useAppState()
   const { handleFetchBoundingBoxes, handleFindSimilar } = useBoundingBoxes()
-
   const { viewState, setViewState, popupInfo, setPopupInfo } = useMapState()
 
   const bounding_box = state.config.polygon
@@ -54,21 +53,15 @@ export function MapComponent() {
   const layers =
     state.mode.type == "image"
       ? createMapLayers(
-          state.visibleBoundingBoxes
-            ? selectByIndices(state.mode.targetBoundingBoxes, state.visibleBoundingBoxes)
-            : state.mode.targetBoundingBoxes,
-          state.visibleBoundingBoxes
-            ? selectByIndices(state.resultBoundingBoxes, state.visibleBoundingBoxes)
-            : state.resultBoundingBoxes,
-          viewState.zoom,
-        )
+        state.mode.targetBoundingBoxes,
+        state.resultBoundingBoxes,
+        viewState.zoom,
+      )
       : createMapLayers(
-          [],
-          state.visibleBoundingBoxes
-            ? selectByIndices(state.resultBoundingBoxes, state.visibleBoundingBoxes)
-            : state.resultBoundingBoxes,
-          viewState.zoom,
-        )
+        [],
+        state.resultBoundingBoxes,
+        viewState.zoom,
+      )
 
   const handleSearchAndCancelPin = useCallback(() => {
     handleFindSimilar()
@@ -90,6 +83,7 @@ export function MapComponent() {
 
   return (
     <APIProvider apiKey={GOOGLE_MAPS_API_KEY}>
+
       <Map //@ts-ignore
         options={mapOptions}
         mapTypeId={"satellite"}
@@ -117,32 +111,15 @@ export function MapComponent() {
           handleCleanSearch={handleCleanSearch}
         />
 
-        <ClusteringCard
+        {/* <ClusteringCard
           onTileClick={handleTileClick}
           handleCleanSearch={handleCleanSearch}
           handleFindSimilar={handleSearchAndCancelPin}
-        />
+        /> */}
 
         <SearchBox isPinning={isPinning} handlePinPoint={handlePinPoint} />
       </Map>
     </APIProvider>
   )
 }
-
-export default function App() {
-  const [isLoaded, setIsLoaded] = useState(false)
-
-  useEffect(() => {
-    async function loadConfig() {
-      await updateConfigs()
-      setIsLoaded(true)
-    }
-    loadConfig()
-  }, [])
-
-  if (!isLoaded) {
-    return <div>Loading...</div>
-  }
-
-  return <MapComponent />
-}
+export default MapComponent

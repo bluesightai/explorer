@@ -1,42 +1,86 @@
-.logo {
+.left-toolbar {
   position: absolute;
   top: var(--spacing-s);
   left: var(--spacing-s);
   z-index: 1000;
   display: flex;
-  row-gap: var(--spacing-s);
-  background-color: var(--white);
-  padding: var(--spacing-xs) var(--spacing-s);
-  border-radius: var(--border-radius);
-  font-size: var(--font-size);
-
-  &-full {
-    display: flex;
-    align-items: center;
-    column-gap: var(--spacing-s);
-    text-decoration: none;
-    font-weight: 600;
-    color: var(--blue);
-  }
-  &-dot {
-    display: inline-block;
-    width: var(--spacing-s);
-    height: var(--spacing-s);
-    border-radius: 50%;
-    background-color: var(--light-blue);
-  }
-
-  &-name {
-    text-decoration: none;
-  }
-}
-.control-widget {
-  position: absolute;
-  bottom: var(--spacing-s);
-  left: var(--spacing-s);
-  z-index: 1000;
-  display: flex;
   flex-direction: column;
   row-gap: var(--spacing-s);
-  // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  background-color: var(--white);
+  padding: var(--spacing-s);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  width: 240px; // Adjust as needed
+
+  .logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--spacing-s);
+
+    &-full {
+      display: flex;
+      align-items: center;
+      column-gap: var(--spacing-s);
+      text-decoration: none;
+      font-weight: 600;
+      color: var(--blue);
+      font-size: var(--font-size);
+    }
+
+    &-dot {
+      display: inline-block;
+      width: var(--spacing-s);
+      height: var(--spacing-s);
+      border-radius: 50%;
+      background-color: var(--light-blue);
+    }
+
+    &-name {
+      text-decoration: none;
+    }
+  }
+
+  .start-tour-button {
+    width: 100%;
+    background-color: var(--blue);
+    color: var(--white);
+    border: none;
+    padding: var(--spacing-xs) var(--spacing-s);
+    border-radius: var(--border-radius);
+    font-size: var(--font-size);
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      background-color 0.3s ease,
+      transform 0.1s ease;
+
+    &:hover {
+      background-color: var(--dark-blue, #0056b3); // Fallback color if --dark-blue is not defined
+      filter: brightness(90%); // Alternative way to darken the button on hover
+    }
+
+    &:active {
+      transform: translateY(1px);
+    }
+  }
+}
+
+// Media query for responsive layout
+@media (max-width: 768px) {
+  .left-toolbar {
+    top: auto;
+    bottom: var(--spacing-s);
+    width: calc(100% - var(--spacing-s) * 2);
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .logo {
+      margin-bottom: 0;
+    }
+
+    .start-tour-button {
+      width: auto;
+    }
+  }
 }

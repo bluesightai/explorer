@@ -1,6 +1,7 @@
 import { Config, cali_config } from "../config"
 import { BoundingBoxResponse, SimilarBox } from "./supabaseTypes"
 import React, { Dispatch, createContext, useContext, useReducer } from "react"
+import { Step } from "react-joyride"
 
 // Define the possible modes with their associated data
 export type Mode = { type: "text"; query: string } | { type: "image"; targetBoundingBoxes: BoundingBoxResponse[] }
@@ -15,6 +16,8 @@ export interface AppState {
   negativeIDs: number[]
   resultBoundingBoxes: SimilarBox[]
   visibleBoundingBoxes: number[] | null
+  runTour: boolean
+  steps: Step[]
 }
 
 // Define all possible action types
@@ -28,17 +31,19 @@ export type AppAction =
   | { type: "SET_NEGATIVE_IDS"; payload: number[] }
   | { type: "FINISH_RESTORE_SEARCH" }
   | {
-      type: "RESTORE_SEARCH"
-      payload: {
-        negativeIDs: number[]
-        targetBoundingBoxes: BoundingBoxResponse[]
-        resultBoundingBoxes: SimilarBox[]
-        areaId: number
-        sliderValue: number
-      }
+    type: "RESTORE_SEARCH"
+    payload: {
+      negativeIDs: number[]
+      targetBoundingBoxes: BoundingBoxResponse[]
+      resultBoundingBoxes: SimilarBox[]
+      areaId: number
+      sliderValue: number
     }
+  }
   | { type: "SET_LOADING"; payload: boolean }
   | { type: "SET_VISIBLE_BOXES"; payload: number[] | null }
+  | { type: "SET_RUN_TOUR"; payload: boolean }
+  | { type: "SET_STEPS"; payload: Step[] }
 
 // Initial state
 const initialState: AppState = {
@@ -54,6 +59,8 @@ const initialState: AppState = {
     query: "",
   },
   visibleBoundingBoxes: [],
+  runTour: false,
+  steps: [],
 }
 
 // Reducer function
@@ -97,6 +104,10 @@ function appReducer(state: AppState, action: AppAction): AppState {
       return { ...state, isLoading: action.payload }
     case "SET_VISIBLE_BOXES":
       return { ...state, visibleBoundingBoxes: action.payload }
+    case "SET_RUN_TOUR":
+      return { ...state, runTour: action.payload }
+    case "SET_STEPS":
+      return { ...state, steps: action.payload }
     default:
       return state
   }
