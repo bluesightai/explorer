@@ -25,6 +25,17 @@ async function retryOperation<T>(operation: () => Promise<T>): Promise<T> {
 }
 
 export const useSupabase = () => {
+  const saveQueryResult = async (query: string): Promise<void> => {
+    return retryOperation(async () => {
+      const { error } = await supabase.from("queries").insert({ query: query })
+
+      if (error) {
+        console.error("Error saving query result:", error)
+        throw error
+      }
+    })
+  }
+
   const fetchBoundingBoxes = async (table_name: string, lat: number, lon: number): Promise<BoundingBoxResponse[]> => {
     return retryOperation(async () => {
       const { data, error }: PostgrestResponse<BoundingBoxResponse> = await supabase.rpc("find_polygon", {
@@ -118,5 +129,13 @@ export const useSupabase = () => {
     }
   }
 
-  return { fetchBoundingBoxes, supabase, fetchClipBoxes, findSimilarClip, getBoundingBox, loadImageFromSupabase }
+  return {
+    saveQueryResult,
+    fetchBoundingBoxes,
+    supabase,
+    fetchClipBoxes,
+    findSimilarClip,
+    getBoundingBox,
+    loadImageFromSupabase,
+  }
 }

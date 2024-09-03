@@ -9,6 +9,8 @@ export const MAIN_TOUR_COOKIE_NAME = "hasSeenTour"
 
 const initialSteps: Step[] = [
   {
+    disableBeacon: true,
+
     target: ".search-input",
     content: "Type in what you are looking for, eg. solar panels, blue car",
   },

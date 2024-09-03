@@ -158,7 +158,54 @@ export type Database = {
         }
         Relationships: []
       }
+      clip_boxes_gcp_sf_corrupted: {
+        Row: {
+          embedding: string | null
+          id: number
+          location: unknown
+        }
+        Insert: {
+          embedding?: string | null
+          id?: number
+          location: unknown
+        }
+        Update: {
+          embedding?: string | null
+          id?: number
+          location?: unknown
+        }
+        Relationships: []
+      }
       clip_boxes_gcp_sf_masks: {
+        Row: {
+          embedding: string | null
+          id: number
+          location: unknown
+          parent_tile_id: number | null
+        }
+        Insert: {
+          embedding?: string | null
+          id?: number
+          location: unknown
+          parent_tile_id?: number | null
+        }
+        Update: {
+          embedding?: string | null
+          id?: number
+          location?: unknown
+          parent_tile_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clip_boxes_gcp_sf_masks_parent_tile_id_fkey1"
+            columns: ["parent_tile_id"]
+            isOneToOne: false
+            referencedRelation: "clip_boxes_gcp_sf_corrupted"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      clip_boxes_gcp_sf_masks_corrupted: {
         Row: {
           embedding: string | null
           id: number
@@ -182,7 +229,7 @@ export type Database = {
             foreignKeyName: "clip_boxes_gcp_sf_masks_parent_tile_id_fkey"
             columns: ["parent_tile_id"]
             isOneToOne: false
-            referencedRelation: "clip_boxes_gcp_sf"
+            referencedRelation: "clip_boxes_gcp_sf_corrupted"
             referencedColumns: ["id"]
           },
         ]
@@ -332,6 +379,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      queries: {
+        Row: {
+          created_at: string
+          id: number
+          query: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          query?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          query?: string | null
+        }
+        Relationships: []
       }
       requests: {
         Row: {
@@ -690,39 +755,22 @@ export type Database = {
           max_lon: number
         }[]
       }
-      search_within_using_text:
-        | {
-            Args: {
-              query_embedding: string
-              k: number
-              table_name: string
-              search_within?: number[]
-            }
-            Returns: {
-              id: number
-              similarity: number
-              min_lat: number
-              min_lon: number
-              max_lat: number
-              max_lon: number
-            }[]
-          }
-        | {
-            Args: {
-              table_name: string
-              query_text: string
-              k: number
-              search_within?: number[]
-            }
-            Returns: {
-              id: number
-              similarity: number
-              min_lat: number
-              min_lon: number
-              max_lat: number
-              max_lon: number
-            }[]
-          }
+      search_within_using_text: {
+        Args: {
+          query_embedding: string
+          k: number
+          table_name: string
+          search_within?: number[]
+        }
+        Returns: {
+          id: number
+          similarity: number
+          min_lat: number
+          min_lon: number
+          max_lat: number
+          max_lon: number
+        }[]
+      }
       update_search_boxes_area: {
         Args: {
           box_ids: number[]

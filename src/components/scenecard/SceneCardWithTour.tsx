@@ -20,7 +20,6 @@ const SceneCardWrapper: React.FC<SceneCardWrapperProps> = (props) => {
     {
       target: ".scene-card",
       content: "This is the scene card where you can view and interact with results.",
-      disableBeacon: true,
     },
     {
       target: ".carousel",

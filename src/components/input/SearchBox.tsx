@@ -1,7 +1,9 @@
 import { useAppState } from "../../hooks/AppContext"
 import { useBoundingBoxes } from "../../hooks/useBoundingBoxes"
+import { useSupabase } from "../../hooks/useSupabase"
 import "./SearchBox.scss"
-import React, { KeyboardEvent, useState } from "react"
+import debounce from "lodash/debounce"
+import React, { KeyboardEvent, useCallback, useEffect, useState } from "react"
 
 interface SearchBoxProps {
   isPinning: boolean
@@ -12,6 +14,30 @@ const SearchBox: React.FC<SearchBoxProps> = ({ isPinning, handlePinPoint }) => {
   const { state, dispatch } = useAppState()
   const { handleFindSimilar } = useBoundingBoxes()
   const [isFocused, setIsFocused] = useState(false)
+  const { saveQueryResult } = useSupabase()
+
+  const query = state.mode.type == "text" ? state.mode.query : ""
+
+  // Create a debounced version of saveQueryResult
+  const debouncedSaveQuery = useCallback(
+    debounce((query: string) => {
+      if (query) {
+        saveQueryResult(query)
+      }
+    }, 500), // 500ms delay
+    [saveQueryResult],
+  )
+
+  useEffect(() => {
+    if (state.mode.type == "text") {
+      debouncedSaveQuery(query)
+    }
+
+    // Cleanup function to cancel any pending debounced calls
+    return () => {
+      debouncedSaveQuery.cancel()
+    }
+  }, [query])
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
