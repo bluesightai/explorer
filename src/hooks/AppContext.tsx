@@ -14,7 +14,7 @@ export interface AppState {
   sliderValue: number
   isLoading: boolean
   isRestoringSearch: boolean
-  negativeIDs: number[]
+  negativeBoxes: BoundingBoxResponse[]
   resultBoundingBoxes: SimilarBox[]
   visibleBoundingBoxes: number[] | null
   helpTour: HelpTour
@@ -28,12 +28,12 @@ export type AppAction =
   | { type: "SET_RESULT_BOXES"; payload: SimilarBox[] }
   | { type: "SET_AREA_ID"; payload: number }
   | { type: "SET_SLIDER_VALUE"; payload: number }
-  | { type: "SET_NEGATIVE_IDS"; payload: number[] }
+  | { type: "SET_NEGATIVE_BOXES"; payload: BoundingBoxResponse[] }
   | { type: "FINISH_RESTORE_SEARCH" }
   | {
       type: "RESTORE_SEARCH"
       payload: {
-        negativeIDs: number[]
+        negativeBoxess: BoundingBoxResponse[]
         targetBoundingBoxes: BoundingBoxResponse[]
         resultBoundingBoxes: SimilarBox[]
         areaId: number
@@ -47,7 +47,7 @@ export type AppAction =
 // Initial state
 const initialState: AppState = {
   config: cali_config,
-  negativeIDs: [],
+  negativeBoxes: [],
   resultBoundingBoxes: [],
   areaId: 5,
   sliderValue: 9,
@@ -85,8 +85,8 @@ function appReducer(state: AppState, action: AppAction): AppState {
         ...action.payload,
         isRestoringSearch: true,
       }
-    case "SET_NEGATIVE_IDS":
-      return { ...state, negativeIDs: action.payload }
+    case "SET_NEGATIVE_BOXES":
+      return { ...state, negativeBoxes: action.payload }
     case "SET_TARGET_BOXES":
       return {
         ...state,

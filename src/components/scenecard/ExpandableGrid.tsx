@@ -8,7 +8,7 @@ interface ExpandableGridProps {
   count: number
   fetchImage: (box: BoundingBoxResponse) => Promise<string>
   onTileClick: (boundingBox: [number, number, number, number]) => void
-  setNegativeId?: (id: number) => void
+  setNegative?: (box: BoundingBoxResponse) => void
   showDislikeButton?: boolean
 }
 
@@ -17,7 +17,7 @@ const ITEMS_PER_PAGE_SMALL = 6
 const GRID_COLS = 3
 
 const ExpandableGrid: React.FC<ExpandableGridProps> = ({
-  setNegativeId,
+  setNegative,
   boxes,
   count,
   fetchImage,
@@ -50,12 +50,12 @@ const ExpandableGrid: React.FC<ExpandableGridProps> = ({
       return (
         <div key={id} onClick={() => onTileClick([min_lon, min_lat, max_lon, max_lat])} className="grid-item">
           <LazyImage boxData={box} fetchImage={fetchImage} alt={`Similar ${startIndex + index}`} />
-          {showDislikeButton && setNegativeId && (
+          {showDislikeButton && setNegative && (
             <button
               className="negative-box-button"
               onClick={(e) => {
                 e.stopPropagation()
-                setNegativeId(id)
+                setNegative(box)
               }}
               title="Mark as negative example"
             >

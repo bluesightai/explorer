@@ -1,9 +1,11 @@
 import { useAppState } from "../../hooks/AppContext"
+import { BoundingBoxResponse } from "../../hooks/supabaseTypes"
 import { useBoundingBoxes } from "../../hooks/useBoundingBoxes"
 import { useSupabaseImagery } from "../../hooks/useSupabaseImagery"
 import Carousel from "./Carousel"
 import ExpandableGrid from "./ExpandableGrid"
 import FindButton from "./FindSimillarButton"
+import NegativeCarousel from "./NegativeCarousel"
 import "./SceneCard.scss"
 import Slider from "./Slider"
 import React, { useEffect } from "react"
@@ -30,7 +32,7 @@ const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch })
   }, [
     state.areaId,
     state.mode.type,
-    state.negativeIDs,
+    state.negativeBoxes,
     state.isRestoringSearch,
     state.mode.type === "text" ? "" : state.mode.targetBoundingBoxes,
   ])
@@ -43,10 +45,15 @@ const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch })
     dispatch({ type: "SET_TARGET_BOXES", payload: newBoxes })
   }
 
-  const setNegativeId = (negative_id: number) => {
-    const oldNegatives = state.negativeIDs
-    const newNegatives = [negative_id, ...oldNegatives]
-    dispatch({ type: "SET_NEGATIVE_IDS", payload: newNegatives })
+  const removeNegativeBox = (toBeRemovedId: number) => {
+    const newBoxes = state.negativeBoxes.filter((item) => item.id != toBeRemovedId)
+    dispatch({ type: "SET_NEGATIVE_BOXES", payload: newBoxes })
+  }
+
+  const setNegative = (negative_box: BoundingBoxResponse) => {
+    const oldNegatives = state.negativeBoxes
+    const newNegatives = [negative_box, ...oldNegatives]
+    dispatch({ type: "SET_NEGATIVE_BOXES", payload: newNegatives })
   }
 
   const handleSliderChange = (newValue: number) => {
@@ -74,6 +81,8 @@ const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch })
   return (
     <div className="scene-card">
       <Carousel removeBox={removeBox} onTileClick={onTileClick} mode={state.mode} fetchImage={fetchSupabaseImage} />
+      <NegativeCarousel removeBox={removeNegativeBox} onTileClick={onTileClick} fetchImage={fetchSupabaseImage} />
+
       {state.resultBoundingBoxes.length > 0 ? (
         <Slider
           min={1}
@@ -89,7 +98,7 @@ const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch })
 
       {state.resultBoundingBoxes.length > 0 && (
         <ExpandableGrid
-          setNegativeId={setNegativeId}
+          setNegative={setNegative}
           onTileClick={onTileClick}
           boxes={state.resultBoundingBoxes}
           count={state.resultBoundingBoxes.length}

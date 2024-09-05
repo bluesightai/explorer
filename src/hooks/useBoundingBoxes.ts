@@ -36,7 +36,10 @@ export const useBoundingBoxes = () => {
       const data = await response.json()
       const { embeddings } = data
       const flat = embeddings.flat()
-      const result = await fetchClipBoxes(state.config.table_name, flat, state.sliderValue, state.negativeIDs)
+      const negativeBoxes = state.negativeBoxes
+      const negativeIDs = negativeBoxes.map((item) => item.id)
+
+      const result = await fetchClipBoxes(state.config.table_name, flat, state.sliderValue, negativeIDs)
       dispatch({ type: "SET_RESULT_BOXES", payload: result })
 
       // Process the response data here
@@ -62,13 +65,9 @@ export const useBoundingBoxes = () => {
       handleTextSearch(mode.query)
     } else {
       try {
+        const negativeIDs = state.negativeBoxes.map((item) => item.id)
         const targetIds = mode.targetBoundingBoxes.map((item) => item.id)
-        const similarBoxes = await findSimilarClip(
-          state.config.table_name,
-          targetIds,
-          state.sliderValue,
-          state.negativeIDs,
-        )
+        const similarBoxes = await findSimilarClip(state.config.table_name, targetIds, state.sliderValue, negativeIDs)
 
         dispatch({ type: "SET_RESULT_BOXES", payload: similarBoxes })
       } catch (error) {

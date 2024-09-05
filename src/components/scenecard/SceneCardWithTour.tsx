@@ -27,7 +27,7 @@ const SceneCardWrapper: React.FC<SceneCardWrapperProps> = (props) => {
     },
     {
       target: ".slider",
-      content: "Use this slider to adjust the search parameters.",
+      content: "Use this slider to adjust how many matches you are looking for.",
     },
     {
       target: ".expandable-grid",
