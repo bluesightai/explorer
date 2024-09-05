@@ -1,7 +1,7 @@
 import { useAppState } from "../../hooks/AppContext"
-import HelpButton from "../HelpTour"
 import { MAIN_TOUR_COOKIE_NAME } from "../MainMap/MapApp"
 import "./ControlWidget.scss"
+import HelpButton from "./HelpTour"
 import Cookies from "js-cookie"
 
 function ControlWidget() {

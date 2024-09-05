@@ -32,7 +32,7 @@ const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch })
     state.mode.type,
     state.negativeIDs,
     state.isRestoringSearch,
-    state.mode.type === "text" ? state.mode.query : state.mode.targetBoundingBoxes,
+    state.mode.type === "text" ? "" : state.mode.targetBoundingBoxes,
   ])
 
   const removeBox = (toBeRemovedId: number) => {
