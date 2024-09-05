@@ -41,8 +41,7 @@ export const BoundingBoxLayer = ({ boundingBoxes, fillColor, borderColor }: Boun
     filled: true,
     getLineColor: borderColor,
     getFillColor: fillColor,
-    getLineWidth: 2,
-    lineWidthMinPixels: 1,
+    getLineWidth: 0.1,
     pickable: true,
     // onClick: (info) => {
     // },

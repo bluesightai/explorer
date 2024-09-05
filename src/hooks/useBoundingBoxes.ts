@@ -7,7 +7,7 @@ export const useBoundingBoxes = () => {
   const { fetchBoundingBoxes, fetchClipBoxes, findSimilarClip } = useSupabase()
 
   const handleFetchBoundingBoxes = async (latitude: number, longitude: number) => {
-    const bboxes = await fetchBoundingBoxes(state.config.table_name, latitude, longitude)
+    const bboxes = await fetchBoundingBoxes(state.config.table_name, state.config.mask_table_name, latitude, longitude)
     if (state.mode.type != "image") {
       throw Error("We should be in image mode")
     }

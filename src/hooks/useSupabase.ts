@@ -36,13 +36,20 @@ export const useSupabase = () => {
     })
   }
 
-  const fetchBoundingBoxes = async (table_name: string, lat: number, lon: number): Promise<BoundingBoxResponse[]> => {
+  const fetchBoundingBoxes = async (
+    table_name: string,
+    masks_table_name: string,
+    lat: number,
+    lon: number,
+  ): Promise<BoundingBoxResponse[]> => {
     return retryOperation(async () => {
-      const { data, error }: PostgrestResponse<BoundingBoxResponse> = await supabase.rpc("find_polygon", {
+      const { data, error }: PostgrestResponse<BoundingBoxResponse> = await supabase.rpc("get_all_matching_masks", {
         table_name: table_name,
+        masks_table_name,
         lat,
         lon,
       })
+      console.log("Data is data", data)
       if (error) {
         console.error("Error fetching covered boxes:", error)
         throw error

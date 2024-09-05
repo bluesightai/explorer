@@ -22,7 +22,7 @@ interface SceneCardProps {
 const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch }) => {
   const { state, dispatch } = useAppState()
   // const { fetchNaipImage } = useNaipImagery(state.config.style_id)
-  const { fetchSupabaseImage } = useSupabaseImagery(state.config.style_id)
+  const { fetchSupabaseImage } = useSupabaseImagery(state.config.mask_table_name)
   const { handleFindSimilar } = useBoundingBoxes()
 
   useEffect(() => {

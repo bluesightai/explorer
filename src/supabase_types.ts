@@ -200,7 +200,7 @@ export type Database = {
             foreignKeyName: "clip_boxes_gcp_sf_masks_parent_tile_id_fkey1"
             columns: ["parent_tile_id"]
             isOneToOne: false
-            referencedRelation: "clip_boxes_gcp_sf_corrupted"
+            referencedRelation: "clip_boxes_gcp_sf"
             referencedColumns: ["id"]
           },
         ]
@@ -230,6 +230,35 @@ export type Database = {
             columns: ["parent_tile_id"]
             isOneToOne: false
             referencedRelation: "clip_boxes_gcp_sf_corrupted"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      clip_boxes_gcp_sf_masks_duplicate: {
+        Row: {
+          embedding: string | null
+          id: number
+          location: unknown
+          parent_tile_id: number | null
+        }
+        Insert: {
+          embedding?: string | null
+          id?: number
+          location: unknown
+          parent_tile_id?: number | null
+        }
+        Update: {
+          embedding?: string | null
+          id?: number
+          location?: unknown
+          parent_tile_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clip_boxes_gcp_sf_masks_duplicate_parent_tile_id_fkey"
+            columns: ["parent_tile_id"]
+            isOneToOne: false
+            referencedRelation: "clip_boxes_gcp_sf"
             referencedColumns: ["id"]
           },
         ]
@@ -577,6 +606,46 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      find_covering_mask: {
+        Args: {
+          table_name: string
+          lat: number
+          lon: number
+          masks_table_name: string
+        }
+        Returns: {
+          id: number
+          min_lat: number
+          min_lon: number
+          max_lat: number
+          max_lon: number
+        }[]
+      }
+      find_covering_mask1: {
+        Args: {
+          table_name: string
+          lat: number
+          lon: number
+          masks_table_name: string
+        }
+        Returns: {
+          id: number
+          geom: unknown
+        }[]
+      }
+      find_intersecting_masks: {
+        Args: {
+          tile_table_name: string
+          mask_table_name: string
+          point_lon: number
+          point_lat: number
+        }
+        Returns: {
+          tile_id: number
+          mask_id: number
+          mask_geometry: unknown
+        }[]
+      }
       find_polygon: {
         Args: {
           table_name: string
@@ -626,6 +695,21 @@ export type Database = {
           size?: number
         }
         Returns: string
+      }
+      get_all_matching_masks: {
+        Args: {
+          lat: number
+          lon: number
+          table_name: string
+          masks_table_name: string
+        }
+        Returns: {
+          id: number
+          min_lat: number
+          min_lon: number
+          max_lat: number
+          max_lon: number
+        }[]
       }
       get_bounding_box: {
         Args: {
@@ -757,13 +841,15 @@ export type Database = {
       }
       search_within_using_text: {
         Args: {
+          table_name: string
           query_embedding: string
           k: number
-          table_name: string
           search_within?: number[]
+          negativeids?: number[]
         }
         Returns: {
           id: number
+          parent_tile_id: number
           similarity: number
           min_lat: number
           min_lon: number
