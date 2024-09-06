@@ -31,7 +31,11 @@ const SceneCardWrapper: React.FC<SceneCardWrapperProps> = (props) => {
     },
     {
       target: ".expandable-grid",
-      content: "This grid shows similar results based on your search. Click on a tile zoom in.",
+      content: "This grid shows matches based on your search. Click on a tile zoom in.",
+    },
+    {
+      target: ".negative-box-button",
+      content: "You can click here if it's not a match and we will improve based on that ",
     },
     {
       target: ".clear-button",
