@@ -26,7 +26,7 @@ function ControlWidget() {
       </div>
       <div className="contact-info">
         <a href="mailto:szymon@bluesight.ai" className="contact-link">
-          Contact: hello@bluesight.ai
+          Contact: helo@bluesight.ai
         </a>
       </div>
     </div>
