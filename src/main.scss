@@ -1,41 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap");
 
-// Existing styles...
-
-.mobile-message-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background-color: #f3f4f6;
-}
-
-.mobile-message {
-  text-align: center;
-  padding: 2rem;
-  background-color: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.mobile-message-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-}
-
-.mobile-message-text {
-  margin-bottom: 1rem;
-}
-
-body,
-html,
-#root,
-input,
-button,
-span {
-  font-family: "Roboto Mono", monospace;
-}
 :root {
   --black: #333333;
   --white: #f0f0f0;
@@ -54,10 +18,18 @@ span {
   --spacing-m: 32px;
   --spacing-l: 64px;
 
-  //improving text appearence on different defices and os
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body,
+html,
+#root,
+input,
+button,
+span {
+  font-family: "Roboto Mono", monospace;
 }
 
 body {
@@ -83,4 +55,34 @@ button {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+// Mobile message styles
+.mobile-message-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--white);
+}
+
+.mobile-message {
+  text-align: center;
+  padding: var(--spacing-m);
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 6px var(--black-transparent);
+  color: var(--black);
+}
+
+.mobile-message-title {
+  font-size: calc(var(--font-size) * 1.5);
+  font-weight: 700;
+  margin-bottom: var(--spacing-s);
+  color: var(--blue);
+}
+
+.mobile-message-text {
+  margin-bottom: var(--spacing-s);
+  font-size: var(--font-size);
 }
