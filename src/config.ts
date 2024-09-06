@@ -8,6 +8,7 @@ export type Config = {
   initial_lat: number
   initial_lon: number
   mask_table_name: string
+  masks_bucket_name: string
 }
 
 export const mapOptions = {
@@ -28,6 +29,7 @@ export const ukraine_config: Config = {
   initial_lat: 51.191,
   initial_lon: 35.285,
   table_name: "defense_boxes",
+  masks_bucket_name: "",
   polygon: [
     [35.22523850097286, 51.22252531315613],
     [35.23329263632898, 51.22676466941128],
@@ -140,6 +142,7 @@ export const cali_config: Config = {
   name: "Bay Area",
   // style_id: "cm05fx10r00im01rb7h3haudx",
   mask_table_name: "clip_boxes_gcp_sf_masks_duplicate",
+  masks_bucket_name: "clip_boxes_gcp_sf_masks",
 
   style_id: "clip_boxes_gcp_sf",
   table_name: "clip_boxes_gcp_sf",
@@ -155,6 +158,7 @@ export const cali_config: Config = {
 }
 
 export const la_config: Config = {
+  masks_bucket_name: "",
   mask_table_name: "",
   name: "LA port",
   style_id: "clip_boxes_gcp_la",

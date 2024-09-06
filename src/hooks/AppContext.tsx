@@ -8,6 +8,7 @@ export type Mode = { type: "text"; query: string } | { type: "image"; targetBoun
 type HelpTour = "first" | "second" | "off"
 
 export interface AppState {
+  largeObjects: boolean
   config: Config
   mode: Mode
   areaId: number
@@ -43,9 +44,11 @@ export type AppAction =
   | { type: "SET_LOADING"; payload: boolean }
   | { type: "SET_VISIBLE_BOXES"; payload: number[] | null }
   | { type: "SET_HELP_TOUR"; payload: HelpTour }
+  | { type: "SET_LARGE_OBJECTS"; payload: boolean }
 
 // Initial state
 const initialState: AppState = {
+  largeObjects: false,
   config: cali_config,
   negativeBoxes: [],
   resultBoundingBoxes: [],
@@ -104,6 +107,8 @@ function appReducer(state: AppState, action: AppAction): AppState {
       return { ...state, visibleBoundingBoxes: action.payload }
     case "SET_HELP_TOUR":
       return { ...state, helpTour: action.payload }
+    case "SET_LARGE_OBJECTS":
+      return { ...state, largeObjects: action.payload }
     default:
       return state
   }

@@ -10,6 +10,18 @@ interface SearchBoxProps {
   handlePinPoint: () => void
 }
 
+const Toggle = () => {
+  const { state, dispatch } = useAppState()
+  const isOn = state.largeObjects
+  const handleToggle = () => dispatch({ type: "SET_LARGE_OBJECTS", payload: !isOn })
+  return (
+    <label className="toggle-switch">
+      <input type="checkbox" checked={isOn} onChange={handleToggle} />
+      <span className="toggle-slider"></span>
+    </label>
+  )
+}
+
 const SearchBox: React.FC<SearchBoxProps> = ({}) => {
   const { state, dispatch } = useAppState()
   const { handleFindSimilar } = useBoundingBoxes()
@@ -65,6 +77,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({}) => {
 
   return (
     <div className={`search-box ${isFocused ? "focused" : ""}`}>
+      <Toggle />
       <div className="search-input-wrapper">
         <input
           type="text"

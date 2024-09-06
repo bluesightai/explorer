@@ -41,15 +41,21 @@ export const useSupabase = () => {
     masks_table_name: string,
     lat: number,
     lon: number,
+    findLargeObject: boolean,
   ): Promise<BoundingBoxResponse[]> => {
     return retryOperation(async () => {
-      const { data, error }: PostgrestResponse<BoundingBoxResponse> = await supabase.rpc("get_all_matching_masks", {
-        table_name: table_name,
-        masks_table_name,
-        lat,
-        lon,
-      })
-      console.log("Data is data", data)
+      const { data, error }: PostgrestResponse<BoundingBoxResponse> = findLargeObject
+        ? await supabase.rpc("find_polygon", {
+            table_name: table_name,
+            lat,
+            lon,
+          })
+        : await supabase.rpc("get_all_matching_masks", {
+            table_name: table_name,
+            masks_table_name,
+            lat,
+            lon,
+          })
       if (error) {
         console.error("Error fetching covered boxes:", error)
         throw error
@@ -60,17 +66,26 @@ export const useSupabase = () => {
 
   const fetchClipBoxes = async (
     table_name: string,
+    mask_table_name: string,
     embedding: number[],
     top_k: number,
     negativeids: number[],
+    findLargeObject: boolean,
   ): Promise<SimilarBox[]> => {
     return retryOperation(async () => {
-      const { data, error }: PostgrestResponse<SimilarBox> = await supabase.rpc("search_using_text", {
-        table_name: table_name,
-        query_embedding: embedding,
-        k: top_k,
-        negativeids,
-      })
+      const { data, error }: PostgrestResponse<SimilarBox> = findLargeObject
+        ? await supabase.rpc("search_using_text", {
+            table_name: table_name,
+            query_embedding: embedding,
+            k: top_k,
+            negativeids,
+          })
+        : await supabase.rpc("search_using_text", {
+            table_name: mask_table_name,
+            query_embedding: embedding,
+            k: top_k,
+            negativeids,
+          })
 
       if (error) {
         console.error("Error fetching search boxes:", error)
@@ -82,17 +97,26 @@ export const useSupabase = () => {
 
   const findSimilarClip = async (
     table_name: string,
+    mask_table_name: string,
     ids: number[],
     top_k: number,
     negative_input_ids: number[],
+    findLargeObject: boolean,
   ): Promise<SimilarBox[]> => {
     return retryOperation(async () => {
-      const { data, error } = await supabase.rpc("search_using_image", {
-        table_name: table_name,
-        input_ids: ids,
-        top_k: top_k, // optional, defaults to 5 if not provided
-        negativeids: negative_input_ids,
-      })
+      const { data, error } = findLargeObject
+        ? await supabase.rpc("search_using_image", {
+            table_name: table_name,
+            input_ids: ids,
+            top_k: top_k, // optional, defaults to 5 if not provided
+            negativeids: negative_input_ids,
+          })
+        : await supabase.rpc("search_using_image", {
+            table_name: mask_table_name,
+            input_ids: ids,
+            top_k: top_k, // optional, defaults to 5 if not provided
+            negativeids: negative_input_ids,
+          })
 
       if (error) {
         console.error("Error finding similar tiles:", error)
