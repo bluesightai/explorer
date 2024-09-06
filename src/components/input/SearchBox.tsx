@@ -14,11 +14,17 @@ const Toggle = () => {
   const { state, dispatch } = useAppState()
   const isOn = state.largeObjects
   const handleToggle = () => dispatch({ type: "SET_LARGE_OBJECTS", payload: !isOn })
+
   return (
-    <label className="toggle-switch">
-      <input type="checkbox" checked={isOn} onChange={handleToggle} />
-      <span className="toggle-slider"></span>
-    </label>
+    <input
+      checked={isOn}
+      onChange={handleToggle}
+      className="toggle"
+      type="checkbox"
+      id="toggle-switch"
+      data-label-on={"big"}
+      data-label-off={"big"}
+    />
   )
 }
 
@@ -77,7 +83,6 @@ const SearchBox: React.FC<SearchBoxProps> = ({}) => {
 
   return (
     <div className={`search-box ${isFocused ? "focused" : ""}`}>
-      <Toggle />
       <div className="search-input-wrapper">
         <input
           type="text"
@@ -92,6 +97,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({}) => {
         <button onClick={handleSubmit} className="submit-button" aria-label="Submit" disabled={state.isLoading}>
           {state.isLoading ? <span className="loading">⏳</span> : "🔍"}
         </button>
+        <Toggle />
       </div>
     </div>
   )
