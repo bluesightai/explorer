@@ -25,8 +25,8 @@ function ControlWidget() {
         <HelpButton onClick={resetTour} />
       </div>
       <div className="contact-info">
-        <a href="mailto:helo@bluesight.ai" className="contact-link">
-          Contact: helo@bluesight.ai
+        <a href="mailto:hello@bluesight.ai" className="contact-link">
+          Contact: hello@bluesight.ai
         </a>
       </div>
     </div>

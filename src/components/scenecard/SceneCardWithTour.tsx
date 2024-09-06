@@ -18,26 +18,38 @@ const SceneCardWrapper: React.FC<SceneCardWrapperProps> = (props) => {
 
   const sceneCardSteps: Step[] = [
     {
+      disableBeacon: true,
+
       target: ".scene-card",
       content: "This is the scene card where you can view and interact with results.",
     },
     {
+      disableBeacon: true,
+
       target: ".carousel",
       content: "This carousel shows your selected areas or search results. Click to zoom in.",
     },
     {
+      disableBeacon: true,
+
       target: ".slider",
       content: "Use this slider to adjust how many matches you are looking for.",
     },
     {
+      disableBeacon: true,
+
       target: ".expandable-grid",
       content: "This grid shows matches based on your search. Click on a tile zoom in.",
     },
     {
+      disableBeacon: true,
+
       target: ".negative-box-button",
       content: "You can click here if it's not a match and we will improve based on that ",
     },
     {
+      disableBeacon: true,
+
       target: ".clear-button",
       content: "Click here to clear your search and start over.",
     },

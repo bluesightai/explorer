@@ -10,7 +10,7 @@ interface SearchBoxProps {
   handlePinPoint: () => void
 }
 
-const SearchBox: React.FC<SearchBoxProps> = ({ isPinning, handlePinPoint }) => {
+const SearchBox: React.FC<SearchBoxProps> = ({}) => {
   const { state, dispatch } = useAppState()
   const { handleFindSimilar } = useBoundingBoxes()
   const [isFocused, setIsFocused] = useState(false)
@@ -63,20 +63,8 @@ const SearchBox: React.FC<SearchBoxProps> = ({ isPinning, handlePinPoint }) => {
     }
   }
 
-  const handlePinClick = () => {
-    handlePinPoint()
-    dispatch({ type: "SET_TARGET_BOXES", payload: [] })
-  }
-
   return (
     <div className={`search-box ${isFocused ? "focused" : ""}`}>
-      <button
-        onClick={handlePinClick}
-        className={`pin-button ${isPinning ? "active" : ""}`}
-        title={isPinning ? "Cancel pin" : "Select point"}
-      >
-        <img src="./pin.svg" alt="pin icon" className={`pin-icon ${isPinning ? "active" : ""}`} />
-      </button>
       <div className="search-input-wrapper">
         <input
           type="text"

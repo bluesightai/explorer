@@ -15,12 +15,10 @@ const initialSteps: Step[] = [
     content: "Type in what you are looking for, eg. solar panels, blue car",
   },
   {
+    disableBeacon: true,
+
     target: ".submit-button",
     content: "Press ↩️ or click this button to search",
-  },
-  {
-    target: ".pin-button",
-    content: "You can also use image search, click here and then click on anywhere on the map",
   },
 ]
 
