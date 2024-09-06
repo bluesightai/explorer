@@ -139,7 +139,7 @@ export const ukraine_config: Config = {
 export const cali_config: Config = {
   name: "Bay Area",
   // style_id: "cm05fx10r00im01rb7h3haudx",
-  mask_table_name: "clip_boxes_gcp_sf_masks",
+  mask_table_name: "clip_boxes_gcp_sf_masks_duplicate",
 
   style_id: "clip_boxes_gcp_sf",
   table_name: "clip_boxes_gcp_sf",
