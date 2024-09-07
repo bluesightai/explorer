@@ -8,11 +8,15 @@ export const usePinning = () => {
   const handlePinPoint = () => {
     setIsPinning(!isPinning)
   }
+  const setPinPointNegative = () => {
+    setIsPinning(false)
+  }
 
   return {
     isPinning,
     pinnedPoints,
     setPinnedPoints,
     handlePinPoint,
+    setPinPointNegative,
   }
 }

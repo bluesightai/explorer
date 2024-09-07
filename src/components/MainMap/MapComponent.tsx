@@ -16,7 +16,7 @@ import { useCallback } from "react"
 import { Popup } from "react-map-gl"
 
 export function MapComponent() {
-  const { isPinning, pinnedPoints, setPinnedPoints, handlePinPoint } = usePinning()
+  const { isPinning, pinnedPoints, setPinnedPoints, handlePinPoint, setPinPointNegative } = usePinning()
   const { state, dispatch } = useAppState()
   const { handleFetchBoundingBoxes, handleFindSimilar } = useBoundingBoxes()
   const { viewState, setViewState, popupInfo, setPopupInfo } = useMapState()
@@ -61,7 +61,7 @@ export function MapComponent() {
   }, [handleFindSimilar, handlePinPoint])
 
   const handleCleanSearch = () => {
-    handlePinPoint()
+    setPinPointNegative()
     dispatch({ type: "SET_TEXT", payload: "" })
     dispatch({ type: "SET_RESULT_BOXES", payload: [] })
   }
@@ -108,7 +108,7 @@ export function MapComponent() {
           handleFindSimilar={handleSearchAndCancelPin}
         /> */}
 
-        <SearchBox isPinning={isPinning} handlePinPoint={handlePinPoint} />
+        <SearchBox setPinPointNegative={setPinPointNegative} isPinning={isPinning} handlePinPoint={handlePinPoint} />
       </Map>
     </APIProvider>
   )

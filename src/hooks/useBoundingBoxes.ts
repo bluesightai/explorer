@@ -26,6 +26,8 @@ export const useBoundingBoxes = () => {
   }
 
   const handleTextSearch = async (query: string) => {
+    console.log("Calling handleTextSearch")
+
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -34,6 +36,7 @@ export const useBoundingBoxes = () => {
 
     try {
       const response = await fetch("https://api.bluesight.ai/embeddings/text", options)
+      console.log("got responses")
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
@@ -67,9 +70,14 @@ export const useBoundingBoxes = () => {
     const mode = state.mode
     const mode_type = mode.type
     dispatch({ type: "SET_LOADING", payload: true })
+    console.log("mode type", mode_type)
 
     if (mode_type == "text") {
+      console.log("Calling handle find similar")
+
       const query = mode.query.trim()
+      console.log("Query is", mode.query)
+
       if (query.length < 3) {
         dispatch({ type: "SET_LOADING", payload: false })
         dispatch({ type: "SET_RESULT_BOXES", payload: [] })

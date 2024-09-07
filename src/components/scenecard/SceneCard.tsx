@@ -3,6 +3,7 @@ import { BoundingBoxResponse } from "../../hooks/supabaseTypes"
 import { useBoundingBoxes } from "../../hooks/useBoundingBoxes"
 import { useSupabaseImagery } from "../../hooks/useSupabaseImagery"
 import Carousel from "./Carousel"
+import Examples from "./ExamplesCard"
 import ExpandableGrid from "./ExpandableGrid"
 import FindButton from "./FindSimillarButton"
 import NegativeCarousel from "./NegativeCarousel"
@@ -62,9 +63,6 @@ const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch })
   const handleSliderChange = (newValue: number) => {
     dispatch({ type: "SET_SLIDER_VALUE", payload: newValue })
   }
-  // const handleAreaChange = (id: number) => {
-  //   dispatch({ type: "SET_AREA_ID", payload: id })
-  // }
 
   const handleSliderRelease = () => {
     if (state.resultBoundingBoxes.length > 0) {
@@ -72,14 +70,12 @@ const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch })
     }
   }
 
-  if (state.mode.type == "text" && state.mode.query.length < 1) {
-    return null
+  if (
+    (state.mode.type == "text" && state.mode.searched_for.length < 1) ||
+    (state.mode.type == "image" && state.mode.targetBoundingBoxes.length < 1)
+  ) {
+    return <Examples handleFindSimilar={handleFindSimilar} />
   }
-  if (state.mode.type == "image" && state.mode.targetBoundingBoxes.length < 1) {
-    return null
-  }
-  // TODO
-  // handle Area selector if we use multiple partial indices
 
   return (
     <div className="scene-card">

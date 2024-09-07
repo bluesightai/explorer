@@ -55,7 +55,7 @@ const initialState: AppState = {
   negativeBoxes: [],
   resultBoundingBoxes: [],
   areaId: 5,
-  sliderValue: 9,
+  sliderValue: 45,
   isLoading: false,
   isRestoringSearch: false,
   mode: {

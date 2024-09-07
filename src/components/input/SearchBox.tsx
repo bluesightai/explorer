@@ -8,6 +8,7 @@ import React, { KeyboardEvent, useCallback, useEffect, useState } from "react"
 interface SearchBoxProps {
   isPinning: boolean
   handlePinPoint: () => void
+  setPinPointNegative: () => void
 }
 
 const Toggle = () => {
@@ -28,7 +29,7 @@ const Toggle = () => {
   )
 }
 
-const SearchBox: React.FC<SearchBoxProps> = ({ isPinning, handlePinPoint }) => {
+const SearchBox: React.FC<SearchBoxProps> = ({ isPinning, handlePinPoint, setPinPointNegative }) => {
   const { state, dispatch } = useAppState()
   const { handleFindSimilar } = useBoundingBoxes()
   const [isFocused, setIsFocused] = useState(false)
@@ -62,6 +63,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ isPinning, handlePinPoint }) => {
   }, [query])
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPinPointNegative()
     dispatch({
       type: "SET_TEXT",
       payload: event.target.value,
