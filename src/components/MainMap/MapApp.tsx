@@ -12,7 +12,7 @@ const initialSteps: Step[] = [
     disableBeacon: true,
 
     target: ".search-input",
-    content: "Type in what you are looking for, eg. solar panels, blue car",
+    content: "Type in what you are looking for, eg. solar panels, blue car, dry patch",
   },
   {
     disableBeacon: true,

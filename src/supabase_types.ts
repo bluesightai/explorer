@@ -158,6 +158,56 @@ export type Database = {
         }
         Relationships: []
       }
+      clip_boxes_gcp_sf_bad_masks: {
+        Row: {
+          embedding: string | null
+          id: number
+          location: unknown
+        }
+        Insert: {
+          embedding?: string | null
+          id?: number
+          location: unknown
+        }
+        Update: {
+          embedding?: string | null
+          id?: number
+          location?: unknown
+        }
+        Relationships: []
+      }
+      clip_boxes_gcp_sf_bad_masks_masks: {
+        Row: {
+          bounding_box: unknown | null
+          embedding: string | null
+          id: number
+          location: unknown
+          parent_tile_id: number | null
+        }
+        Insert: {
+          bounding_box?: unknown | null
+          embedding?: string | null
+          id?: number
+          location: unknown
+          parent_tile_id?: number | null
+        }
+        Update: {
+          bounding_box?: unknown | null
+          embedding?: string | null
+          id?: number
+          location?: unknown
+          parent_tile_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clip_boxes_gcp_sf_masks_duplicate_parent_tile_id_fkey"
+            columns: ["parent_tile_id"]
+            isOneToOne: false
+            referencedRelation: "clip_boxes_gcp_sf_bad_masks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       clip_boxes_gcp_sf_corrupted: {
         Row: {
           embedding: string | null
@@ -177,6 +227,38 @@ export type Database = {
         Relationships: []
       }
       clip_boxes_gcp_sf_masks: {
+        Row: {
+          bounding_box: unknown
+          embedding: string | null
+          id: number
+          location: unknown
+          parent_tile_id: number | null
+        }
+        Insert: {
+          bounding_box: unknown
+          embedding?: string | null
+          id?: number
+          location: unknown
+          parent_tile_id?: number | null
+        }
+        Update: {
+          bounding_box?: unknown
+          embedding?: string | null
+          id?: number
+          location?: unknown
+          parent_tile_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clip_boxes_gcp_sf_masks_parent_tile_id_fkey2"
+            columns: ["parent_tile_id"]
+            isOneToOne: false
+            referencedRelation: "clip_boxes_gcp_sf"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      clip_boxes_gcp_sf_masks_bad_masks_no_index: {
         Row: {
           embedding: string | null
           id: number
@@ -200,7 +282,7 @@ export type Database = {
             foreignKeyName: "clip_boxes_gcp_sf_masks_parent_tile_id_fkey1"
             columns: ["parent_tile_id"]
             isOneToOne: false
-            referencedRelation: "clip_boxes_gcp_sf"
+            referencedRelation: "clip_boxes_gcp_sf_bad_masks"
             referencedColumns: ["id"]
           },
         ]
@@ -230,35 +312,6 @@ export type Database = {
             columns: ["parent_tile_id"]
             isOneToOne: false
             referencedRelation: "clip_boxes_gcp_sf_corrupted"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      clip_boxes_gcp_sf_masks_duplicate: {
-        Row: {
-          embedding: string | null
-          id: number
-          location: unknown
-          parent_tile_id: number | null
-        }
-        Insert: {
-          embedding?: string | null
-          id?: number
-          location: unknown
-          parent_tile_id?: number | null
-        }
-        Update: {
-          embedding?: string | null
-          id?: number
-          location?: unknown
-          parent_tile_id?: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "clip_boxes_gcp_sf_masks_duplicate_parent_tile_id_fkey"
-            columns: ["parent_tile_id"]
-            isOneToOne: false
-            referencedRelation: "clip_boxes_gcp_sf"
             referencedColumns: ["id"]
           },
         ]
@@ -621,18 +674,6 @@ export type Database = {
           max_lon: number
         }[]
       }
-      find_covering_mask1: {
-        Args: {
-          table_name: string
-          lat: number
-          lon: number
-          masks_table_name: string
-        }
-        Returns: {
-          id: number
-          geom: unknown
-        }[]
-      }
       find_intersecting_masks: {
         Args: {
           tile_table_name: string
@@ -709,6 +750,18 @@ export type Database = {
           min_lon: number
           max_lat: number
           max_lon: number
+        }[]
+      }
+      get_all_matching_masks1: {
+        Args: {
+          table_name: string
+          masks_table_name: string
+          lon: number
+          lat: number
+        }
+        Returns: {
+          id: number
+          polygon: unknown
         }[]
       }
       get_bounding_box: {
@@ -850,6 +903,22 @@ export type Database = {
         Returns: {
           id: number
           parent_tile_id: number
+          similarity: number
+          min_lat: number
+          min_lon: number
+          max_lat: number
+          max_lon: number
+        }[]
+      }
+      similarity_search: {
+        Args: {
+          table_name: string
+          negativeids: number[]
+          query_embedding: number[]
+          k: number
+        }
+        Returns: {
+          id: number
           similarity: number
           min_lat: number
           min_lon: number

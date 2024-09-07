@@ -3,7 +3,9 @@ import { BoundingBoxResponse, SimilarBox } from "./supabaseTypes"
 import React, { Dispatch, createContext, useContext, useReducer } from "react"
 
 // Define the possible modes with their associated data
-export type Mode = { type: "text"; query: string } | { type: "image"; targetBoundingBoxes: BoundingBoxResponse[] }
+export type Mode =
+  | { type: "text"; query: string; searched_for: string }
+  | { type: "image"; targetBoundingBoxes: BoundingBoxResponse[] }
 
 type HelpTour = "first" | "second" | "off"
 
@@ -59,6 +61,7 @@ const initialState: AppState = {
   mode: {
     type: "text",
     query: "",
+    searched_for: "",
   },
   visibleBoundingBoxes: [],
   helpTour: "off",
@@ -75,7 +78,11 @@ function appReducer(state: AppState, action: AppAction): AppState {
     case "SET_TEXT":
       return {
         ...state,
-        mode: { type: "text", query: action.payload },
+        mode: {
+          type: "text",
+          query: action.payload,
+          searched_for: state.mode.type == "text" ? state.mode.searched_for : "",
+        },
       }
     case "FINISH_RESTORE_SEARCH":
       return {
@@ -96,7 +103,11 @@ function appReducer(state: AppState, action: AppAction): AppState {
         mode: { type: "image", targetBoundingBoxes: action.payload },
       }
     case "SET_RESULT_BOXES":
-      return { ...state, resultBoundingBoxes: action.payload }
+      return {
+        ...state,
+        resultBoundingBoxes: action.payload,
+        mode: state.mode.type == "text" ? { ...state.mode, searched_for: state.mode.query } : state.mode,
+      }
     case "SET_AREA_ID":
       return { ...state, areaId: action.payload }
     case "SET_SLIDER_VALUE":

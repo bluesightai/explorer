@@ -13,9 +13,12 @@ interface CarouselProps {
 
 const Carousel: React.FC<CarouselProps> = ({ mode, removeBox, fetchImage, onTileClick }) => {
   if (mode.type == "text") {
+    if (!mode.searched_for) {
+      return null
+    }
     return (
       <span>
-        You are searching for: <strong> {mode.query}</strong>
+        Results for: <strong> {mode.searched_for}</strong>
       </span>
     )
   }
