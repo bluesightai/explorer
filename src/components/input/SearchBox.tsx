@@ -28,11 +28,15 @@ const Toggle = () => {
   )
 }
 
-const SearchBox: React.FC<SearchBoxProps> = ({}) => {
+const SearchBox: React.FC<SearchBoxProps> = ({ isPinning, handlePinPoint }) => {
   const { state, dispatch } = useAppState()
   const { handleFindSimilar } = useBoundingBoxes()
   const [isFocused, setIsFocused] = useState(false)
   const { saveQueryResult } = useSupabase()
+  const handlePinClick = () => {
+    handlePinPoint()
+    dispatch({ type: "SET_TARGET_BOXES", payload: [] })
+  }
 
   const query = state.mode.type == "text" ? state.mode.query : ""
 
@@ -83,6 +87,13 @@ const SearchBox: React.FC<SearchBoxProps> = ({}) => {
 
   return (
     <div className={`search-box ${isFocused ? "focused" : ""}`}>
+      <button
+        onClick={handlePinClick}
+        className={`pin-button ${isPinning ? "active" : ""}`}
+        title={isPinning ? "Cancel pin" : "Select point"}
+      >
+        <img src="./pin.svg" alt="pin icon" className={`pin-icon ${isPinning ? "active" : ""}`} />
+      </button>
       <div className="search-input-wrapper">
         <input
           type="text"

@@ -52,8 +52,8 @@ export const createMapLayers = (
     }),
 
     BoundingBoxLayer({
-      borderColor: [0, 0, 0],
-      fillColor: [0, 0, 0, 128], // This is blue
+      borderColor: [0, 0, 255],
+      fillColor: [0, 0, 255, 50], // Blue with 50% opacity (128 is ~50% of 255)
       boundingBoxes: targetBoundingBoxes,
     }),
 

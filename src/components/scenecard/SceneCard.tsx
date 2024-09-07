@@ -23,7 +23,7 @@ const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch })
   const { state, dispatch } = useAppState()
   // const { fetchNaipImage } = useNaipImagery(state.config.style_id)
   const { fetchSupabaseImage } = useSupabaseImagery(
-    state.largeObjects ? state.config.table_name : state.config.masks_bucket_name,
+    state.largeObjects ? state.config.bucket_name : state.config.masks_bucket_name,
   )
   const { handleFindSimilar } = useBoundingBoxes()
 

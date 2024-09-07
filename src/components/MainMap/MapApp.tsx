@@ -20,6 +20,18 @@ const initialSteps: Step[] = [
     target: ".submit-button",
     content: "Press ↩️ or click this button to search",
   },
+  {
+    disableBeacon: true,
+
+    target: ".pin-button",
+    content: "Enable image search. Then select any point on the map.",
+  },
+  {
+    disableBeacon: true,
+
+    target: ".toggle",
+    content: "Toggle between big / small object search.",
+  },
 ]
 
 export default function App() {
