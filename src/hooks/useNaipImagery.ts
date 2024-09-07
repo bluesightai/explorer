@@ -20,7 +20,6 @@ export const useNaipImagery = (_style_id: string) => {
       return url
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unknown error occurred")
-      console.log("We are in placeholder not good")
       return "https://via.placeholder.com/256" // Fallback to placeholder if there's an error
     } finally {
       setIsLoading(false)

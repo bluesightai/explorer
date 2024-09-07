@@ -31,7 +31,6 @@ export const createMapLayers = (
 ): LayersList => {
   const { state } = useAppState()
   const bounding_box = state.config.polygon
-
   // Rescale similarity scores
   const similarityScores = resultBoundingBoxes.map((box) => box.similarity)
   const rescaledScores = rescaleSimilarityScores(similarityScores)
@@ -57,23 +56,25 @@ export const createMapLayers = (
       boundingBoxes: targetBoundingBoxes,
     }),
 
-    new HeatmapLayer({
-      id: "heatmap-layer",
-      data: heatmapData,
-      weightsTextureSize: 512,
-      getWeight: (d) => d.weight,
-      radiusPixels: getHeatmapRadius(zoom),
+    zoom < 20
+      ? new HeatmapLayer({
+          id: "heatmap-layer",
+          data: heatmapData,
+          weightsTextureSize: 512,
+          getWeight: (d) => d.weight,
+          radiusPixels: getHeatmapRadius(zoom),
 
-      colorRange: [
-        [255, 255, 178],
-        [254, 204, 92],
-        [253, 141, 60],
-        [240, 59, 32],
-        [189, 0, 38],
-      ],
+          colorRange: [
+            [255, 255, 178],
+            [254, 204, 92],
+            [253, 141, 60],
+            [240, 59, 32],
+            [189, 0, 38],
+          ],
 
-      opacity: 0.4,
-    }),
+          opacity: 0.4,
+        })
+      : null,
     BoundingBoxLayer({
       borderColor: [255, 0, 0],
       fillColor: [255, 0, 0, 50], // Blue with 50% opacity (128 is ~50% of 255)
