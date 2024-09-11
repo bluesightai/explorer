@@ -1,4 +1,5 @@
 @import "../../main.scss";
+
 .scene-card {
   cursor: pointer;
   position: absolute;
@@ -12,9 +13,8 @@
   font-size: var(--font-size);
   width: 332px; /*calculated -pls don't change if not necessary*/
   z-index: 100000; /* Ensure it's above other elements */
-  max-height: calc(100vh - var(--spacing-s) * 2);
-  overflow: auto;
   box-sizing: border-box;
+  // Removed max-height and overflow properties
 }
 
 .select-area {

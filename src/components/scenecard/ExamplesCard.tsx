@@ -15,16 +15,14 @@ const Examples = ({ handleFindSimilar }: { handleFindSimilar: () => void }) => {
   }
 
   return (
-    <div className="scene-card">
-      <div className="example-group">
-        <h3 className="example-title">Examples:</h3>
-        <div className="example-list">
-          {examples.map((item, index) => (
-            <div key={index} className="example-item">
-              <span onClick={() => handleClick(item)}>{item}</span>
-            </div>
-          ))}
-        </div>
+    <div className="example-group">
+      <h3 className="example-title">Examples:</h3>
+      <div className="example-list">
+        {examples.map((item, index) => (
+          <div key={index} className="example-item">
+            <span onClick={() => handleClick(item)}>{item}</span>
+          </div>
+        ))}
       </div>
     </div>
   )
