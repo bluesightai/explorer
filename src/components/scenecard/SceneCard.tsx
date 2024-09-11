@@ -80,7 +80,18 @@ const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch })
   return (
     <div className={`scene-card`}>
       {!showingExamples && (
-        <div className="scene-card-header" onClick={toggleCollapse}>
+        <div
+          className="scene-card-header"
+          onClick={toggleCollapse}
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            padding: "10px",
+            cursor: "pointer",
+          }}
+        >
+          <span style={{ marginRight: "10px" }}>{isCollapsed ? "Expand" : "Collapse"}</span>
           {isCollapsed ? <ChevronDown size={24} /> : <ChevronUp size={24} />}
         </div>
       )}

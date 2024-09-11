@@ -4,7 +4,7 @@ import { useEffect } from "react"
 
 const Examples = ({ handleFindSimilar }: { handleFindSimilar: () => void }) => {
   const { dispatch, state } = useAppState()
-  const examples = ["tesla", "dry patch", "solar panels", "boats"]
+  const examples = ["tesla", "dry patch", "solar panels", "boats", "letter r"]
 
   useEffect(() => {
     handleFindSimilar()
