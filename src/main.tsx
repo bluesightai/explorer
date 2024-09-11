@@ -38,11 +38,9 @@ const DesktopOnlyApp: React.FC<{ children: React.ReactNode }> = ({ children }) =
 const App: React.FC = () => {
   return (
     <AppProvider>
-      <DesktopOnlyApp>
-        <div className="App" style={{ width: "100vw", height: "100vh" }}>
-          <MapApp />
-        </div>
-      </DesktopOnlyApp>
+      <div className="App" style={{ width: "100vw", height: "100vh" }}>
+        <MapApp />
+      </div>
     </AppProvider>
   )
 }

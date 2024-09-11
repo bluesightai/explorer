@@ -94,7 +94,7 @@ export function MapComponent() {
           </Popup>
         )}
 
-        <ControlWidget />
+        {window.innerWidth > 768 && <ControlWidget />}
 
         <SceneCard
           onTileClick={handleTileClick}
