@@ -10,21 +10,27 @@ import NegativeCarousel from "./NegativeCarousel"
 import "./SceneCard.scss"
 import Slider from "./Slider"
 import { ChevronDown, ChevronUp } from "lucide-react"
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 
 interface SceneCardProps {
   onTileClick: (boundingBox: [number, number, number, number]) => void
   handleCleanSearch: () => void
   handleFindSimilar: () => void
+  isSceneCardCollapsed: boolean
+  setIsSceneCardCollapsed: (isSceneCardCollapsed: boolean) => void
 }
 
-const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch }) => {
+const SceneCard: React.FC<SceneCardProps> = ({
+  onTileClick,
+  handleCleanSearch,
+  isSceneCardCollapsed,
+  setIsSceneCardCollapsed,
+}) => {
   const { state, dispatch } = useAppState()
   const { fetchSupabaseImage } = useSupabaseImagery(
     state.largeObjects ? state.config.bucket_name : state.config.masks_bucket_name,
   )
   const { handleFindSimilar: findSimilar } = useBoundingBoxes()
-  const [isCollapsed, setIsCollapsed] = useState(false)
 
   const showingExamples =
     (state.mode.type === "text" && state.mode.searched_for.length < 1) ||
@@ -73,7 +79,7 @@ const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch })
 
   const toggleCollapse = () => {
     if (!showingExamples) {
-      setIsCollapsed(!isCollapsed)
+      setIsSceneCardCollapsed(!isSceneCardCollapsed)
     }
   }
 
@@ -91,11 +97,11 @@ const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch })
             cursor: "pointer",
           }}
         >
-          <span style={{ marginRight: "10px" }}>{isCollapsed ? "Expand Results" : "Collapse Results"}</span>
-          {isCollapsed ? <ChevronDown size={24} /> : <ChevronUp size={24} />}
+          <span style={{ marginRight: "10px" }}>{isSceneCardCollapsed ? "Expand Results" : "Collapse Results"}</span>
+          {isSceneCardCollapsed ? <ChevronDown size={24} /> : <ChevronUp size={24} />}
         </div>
       )}
-      {(showingExamples || !isCollapsed) && (
+      {(showingExamples || !isSceneCardCollapsed) && (
         <div className="">
           {showingExamples ? (
             <Examples handleFindSimilar={findSimilar} />

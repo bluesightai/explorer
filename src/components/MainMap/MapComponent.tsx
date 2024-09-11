@@ -12,7 +12,7 @@ import SceneCard from "../scenecard/SceneCardWithTour"
 import DeckGlOverlay from "./DeckOverlay"
 import { APIProvider, MapCameraChangedEvent } from "@vis.gl/react-google-maps"
 import { Map } from "@vis.gl/react-google-maps"
-import { useCallback } from "react"
+import { useCallback, useState } from "react"
 
 // import { Popup } from "react-map-gl"
 
@@ -22,6 +22,7 @@ export function MapComponent() {
   const { handleFetchBoundingBoxes, handleFindSimilar } = useBoundingBoxes()
   // const { viewState, setViewState, popupInfo, setPopupInfo } = useMapState()
   const { viewState, setViewState, setPopupInfo } = useMapState()
+  const [isSceneCardCollapsed, setIsSceneCardCollapsed] = useState(false)
 
   const bounding_box = state.config.polygon
 
@@ -44,6 +45,10 @@ export function MapComponent() {
 
   const handleTileClick = useCallback(
     (bbox: [number, number, number, number]) => {
+      // only on mobile
+      if (window.innerWidth <= 768) {
+        setIsSceneCardCollapsed(true)
+      }
       setViewState((prevState) => ({
         ...prevState,
         ...calculateCenterAndZoom(bbox),
@@ -103,6 +108,8 @@ export function MapComponent() {
           onTileClick={handleTileClick}
           handleFindSimilar={handleSearchAndCancelPin}
           handleCleanSearch={handleCleanSearch}
+          isSceneCardCollapsed={isSceneCardCollapsed}
+          setIsSceneCardCollapsed={setIsSceneCardCollapsed}
         />
 
         {/* <ClusteringCard
@@ -111,7 +118,12 @@ export function MapComponent() {
           handleFindSimilar={handleSearchAndCancelPin}
         /> */}
 
-        <SearchBox setPinPointNegative={setPinPointNegative} isPinning={isPinning} handlePinPoint={handlePinPoint} />
+        <SearchBox
+          setPinPointNegative={setPinPointNegative}
+          isPinning={isPinning}
+          handlePinPoint={handlePinPoint}
+          setIsSceneCardCollapsed={setIsSceneCardCollapsed}
+        />
       </Map>
     </APIProvider>
   )

@@ -10,6 +10,7 @@ interface SearchBoxProps {
   isPinning: boolean
   handlePinPoint: () => void
   setPinPointNegative: () => void
+  setIsSceneCardCollapsed: (isSceneCardCollapsed: boolean) => void
 }
 
 const Toggle = () => {
@@ -29,7 +30,12 @@ const Toggle = () => {
   )
 }
 
-const SearchBox: React.FC<SearchBoxProps> = ({ isPinning, handlePinPoint, setPinPointNegative }) => {
+const SearchBox: React.FC<SearchBoxProps> = ({
+  isPinning,
+  handlePinPoint,
+  setPinPointNegative,
+  setIsSceneCardCollapsed,
+}) => {
   const { state, dispatch } = useAppState()
   const { handleFindSimilar } = useBoundingBoxes()
   const [isFocused, setIsFocused] = useState(false)
@@ -75,6 +81,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ isPinning, handlePinPoint, setPin
     const query = state.mode.query
     if (query.trim()) {
       handleFindSimilar()
+      setIsSceneCardCollapsed(false)
     }
   }
 

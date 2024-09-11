@@ -10,6 +10,8 @@ interface SceneCardWrapperProps {
   onTileClick: (boundingBox: [number, number, number, number]) => void
   handleCleanSearch: () => void
   handleFindSimilar: () => void
+  isSceneCardCollapsed: boolean
+  setIsSceneCardCollapsed: (isSceneCardCollapsed: boolean) => void
 }
 
 const SceneCardWrapper: React.FC<SceneCardWrapperProps> = (props) => {
