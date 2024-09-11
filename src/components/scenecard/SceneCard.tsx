@@ -91,7 +91,7 @@ const SceneCard: React.FC<SceneCardProps> = ({ onTileClick, handleCleanSearch })
             cursor: "pointer",
           }}
         >
-          <span style={{ marginRight: "10px" }}>{isCollapsed ? "Expand" : "Collapse"}</span>
+          <span style={{ marginRight: "10px" }}>{isCollapsed ? "Expand Results" : "Collapse Results"}</span>
           {isCollapsed ? <ChevronDown size={24} /> : <ChevronUp size={24} />}
         </div>
       )}
