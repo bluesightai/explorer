@@ -51,3 +51,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <App />
   </React.StrictMode>,
 )
+
+document.addEventListener("DOMContentLoaded", function () {
+  if (/Android/i.test(navigator.userAgent)) {
+    document.body.classList.add("android")
+  }
+})

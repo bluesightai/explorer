@@ -1,7 +1,7 @@
 @import "../../main.scss";
 
 .search-box {
-  position: absolute;
+  position: fixed;
   bottom: var(--spacing-s);
   left: 50%;
   transform: translateX(-50%);
@@ -116,9 +116,29 @@
   }
 }
 
+// Add a new media query for mobile devices
+@media screen and (max-height: 600px) {
+  .search-box {
+    position: sticky;
+    bottom: var(--spacing-s);
+    margin-top: auto;
+  }
+}
+
+// Adjust the existing media query
 @media (max-width: 768px) {
   .search-box {
     width: 95%;
+    max-width: none; // Remove max-width constraint on mobile
+  }
+}
+
+// Add styles to handle Android soft keyboard
+.android {
+  .search-box {
+    position: sticky;
+    bottom: 0;
+    margin-top: auto;
   }
 }
 
