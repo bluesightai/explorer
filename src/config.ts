@@ -17,6 +17,7 @@ export const mapOptions = {
   tilt: 0,
   mapTypeControl: false,
   streetViewControl: false,
+  gestureHandling: "greedy",
 }
 
 export const GOOGLE_MAPS_API_KEY = "AIzaSyAuQYBLOs6UfgdRw7lliJ7ik1sVVWhbvM0"
