@@ -1,3 +1,4 @@
+// SearchBox.tsx
 import { useAppState } from "../../hooks/AppContext"
 import { useBoundingBoxes } from "../../hooks/useBoundingBoxes"
 import { useSupabase } from "../../hooks/useSupabase"
@@ -15,7 +16,6 @@ const Toggle = () => {
   const { state, dispatch } = useAppState()
   const isOn = state.largeObjects
   const handleToggle = () => dispatch({ type: "SET_LARGE_OBJECTS", payload: !isOn })
-
   return (
     <input
       checked={isOn}
@@ -34,6 +34,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ isPinning, handlePinPoint, setPin
   const { handleFindSimilar } = useBoundingBoxes()
   const [isFocused, setIsFocused] = useState(false)
   const { saveQueryResult } = useSupabase()
+
   const handlePinClick = () => {
     handlePinPoint()
     dispatch({ type: "SET_TARGET_BOXES", payload: [] })
@@ -41,13 +42,12 @@ const SearchBox: React.FC<SearchBoxProps> = ({ isPinning, handlePinPoint, setPin
 
   const query = state.mode.type == "text" ? state.mode.query : ""
 
-  // Create a debounced version of saveQueryResult
   const debouncedSaveQuery = useCallback(
     debounce((query: string) => {
       if (query) {
         saveQueryResult(query)
       }
-    }, 500), // 500ms delay
+    }, 500),
     [saveQueryResult],
   )
 
@@ -55,8 +55,6 @@ const SearchBox: React.FC<SearchBoxProps> = ({ isPinning, handlePinPoint, setPin
     if (state.mode.type == "text") {
       debouncedSaveQuery(query)
     }
-
-    // Cleanup function to cancel any pending debounced calls
     return () => {
       debouncedSaveQuery.cancel()
     }
@@ -74,7 +72,6 @@ const SearchBox: React.FC<SearchBoxProps> = ({ isPinning, handlePinPoint, setPin
     if (state.mode.type !== "text") {
       throw Error("We should be in text mode")
     }
-
     const query = state.mode.query
     if (query.trim()) {
       handleFindSimilar()

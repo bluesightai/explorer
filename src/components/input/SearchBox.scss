@@ -1,3 +1,4 @@
+// SearchBox.scss
 @import "../../main.scss";
 
 .search-box {
@@ -48,7 +49,6 @@
 
     &.active {
       background-color: #e8f0fe;
-
       .pin-icon {
         filter: invert(39%) sepia(57%) saturate(2532%) hue-rotate(206deg) brightness(101%) contrast(101%);
       }
@@ -116,29 +116,43 @@
   }
 }
 
-// Add a new media query for mobile devices
-@media screen and (max-height: 600px) {
-  .search-box {
-    position: sticky;
-    bottom: var(--spacing-s);
-    margin-top: auto;
-  }
-}
-
-// Adjust the existing media query
-@media (max-width: 768px) {
+// Media queries for responsiveness
+@media screen and (max-width: 768px) {
   .search-box {
     width: 95%;
-    max-width: none; // Remove max-width constraint on mobile
+    max-width: none;
+    bottom: 10px; // Adjust bottom spacing for mobile
+    padding: 5px;
+  }
+
+  .search-input {
+    font-size: 14px; // Smaller font size for mobile
+  }
+
+  .pin-button, .submit-button {
+    padding: 6px; // Smaller padding for buttons on mobile
   }
 }
 
-// Add styles to handle Android soft keyboard
+// Styles for Android devices
 .android {
   .search-box {
-    position: sticky;
-    bottom: 60px;
-    margin-top: auto;
+    position: fixed;
+    bottom: 10px; // Adjust as needed
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: none;
+  }
+}
+
+// Adjust for landscape orientation
+@media screen and (max-height: 450px) and (orientation: landscape) {
+  .search-box {
+    position: static;
+    margin: 10px auto;
+    transform: none;
+    left: auto;
   }
 }
 
