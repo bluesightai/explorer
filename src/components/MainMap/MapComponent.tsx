@@ -13,13 +13,15 @@ import DeckGlOverlay from "./DeckOverlay"
 import { APIProvider, MapCameraChangedEvent } from "@vis.gl/react-google-maps"
 import { Map } from "@vis.gl/react-google-maps"
 import { useCallback } from "react"
-import { Popup } from "react-map-gl"
+
+// import { Popup } from "react-map-gl"
 
 export function MapComponent() {
   const { isPinning, pinnedPoints, setPinnedPoints, handlePinPoint, setPinPointNegative } = usePinning()
   const { state, dispatch } = useAppState()
   const { handleFetchBoundingBoxes, handleFindSimilar } = useBoundingBoxes()
-  const { viewState, setViewState, popupInfo, setPopupInfo } = useMapState()
+  // const { viewState, setViewState, popupInfo, setPopupInfo } = useMapState()
+  const { viewState, setViewState, setPopupInfo } = useMapState()
 
   const bounding_box = state.config.polygon
 
@@ -83,16 +85,17 @@ export function MapComponent() {
         onCameraChanged={handleSetViewState}
       >
         <DeckGlOverlay layers={layers} onClick={handleClick} />
-        {popupInfo && (
-          <Popup
-            longitude={popupInfo.longitude}
-            latitude={popupInfo.latitude}
-            closeOnClick={false}
-            onClose={() => setPopupInfo(null)}
-          >
-            Clicking outside Bay Area is not allowed.
-          </Popup>
-        )}
+
+        {/* {popupInfo && ( */}
+        {/*   <Popup */}
+        {/*     longitude={popupInfo.longitude} */}
+        {/*     latitude={popupInfo.latitude} */}
+        {/*     closeOnClick={false} */}
+        {/*     onClose={() => setPopupInfo(null)} */}
+        {/*   > */}
+        {/*     Clicking outside Bay Area is not allowed. */}
+        {/*   </Popup> */}
+        {/* )} */}
 
         {window.innerWidth > 768 && <ControlWidget />}
 
