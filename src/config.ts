@@ -20,7 +20,7 @@ export const mapOptions = {
   gestureHandling: "greedy",
 }
 
-export const GOOGLE_MAPS_API_KEY = "AIzaSyAuQYBLOs6UfgdRw7lliJ7ik1sVVWhbvM0"
+export const GOOGLE_MAPS_API_KEY = "AIzaSyBrw8DOkmR1X_vhzvKFbHXWJOCWYO0xL88"
 export const GOOGLE_MAP_ID = "41d48ce57cfb9b71"
 
 export const cali_config: Config = {
