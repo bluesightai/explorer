@@ -1,30 +1,28 @@
-# React + TypeScript + Vite
+# Bluesight Explorer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![Build and Deploy](https://github.com/bluesightai/explorer/actions/workflows/build-and-deploy.yml/badge.svg)](https://github.com/bluesightai/explorer/actions/workflows/build-and-deploy.yml)
 
-Currently, two official plugins are available:
+This is a web application for exploring satellite imagery and performing visual search using AI. Users can search for specific objects or features (like "solar panels" or "blue cars") either by text query or by selecting example locations on a map, with results displayed as a heatmap and individual tile markers. The app integrates with Google Maps for visualization, uses Supabase for backend storage and querying, and implements features like similarity search, negative example filtering, and interactive result browsing.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## How to Run
 
-## Expanding the ESLint configuration
+1. Create `.env` file with required Google Maps credentials:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
-    project: ["./tsconfig.json", "./tsconfig.node.json", "./tsconfig.app.json"],
-    tsconfigRootDir: __dirname,
-  },
-}
+```
+VITE_GOOGLE_MAPS_API_KEY="your-api-key-here"
+VITE_GOOGLE_MAP_ID="your-map-id-here"
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+2. Install dependencies and start dev server:
+
+```bash
+bun install
+
+bun run dev
+```
+
+3. For production build:
+
+```bash
+bun run build
+```
