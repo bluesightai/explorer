@@ -20,8 +20,8 @@ export const mapOptions = {
   gestureHandling: "greedy",
 }
 
-export const GOOGLE_MAPS_API_KEY = "AIzaSyBrw8DOkmR1X_vhzvKFbHXWJOCWYO0xL88"
-export const GOOGLE_MAP_ID = "41d48ce57cfb9b71"
+export const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+export const GOOGLE_MAP_ID = import.meta.env.VITE_GOOGLE_MAP_ID
 
 export const cali_config: Config = {
   name: "Bay Area",
